@@ -1,0 +1,12 @@
+services:
+  esim-backend:
+    container_name: esim-backend
+    image: esim-backend
+    build: .
+    restart: always
+    ports:
+      - ${PORT}:${PORT}
+    environment:
+      - NODE_ENV=production
+    env_file:
+      - .env
