@@ -1,4 +1,4 @@
-import { NextFunction, Request, Response } from 'express';
+import { NextFunction, Request } from 'express';
 import { HttpError } from 'http-errors';
 
 import { getLogger } from '../libs/logger';
@@ -34,8 +34,7 @@ interface ErrorLog {
   response?: any;
 }
 
-// eslint-disable-next-line
-export default function errorHandler(error: any, req: Request, res: Response, _next: NextFunction) {
+export default function errorHandler(error: any, req: Request, res: any, _next: NextFunction) {
   // default error log object
   const errorLog: ErrorLog = {
     requestId: res.locals.requestId,

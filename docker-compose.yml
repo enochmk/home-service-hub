@@ -1,7 +1,7 @@
 services:
-  esim-backend:
-    container_name: esim-backend
-    image: esim-backend
+  hsh-backend:
+    container_name: hsh-backend
+    image: hsh-backend
     build: .
     restart: always
     ports:
