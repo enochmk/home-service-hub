@@ -7,8 +7,9 @@
     "skipLibCheck": true,
     "noImplicitAny": false,
     "outDir": "build",
-    "module": "CommonJS"
+    "module": "CommonJS",
+    "typeRoots": ["node_modules/@types", "./src/types"]
   },
-  "include": ["src/**/*.ts", "config"],
+  "include": ["src/**/*.ts", "config", "src/types/*.d.ts"],
   "exclude": ["node_modules"]
 }

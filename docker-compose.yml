@@ -1,12 +1,12 @@
 services:
-  hsh-backend:
-    container_name: hsh-backend
-    image: hsh-backend
+  api:
+    container_name: backend
+    image: backend
     build: .
     restart: always
     ports:
-      - ${PORT}:${PORT}
+      - 4000:4000
     environment:
       - NODE_ENV=production
-    env_file:
-      - .env
+    # env_file:
+    #   - .env

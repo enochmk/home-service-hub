@@ -1,16 +1,17 @@
 import 'express-async-errors';
 
 import { Router } from 'express';
-
-
-import verifyJWT from './middlewares/jwt.middleware';
+import { join } from 'path';
+import { registerApiRoutesFromDir } from './utils/helpers';
 
 const router = Router();
 
-router.use(verifyJWT); // private routes
+const apiRoutesPath = join(__dirname, 'api');
+registerApiRoutesFromDir(router, apiRoutesPath);
 
-router.get('/health-check', (req, res) => {
-  res.status(200).json({ message: 'Server is up and running!' });
-})
+// health-check route
+router.get('/health', (_req, res) => {
+  res.send('OK');
+});
 
 export default router;

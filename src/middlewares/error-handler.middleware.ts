@@ -1,69 +1,47 @@
 import { NextFunction, Request } from 'express';
 import { HttpError } from 'http-errors';
+import { getLogger } from '../utils/logger';
+import { ErrorLog, ErrorResponse } from '../types/common';
 
-import { getLogger } from '../libs/logger';
-import { DEFAULT_ERROR_MESSAGE } from '../utils/constants';
+const logger = getLogger('Error-Handler');
 
-const logger = getLogger('ErrorHandler');
+export const DEFAULT_ERROR_MESSAGE =
+  'An unexpected error occurred. Please try again later or contact support if the issue persists.';
 
-interface ErrorResponse {
-  requestId: string;
-  requestTimestamp: string;
-  message: string;
-}
-
-interface ErrorLog {
-  requestId: string;
-  requestTimestamp: string;
-  error: {
-    statusCode?: number;
-    name: string;
-    message: string;
-    code?: string;
-    status?: number;
-    stack?: any
-  };
-  endpoint: {
-    url: string;
-    headers: any;
-    method: string;
-    body: any;
-    params: any;
-    query: any;
-  };
-  response?: any;
-}
-
+// eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function errorHandler(error: any, req: Request, res: any, _next: NextFunction) {
+  if (process.env.NODE_ENV === 'development') {
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+
   // default error log object
   const errorLog: ErrorLog = {
-    requestId: res.locals.requestId,
-    requestTimestamp: res.locals.timestamp,
+    ...res.locals,
     error: {
       statusCode: 500,
-      name: error.name ?? 'UnknownError',
-      message: error.message ?? 'No error message provided',
+      name: error.name,
+      message: error.message,
       code: error.code,
       status: error.status,
-      stack: error.stack
+      stack: error.stack,
     },
-    endpoint: {
-      headers: req.headers ?? {},
-      url: req.originalUrl ?? '',
-      method: req.method ?? '',
-      body: req.body ?? {},
-      params: req.params ?? {},
-      query: req.query ?? {},
+    requestDetails: {
+      headers: req.headers,
+      url: req.originalUrl,
+      method: req.method,
+      query: req.query,
+      params: req.params,
+      body: req.body,
     },
   };
 
   // Function to create the response object
   const createErrorResponse = (message: string): ErrorResponse => ({
-    requestId: res.locals.requestId ?? '',
-    requestTimestamp: res.locals.timestamp ?? '',
+    requestId: res.locals.requestId,
+    // requestTimestamp: res.locals.requestTimestamp,
     message,
   });
-
 
   // * Handled API Error
   if (error instanceof HttpError) {
@@ -71,7 +49,8 @@ export default function errorHandler(error: any, req: Request, res: any, _next: 
     errorLog.response = response;
     errorLog.error.statusCode = error.statusCode;
     logger.warn(error.message, errorLog);
-    return res.status(error.statusCode).json(response);
+    res.status(error.statusCode).json(response);
+    return;
   }
 
   // ! Unhandled Error
@@ -79,7 +58,6 @@ export default function errorHandler(error: any, req: Request, res: any, _next: 
   errorLog.response = response;
   errorLog.error.stack = error.stack;
   logger.error(error.message, errorLog);
-  return res.status(500).json(response);
+  res.status(500).json(response);
+  return;
 }
-
-

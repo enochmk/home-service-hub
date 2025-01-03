@@ -1,22 +1,19 @@
 import 'winston-daily-rotate-file';
-
 import rtracer from 'cls-rtracer';
 import config from 'config';
 import winston, { format } from 'winston';
 
-const SERVICE = 'eSIM';
 const dirname = config.get('logger.dirname') as string;
 const LEVEL = config.get('logger.level') as string;
 const TIMESTAMP_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 
 const formatter = {
   file: format.printf((log: any): string => {
-    const requestID = rtracer.id();
-    const { message, level, timestamp, label, service, ...rest } = log;
+    const requestId = rtracer.id();
+    const { message, level, timestamp, label, ...rest } = log;
     return JSON.stringify({
       timestamp,
-      requestID,
-      service,
+      requestId,
       level,
       label,
       message,
@@ -24,14 +21,13 @@ const formatter = {
     });
   }),
   console: format.printf((log: any): string => {
-    const { timestamp, level, message, label, service, ...rest } = log;
-    // if label is set, add it to the log message
+    const { timestamp, level, message, label, ...rest } = log;
     if (label) {
-      return `[${timestamp}] [${service}] [${level?.toUpperCase()}]: [${label}] - ${message} ${
+      return `[${timestamp}][${level?.toUpperCase()}]: [${label}] - ${message} ${
         Object.keys(rest).length ? JSON.stringify(rest) : ''
       }`;
     }
-    return `[${timestamp}] [${level?.toUpperCase()}]: ${message} ${
+    return `[${timestamp}][${level?.toUpperCase()}]: ${message} ${
       Object.keys(rest).length ? JSON.stringify(rest) : ''
     }`;
   }),
@@ -54,15 +50,17 @@ const transporter = {
 const logger = winston.createLogger({
   transports: [transporter.console, transporter.file],
   levels: winston.config.npm.levels,
-  defaultMeta: { service: SERVICE },
   format: winston.format.combine(
     winston.format.timestamp({ format: TIMESTAMP_FORMAT }),
     winston.format.errors({ stack: true }),
   ),
 });
-
 export const getLogger = (label: string, service?: string) => {
-  return logger.child({ label, service });
+  const childLogger = logger.child({ label });
+  if (service) {
+    childLogger.defaultMeta = { ...childLogger.defaultMeta, service };
+  }
+  return childLogger;
 };
 
 export default logger;
