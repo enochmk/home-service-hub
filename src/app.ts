@@ -9,6 +9,7 @@ import errorHandler from './middlewares/error-handler.middleware';
 import requestLogger from './middlewares/request-logger.middleware';
 import { getLogger } from './utils/logger';
 import routes from './routes';
+import { connectDatabase, disconnectDatabase } from './db/prisma.db';
 
 const logger = getLogger('Server');
 
@@ -37,11 +38,13 @@ async function initializeServer() {
   const server = http.createServer(app);
 
   // start server
-  server.on('listening', () => {
+  server.on('listening', async () => {
+    await connectDatabase();
     logger.info(`Server listening in mode: ${NODE_ENV} on port: ${PORT}`);
   });
 
-  server.on('error', (err) => {
+  server.on('error', async (err) => {
+    await disconnectDatabase();
     logger.error(`Server error: ${err}`);
     process.exit(1);
   });

@@ -6,12 +6,12 @@ import { registerApiRoutesFromDir } from './utils/helpers';
 
 const router = Router();
 
-const apiRoutesPath = join(__dirname, 'api');
-registerApiRoutesFromDir(router, apiRoutesPath);
-
 // health-check route
 router.get('/health', (_req, res) => {
   res.send('OK');
 });
+
+const apiRoutesPath = join(__dirname, 'api');
+registerApiRoutesFromDir(router, apiRoutesPath);
 
 export default router;
