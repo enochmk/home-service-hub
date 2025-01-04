@@ -51,4 +51,6 @@ model rolePermissions {
   permissionId String
   role         roles       @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   permission   permissions @relation(fields: [permissionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+
+  @@unique([roleId, permissionId])
 }

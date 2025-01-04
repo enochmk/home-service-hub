@@ -1,5 +1,5 @@
 import prisma from './prisma.db';
-import { ROLES } from '../utils/constants';
+import { PERMISSIONS, ROLE_PERMISSIONS, ROLES } from '../utils/constants';
 import logger from '../utils/logger';
 
 async function seedRoles() {
@@ -15,9 +15,48 @@ async function seedRoles() {
   logger.info('Roles seeded');
 }
 
+async function seedPermissions() {
+  logger.verbose('Seeding permissions...');
+  const permissions = Object.values(PERMISSIONS);
+  for (const permission of permissions) {
+    await prisma.permissions.upsert({
+      where: { name: permission },
+      update: {},
+      create: { name: permission },
+    });
+  }
+
+  const roles = Object.keys(ROLE_PERMISSIONS);
+  for (const role of roles) {
+    const roleRecord = await prisma.roles.findUnique({ where: { name: role } });
+    if (!roleRecord) continue;
+    const rolePermissions = ROLE_PERMISSIONS[role];
+    for (const permission of rolePermissions) {
+      const permissionRecord = await prisma.permissions.findUnique({ where: { name: permission } });
+      if (!permissionRecord) continue;
+
+      await prisma.rolePermissions.upsert({
+        where: {
+          roleId_permissionId: {
+            roleId: roleRecord.id,
+            permissionId: permissionRecord.id,
+          },
+        },
+        create: {
+          roleId: roleRecord.id,
+          permissionId: permissionRecord.id,
+        },
+        update: {},
+      });
+    }
+    logger.info('Permissions seeded');
+  }
+}
+
 async function seedDatabase() {
   logger.verbose('Seeding database...');
   await seedRoles();
+  await seedPermissions();
   logger.info('Database seeded');
 }
 
