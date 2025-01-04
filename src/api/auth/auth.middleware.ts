@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from 'express';
 import createHttpError from 'http-errors';
 import { decodeToken } from './auth.utils';
+import * as model from './auth.model';
 
 export async function verifyJWT(req: Request, res: Response, next: NextFunction) {
   const authorization = req.headers?.authorization;
@@ -23,4 +24,15 @@ export async function verifyJWT(req: Request, res: Response, next: NextFunction)
     if (message.includes('jwt not active')) message = 'Token not active. Please login again';
     return next(new createHttpError.Unauthorized(message));
   }
+}
+
+// check if user is active
+export async function validateCurrentUser(req: Request, res: Response, next: NextFunction) {
+  const userId = res.locals.user?.id;
+  if (!userId) return next(new createHttpError.Unauthorized('Invalid token. Please login again'));
+  // check if user is active
+  const user = await model.findUserById(userId);
+  if (!user) return next(new createHttpError.Unauthorized('User not found'));
+  if (!user.active) return next(new createHttpError.Unauthorized('User is not active'));
+  return next();
 }

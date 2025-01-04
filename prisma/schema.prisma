@@ -14,6 +14,7 @@ model users {
   email          String           @unique
   password       String
   roleId         String
+  active         Boolean          @default(true)
   createdAt      DateTime         @default(now())
   updatedAt      DateTime         @updatedAt
   role           roles            @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
@@ -21,11 +22,10 @@ model users {
 }
 
 model roles {
-  id        String   @id @default(uuid())
-  name      String   @unique
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-  users     users[]
+  id              String            @id @default(uuid())
+  name            String            @unique
+  rolePermissions rolePermissions[]
+  users           users[]
 }
 
 model passwordResets {
@@ -37,4 +37,18 @@ model passwordResets {
   updatedAt DateTime @updatedAt
 
   user users @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model permissions {
+  id              String            @id @default(uuid())
+  name            String            @unique
+  rolePermissions rolePermissions[]
+}
+
+model rolePermissions {
+  id           String      @id @default(uuid())
+  roleId       String
+  permissionId String
+  role         roles       @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  permission   permissions @relation(fields: [permissionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }

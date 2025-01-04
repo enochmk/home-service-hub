@@ -1,8 +1,9 @@
 import 'express-async-errors';
 
 import { Router } from 'express';
-import { join } from 'path';
-import { registerApiRoutesFromDir } from './utils/helpers';
+import authRoutes from './api/auth/auth.routes';
+import usersRoutes from './api/users/users.routes';
+import * as authMiddleware from './api/auth/auth.middleware';
 
 const router = Router();
 
@@ -11,7 +12,9 @@ router.get('/health', (_req, res) => {
   res.send('OK');
 });
 
-const apiRoutesPath = join(__dirname, 'api');
-registerApiRoutesFromDir(router, apiRoutesPath);
+router.use('/auth', authRoutes);
+router.use(authMiddleware.verifyJWT);
+router.use(authMiddleware.validateCurrentUser);
+router.use('/users', usersRoutes);
 
 export default router;

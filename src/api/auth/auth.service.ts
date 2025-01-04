@@ -7,6 +7,7 @@ import { generatePasswordResetToken, generateToken } from './auth.utils';
 import { SignUpInput } from './auth.schema';
 import { ROLES } from '../../utils/constants';
 import { getLogger } from '../../utils/logger';
+import { IUserSessionData } from './auth.interface';
 
 const logger = getLogger('auth.service');
 
@@ -21,13 +22,20 @@ export const signIn = async (email: string, password: string) => {
     throw new createHttpError.Forbidden('Invalid credentials. Please check and try again');
   }
 
-  const payload = {
+  if (!user.active) {
+    throw new createHttpError.Forbidden('User is not active');
+  }
+
+  const userPermissions = await model.getPermissionsByRoleId(user.role?.id);
+
+  const payload: IUserSessionData = {
     id: user.id,
     email: user.email,
     firstName: user.firstName,
     lastName: user.lastName,
     roleId: user.role?.id,
     roleName: user.role?.name,
+    permissions: userPermissions,
   };
 
   const token = generateToken(payload);

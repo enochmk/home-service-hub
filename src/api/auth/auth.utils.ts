@@ -5,16 +5,16 @@ import { IUserSessionData } from './auth.interface';
 const JWT_SECRET = process.env['JWT_SECRET'] || 'secret';
 const JWT_EXPIRES_IN = process.env['JWT_EXPIRES_IN'] || '30m';
 
-export const generateToken = (payload: any) => {
+export const generateToken = (payload: IUserSessionData): string => {
   return jwt.sign(payload, JWT_SECRET, {
     expiresIn: JWT_EXPIRES_IN,
   });
 };
 
-export const decodeToken = (token: string) => {
+export const decodeToken = (token: string): IUserSessionData => {
   try {
-    const decoded = jwt.verify(token, JWT_SECRET) as IUserSessionData;
-    return decoded;
+    const decoded = jwt.verify(token, JWT_SECRET);
+    return decoded as IUserSessionData;
   } catch (error: any) {
     let { message } = error;
     message = message.includes('jwt expired')

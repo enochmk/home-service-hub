@@ -110,3 +110,24 @@ export const expirePasswordResetToken = async (userId: string) => {
   });
   return passwordReset;
 };
+
+export const getPermissionsByRoleId = async (roleId: string) => {
+  const role = await prisma.roles.findFirst({
+    where: {
+      id: roleId,
+    },
+    include: {
+      rolePermissions: {
+        select: {
+          permission: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return role?.rolePermissions.map((rp) => rp.permission.name) || [];
+};
