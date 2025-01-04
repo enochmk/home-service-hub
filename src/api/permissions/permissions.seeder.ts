@@ -49,6 +49,6 @@ export async function seedPermissions() {
         update: {},
       });
     }
-    logger.info('Permissions seeded');
   }
+  logger.info('Permissions seeded');
 }
