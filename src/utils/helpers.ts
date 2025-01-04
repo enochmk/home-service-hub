@@ -4,7 +4,14 @@ import { readdir } from 'fs/promises';
 import { Router } from 'express';
 
 export function redactSensitiveData(body: any): any {
-  const sensitiveFields = ['password', 'confirm-password', 'token', 'pin'];
+  const sensitiveFields = [
+    'password',
+    'new-password',
+    'old-password',
+    'confirm-password',
+    'token',
+    'pin',
+  ];
   function redact(obj: any): any {
     if (typeof obj !== 'object' || obj === null) {
       return obj;
