@@ -14,6 +14,8 @@ export const PERMISSIONS = {
   'users.edit': 'users.edit',
   'users.delete': 'users.delete',
   'users.view': 'users.view',
+  'roles.addPermission': 'roles.addPermission',
+  'roles.removePermission': 'roles.removePermission',
 } as const;
 
 export const STATUS = {
