@@ -22,6 +22,6 @@ export const STATUS = {
 };
 
 export const ROLE_PERMISSIONS = {
-  [ROLES.ADMIN]: Object.values(PERMISSIONS),
+  [ROLES.ADMIN]: [PERMISSIONS.admin],
   [ROLES.USER]: [PERMISSIONS['users.view']],
 } as const;
