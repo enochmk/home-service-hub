@@ -40,7 +40,7 @@ export default function errorHandler(error: any, req: Request, res: any, _next: 
   // Function to create the response object
   const createErrorResponse = (message: string): ErrorResponse => ({
     requestId: res.locals.requestId,
-    // requestTimestamp: res.locals.requestTimestamp,
+    requestTimestamp: res.locals.requestTimestamp,
     message,
   });
 
