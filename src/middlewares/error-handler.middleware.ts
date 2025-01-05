@@ -2,6 +2,7 @@ import { NextFunction, Request } from 'express';
 import { HttpError } from 'http-errors';
 import { getLogger } from '../utils/logger';
 import { ErrorLog, ErrorResponse } from '../types/common';
+import { redactSensitiveData } from '../utils/helpers';
 
 const logger = getLogger('Error-Handler');
 
@@ -30,9 +31,9 @@ export default function errorHandler(error: any, req: Request, res: any, _next: 
       headers: req.headers,
       url: req.originalUrl,
       method: req.method,
-      query: req.query,
-      params: req.params,
-      body: req.body,
+      query: redactSensitiveData(req.query),
+      params: redactSensitiveData(req.params),
+      body: redactSensitiveData(req.body),
     },
   };
 

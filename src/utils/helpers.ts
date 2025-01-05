@@ -6,19 +6,18 @@ import { Router } from 'express';
 export function redactSensitiveData(body: any): any {
   const sensitiveFields = [
     'password',
-    'new-password',
-    'old-password',
-    'confirm-password',
+    'oldPassword',
+    'newPassword',
+    'confirmPassword',
     'token',
     'pin',
   ];
+
   function redact(obj: any): any {
-    if (typeof obj !== 'object' || obj === null) {
-      return obj;
-    }
+    if (typeof obj !== 'object' || obj === null) return obj;
     const redactedObj = Array.isArray(obj) ? [] : {};
     Object.keys(obj).forEach((key) => {
-      if (sensitiveFields.includes(key.toLowerCase())) {
+      if (sensitiveFields.includes(key)) {
         redactedObj[key] = 'REDACTED';
       } else {
         redactedObj[key] = redact(obj[key]);
