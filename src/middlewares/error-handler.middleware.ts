@@ -6,8 +6,7 @@ import { redactSensitiveData } from '../utils/helpers';
 
 const logger = getLogger('Error-Handler');
 
-export const DEFAULT_ERROR_MESSAGE =
-  'An unexpected error occurred. Please try again later or contact support if the issue persists.';
+export const DEFAULT_ERROR_MESSAGE = 'Something went wrong. Please try again later.';
 
 // eslint-disable-next-line @typescript-eslint/no-unused-vars
 export default function errorHandler(error: any, req: Request, res: any, _next: NextFunction) {
