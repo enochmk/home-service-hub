@@ -104,26 +104,27 @@ export const updatePassword = async (userId: string, hashPassword: string) => {
   });
 };
 
-export const findUsers = async (filter?: FindUsersParams) => {
-  const { sort, limit, page } = filter || {};
+export const findUsers = async (query?: FindUsersParams) => {
+  const { sort, limit, page } = query || {};
   const skip = limit && page ? limit * (page - 1) : 0;
   let where = {};
-  if (filter?.email) {
-    where = { ...where, email: { contains: filter.email } };
+  if (query?.email) {
+    where = { ...where, email: { contains: query.email } };
   }
 
-  if (filter?.firstName) {
-    where = { ...where, firstName: { contains: filter.firstName } };
+  if (query?.firstName) {
+    where = { ...where, firstName: { contains: query.firstName } };
   }
 
-  if (filter?.lastName) {
-    where = { ...where, lastName: { contains: filter.lastName } };
+  if (query?.lastName) {
+    where = { ...where, lastName: { contains: query.lastName } };
   }
 
   return prisma.users.findMany({
     select: {
       id: true,
       email: true,
+      phoneNumber: true,
       firstName: true,
       lastName: true,
       active: true,

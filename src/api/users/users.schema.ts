@@ -18,6 +18,7 @@ export const createUserSchema = z.object({
     lastName: z.string().min(2, 'Last name is too short').max(100, 'Last name is too long'),
     roleId: z.string().uuid(),
     email: z.string().email(),
+    phoneNumber: z.string(),
     password: z
       .string()
       .min(MIN_PASSWORD_LENGTH, 'Password is too short')
