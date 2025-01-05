@@ -39,6 +39,7 @@ export const createUser = async (data: any) => {
       firstName: data.firstName,
       lastName: data.lastName,
       password: data.password,
+      phoneNumber: data.phoneNumber,
       role: {
         connect: {
           name: data.roleName,

@@ -23,6 +23,7 @@ export const signUpSchema = z.object({
     firstName: z.string().min(2, 'First name is too short').max(100),
     lastName: z.string().min(2, 'Last name is too short').max(100),
     email: z.string().email(),
+    phoneNumber: z.string().min(6).max(16),
     password: z
       .string()
       .min(MIN_PASSWORD_LENGTH, 'Password is too short')

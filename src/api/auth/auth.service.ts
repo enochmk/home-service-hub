@@ -31,6 +31,7 @@ export const signIn = async (email: string, password: string) => {
   const payload: IUserSessionData = {
     id: user.id,
     email: user.email,
+    phoneNumber: user.phoneNumber,
     firstName: user.firstName,
     lastName: user.lastName,
     roleId: user.role?.id,

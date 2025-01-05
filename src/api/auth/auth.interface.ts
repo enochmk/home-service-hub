@@ -3,6 +3,7 @@ export interface IUserSessionData {
   firstName: string;
   lastName: string;
   email: string;
+  phoneNumber: string;
   roleId: string;
   roleName: string;
   permissions: string[];

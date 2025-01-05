@@ -26,6 +26,7 @@ export const signOut: RequestHandler = async (req, res) => {
 
 export const forgotPassword: ForgotPasswordRequest = async (req, res) => {
   const response = await service.forgotPassword(req.body.email);
+  // TODO: revert back to this code
   // res.status(204).send();
   res.status(200).json(response);
 };
