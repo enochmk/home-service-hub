@@ -16,6 +16,8 @@ export const PERMISSIONS = {
   'users.view': 'users.view',
   'roles.addPermission': 'roles.addPermission',
   'roles.removePermission': 'roles.removePermission',
+  'roles.viewPermissions': 'roles.viewPermissions',
+  'roles.list': 'roles.list',
 } as const;
 
 export const STATUS = {

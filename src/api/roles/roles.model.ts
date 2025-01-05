@@ -1,18 +1,15 @@
 import prisma from '../../db/prisma.db';
-import createHttpError from 'http-errors';
 
-export const addPermissionToRole = async (roleId: string, permissionId: string) => {
-  const existingPermission = await prisma.rolePermissions.findFirst({
+export const findPermission = async (roleId: string, permissionId: string) => {
+  return prisma.rolePermissions.findFirst({
     where: {
       roleId,
       permissionId,
     },
   });
+};
 
-  if (existingPermission) {
-    throw new createHttpError.Conflict('Permission already added');
-  }
-
+export const addPermissionToRole = async (roleId: string, permissionId: string) => {
   return prisma.rolePermissions.create({
     data: {
       roleId,
@@ -22,21 +19,33 @@ export const addPermissionToRole = async (roleId: string, permissionId: string) 
 };
 
 export const removePermissionFromRole = async (roleId: string, permissionId: string) => {
-  const existingPermission = await prisma.rolePermissions.findFirst({
-    where: {
-      roleId,
-      permissionId,
-    },
-  });
-
-  if (!existingPermission) {
-    throw new createHttpError.NotFound('Permission not found in role');
-  }
-
   return prisma.rolePermissions.deleteMany({
     where: {
       roleId,
       permissionId,
     },
   });
+};
+
+export const getPermissionsByRole = async (roleId: string) => {
+  const role = await prisma.roles.findUnique({
+    where: { id: roleId },
+    include: {
+      rolePermissions: {
+        select: {
+          permission: {
+            select: {
+              name: true,
+            },
+          },
+        },
+      },
+    },
+  });
+
+  return role?.rolePermissions.map((rp) => rp.permission.name) || [];
+};
+
+export const getAllRoles = async () => {
+  return prisma.roles.findMany();
 };

@@ -7,6 +7,8 @@ import { rolePermissionSchema } from './roles.schema';
 
 const router = Router();
 
+router.get('/', checkPermission([PERMISSIONS['roles.list']]), controller.getAllRoles);
+
 router.post(
   '/:roleId/permissions',
   schemaValidation(rolePermissionSchema),
@@ -19,6 +21,12 @@ router.delete(
   schemaValidation(rolePermissionSchema),
   checkPermission([PERMISSIONS['roles.removePermission']]),
   controller.removePermissionFromRole,
+);
+
+router.get(
+  '/:roleId/permissions',
+  checkPermission([PERMISSIONS['roles.viewPermissions']]),
+  controller.getPermissionsByRole,
 );
 
 export default router;

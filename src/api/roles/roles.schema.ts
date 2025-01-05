@@ -1,17 +1,12 @@
 import { z } from 'zod';
-import { ROLES, PERMISSIONS } from '../../utils/constants';
 import { RequestHandler } from 'express';
 
 export const rolePermissionSchema = z.object({
   params: z.object({
-    roleId: z.string().refine((roleId) => ROLES[roleId], {
-      message: 'Invalid role',
-    }),
+    roleId: z.string().uuid(),
   }),
   body: z.object({
-    permissionId: z.string().refine((permissionId) => PERMISSIONS[permissionId], {
-      message: 'Invalid permission',
-    }),
+    permissionId: z.string().uuid(),
   }),
 });
 
