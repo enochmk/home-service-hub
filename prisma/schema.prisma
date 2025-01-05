@@ -12,6 +12,7 @@ model users {
   firstName      String
   lastName       String
   email          String           @unique
+  phonenumber    String
   password       String
   roleId         String
   active         Boolean          @default(true)
