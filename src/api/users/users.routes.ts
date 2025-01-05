@@ -4,16 +4,19 @@ import * as schema from './users.schema';
 import * as controller from './users.controller';
 import * as middleware from './users.midddleware';
 import schemaValidation from '../../middlewares/schema-validation.middleware';
+import { checkPermission } from '../permissions/permissions.middleware';
+import { PERMISSIONS } from '../../utils/constants';
 
 const router = Router();
 
 // get all users
-router.get('/', controller.getUsers);
+router.get('/', checkPermission([PERMISSIONS['users.list']]), controller.getUsers);
 
 // create a new user
 router.post(
   '/',
   schemaValidation(schema.createUserSchema),
+  checkPermission([PERMISSIONS['users.create']]),
   middleware.verifyEmailAvailability,
   controller.createUser,
 );
@@ -35,6 +38,7 @@ router.put(
 router.get(
   '/:userId',
   schemaValidation(schema.getUserSchema),
+  checkPermission([PERMISSIONS['users.view']]),
   middleware.verifyUserExists,
   controller.getUser,
 );
@@ -43,6 +47,7 @@ router.get(
 router.put(
   '/:userId',
   schemaValidation(schema.updateUserSchema),
+  checkPermission([PERMISSIONS['users.edit']]),
   middleware.verifyUserExists,
   controller.updateUser,
 );
@@ -51,6 +56,7 @@ router.put(
 router.delete(
   '/:userId',
   schemaValidation(schema.getUserSchema),
+  checkPermission([PERMISSIONS['users.delete']]),
   middleware.verifyUserExists,
   controller.deleteUser,
 );
@@ -59,6 +65,7 @@ router.delete(
 router.put(
   '/:userId/password',
   schemaValidation(schema.updateUserPasswordSchema),
+  checkPermission([PERMISSIONS['users.edit']]),
   controller.updateUserPassword,
 );
 
