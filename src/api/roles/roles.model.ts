@@ -35,6 +35,7 @@ export const getPermissionsByRole = async (roleId: string) => {
         select: {
           permission: {
             select: {
+              id: true,
               name: true,
             },
           },
@@ -43,7 +44,12 @@ export const getPermissionsByRole = async (roleId: string) => {
     },
   });
 
-  return role?.rolePermissions.map((rp) => rp.permission.name) || [];
+  return (
+    role?.rolePermissions.map((rp) => ({
+      id: rp.permission.id,
+      name: rp.permission.name,
+    })) || []
+  );
 };
 
 export const getAllRoles = async () => {
