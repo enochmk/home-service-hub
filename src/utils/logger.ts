@@ -2,6 +2,7 @@ import 'winston-daily-rotate-file';
 import rtracer from 'cls-rtracer';
 import config from 'config';
 import winston, { format } from 'winston';
+import { redactSensitiveData } from './helpers';
 
 const dirname = config.get('logger.dirname') as string;
 const LEVEL = config.get('logger.level') as string;
@@ -17,7 +18,7 @@ const formatter = {
       level,
       label,
       message,
-      metadata: rest,
+      metadata: redactSensitiveData(rest),
     });
   }),
   console: format.printf((log: any): string => {
