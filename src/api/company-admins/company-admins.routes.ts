@@ -9,9 +9,9 @@ const router = Router({ mergeParams: true });
 
 router.use(checkCompanyExists);
 
-router.post('/admin', schemaValidation(addCompanyAdminSchema), controller.addCompanyAdmin);
-
 router.get('/admin', controller.getCompanyAdmins);
+
+router.post('/admin', schemaValidation(addCompanyAdminSchema), controller.addCompanyAdmin);
 
 router.get('/admin/:userId', checkUserExists, controller.getCompanyAdminProfile);
 
