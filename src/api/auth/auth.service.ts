@@ -60,7 +60,7 @@ export const signUp = async (data: SignUpInput) => {
   const newUser = await model.createUser({
     ...data,
     password,
-    roleName: ROLES.USER,
+    roleName: ROLES.CLIENT,
   });
 
   // remove the password, updatedAt from the response

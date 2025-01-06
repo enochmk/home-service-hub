@@ -1,10 +1,11 @@
 import 'express-async-errors';
 
 import { Router } from 'express';
-import authRoutes from './api/auth/auth.routes';
-import usersRoutes from './api/users/users.routes';
-import rolesRoutes from './api/roles/roles.routes';
-import * as authMiddleware from './api/auth/auth.middleware';
+import authRoutes from './auth/auth.routes';
+import usersRoutes from './users/users.routes';
+import rolesRoutes from './roles/roles.routes';
+import companyRoutes from './companies/company.routes';
+import * as authMiddleware from './auth/auth.middleware';
 
 const router = Router();
 
@@ -18,5 +19,6 @@ router.use(authMiddleware.verifyJWT);
 router.use(authMiddleware.validateCurrentUser);
 router.use('/users', usersRoutes);
 router.use('/roles', rolesRoutes);
+router.use('/companies', companyRoutes);
 
 export default router;

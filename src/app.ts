@@ -8,7 +8,7 @@ import hpp from 'hpp';
 import errorHandler from './middlewares/error-handler.middleware';
 import requestLogger from './middlewares/request-logger.middleware';
 import { getLogger } from './utils/logger';
-import routes from './routes';
+import routes from './api/routes';
 import { connectDatabase, disconnectDatabase } from './db/prisma.db';
 
 const logger = getLogger('Server');

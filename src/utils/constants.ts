@@ -20,6 +20,10 @@ export const PERMISSIONS = {
   'roles.removePermission': 'roles.removePermission',
   'roles.viewPermissions': 'roles.viewPermissions',
   'roles.list': 'roles.list',
+  'company.create': 'company.create',
+  'company.update': 'company.update',
+  'company.delete': 'company.delete',
+  'company.view': 'company.view',
 } as const;
 
 export const STATUS = {
@@ -30,4 +34,10 @@ export const STATUS = {
 export const ROLE_PERMISSIONS = {
   [ROLES.TECH_ADMIN]: [PERMISSIONS.admin],
   [ROLES.CLIENT]: [PERMISSIONS['users.view']],
+  [ROLES.COMPANY_ADMIN]: [
+    PERMISSIONS['company.create'],
+    PERMISSIONS['company.update'],
+    PERMISSIONS['company.delete'],
+    PERMISSIONS['company.view'],
+  ],
 } as const;
