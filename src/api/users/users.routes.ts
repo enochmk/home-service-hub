@@ -18,7 +18,7 @@ router.post(
   '/',
   schemaValidation(schema.createUserSchema),
   checkPermission([PERMISSIONS['users.create']]),
-  middleware.verifyEmailAvailability,
+  middleware.checkEmailAvailability,
   roleMiddleware.verifyRoleExists,
   controller.createUser,
 );
@@ -41,7 +41,7 @@ router.get(
   '/:userId',
   schemaValidation(schema.getUserSchema),
   checkPermission([PERMISSIONS['users.view']]),
-  middleware.verifyUserExists,
+  middleware.checkUserExists,
   controller.getUser,
 );
 
@@ -50,7 +50,7 @@ router.put(
   '/:userId',
   schemaValidation(schema.updateUserSchema),
   checkPermission([PERMISSIONS['users.edit']]),
-  middleware.verifyUserExists,
+  middleware.checkUserExists,
   roleMiddleware.verifyRoleExists,
   controller.updateUser,
 );
@@ -60,7 +60,7 @@ router.delete(
   '/:userId',
   schemaValidation(schema.getUserSchema),
   checkPermission([PERMISSIONS['users.delete']]),
-  middleware.verifyUserExists,
+  middleware.checkUserExists,
   controller.deleteUser,
 );
 
@@ -69,7 +69,7 @@ router.put(
   '/:userId/password',
   schemaValidation(schema.updateUserPasswordSchema),
   checkPermission([PERMISSIONS['users.edit']]),
-  middleware.verifyUserExists,
+  middleware.checkUserExists,
   roleMiddleware.verifyRoleExists,
   controller.updateUserPassword,
 );
