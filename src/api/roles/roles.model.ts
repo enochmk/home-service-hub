@@ -55,3 +55,11 @@ export const getPermissionsByRole = async (roleId: string) => {
 export const getAllRoles = async () => {
   return prisma.roles.findMany();
 };
+
+export const findRoleById = async (roleId: string) => {
+  return prisma.roles.findFirst({
+    where: {
+      id: roleId,
+    },
+  });
+};
