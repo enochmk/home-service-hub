@@ -1,9 +1,9 @@
-import c from 'config';
 import prisma from '../../db/prisma.db';
 import { AddCompanyAdminInput } from './company-admins.schema';
 import { ROLES } from '../../utils/constants';
+import { companyAdminSelect } from './company-admins.interface';
 
-export const createAdminUser = async (user: AddCompanyAdminInput) => {
+export const createUserAsCompanyAdmin = async (user: AddCompanyAdminInput) => {
   const createdUser = await prisma.users.create({
     data: {
       firstName: user.firstName,
@@ -28,20 +28,7 @@ export const createCompanyAdmin = async (companyId: string, userId: string) => {
       companyId,
       userId: userId,
     },
-    select: {
-      company: true,
-      user: {
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          role: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      },
-    },
+    select: companyAdminSelect,
   });
 };
 
@@ -59,20 +46,7 @@ export const findCompanyAdmins = async (companyId: string) => {
     where: {
       companyId,
     },
-    select: {
-      company: true,
-      user: {
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          role: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      },
-    },
+    select: companyAdminSelect,
   });
 };
 
@@ -84,20 +58,7 @@ export const findCompanyAdminProfile = async (companyId: string, userId: string)
         userId,
       },
     },
-    select: {
-      company: true,
-      user: {
-        select: {
-          id: true,
-          email: true,
-          firstName: true,
-          lastName: true,
-          role: true,
-          createdAt: true,
-          updatedAt: true,
-        },
-      },
-    },
+    select: companyAdminSelect,
   });
 };
 

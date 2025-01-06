@@ -8,7 +8,7 @@ const logger = getLogger('CompanyAdminsService');
 export const addCompanyAdmin = async (companyId: string, data: AddCompanyAdminInput) => {
   const hashPassword = bcrypt.hashSync(data.password, 10);
   logger.verbose('Adding admin to users table', data);
-  const adminUser = await model.createAdminUser({ ...data, password: hashPassword });
+  const adminUser = await model.createUserAsCompanyAdmin({ ...data, password: hashPassword });
   logger.info('Admin added to users table', adminUser);
   logger.verbose('Adding company admin', { companyId, userId: adminUser.id });
   const response = await model.createCompanyAdmin(companyId, adminUser.id);
