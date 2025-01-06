@@ -1,6 +1,7 @@
 import prisma from '../../db/prisma.db';
 import { ROLES } from '../../utils/constants';
-import { CreateCompanyStaffInput } from './company-staff.schema';
+import { UpdateCompanyInput } from '../companies/companies.schema';
+import { CreateCompanyStaffInput, UpdateCompanyStaffInput } from './company-staff.schema';
 
 export const findCompanyStaffByUserId = async (companyId: string, userId: string) => {
   return prisma.companyStaff.findUnique({
@@ -97,5 +98,26 @@ export const addUserToCompany = async (companyId: string, userId: string) => {
       companyId,
       userId,
     },
+  });
+};
+
+export const updateCompanyStaff = async (
+  companyId: string,
+  userId: string,
+  data: UpdateCompanyStaffInput,
+) => {
+  //
+  const updatedData = Object.fromEntries(
+    Object.entries(data).filter(([_, value]) => value !== undefined),
+  );
+
+  return prisma.companyStaff.update({
+    where: {
+      userId_companyId: {
+        companyId,
+        userId,
+      },
+    },
+    data: updatedData,
   });
 };

@@ -1,7 +1,11 @@
 import { Router } from 'express';
 import * as controller from './company-staff.controller';
 import schemaValidation from '../../middlewares/schema-validation.middleware';
-import { createCompanyStaffSchema, deleteCompanyStaffSchema } from './company-staff.schema';
+import {
+  createCompanyStaffSchema,
+  deleteCompanyStaffSchema,
+  updateCompanyStaffSchema,
+} from './company-staff.schema';
 import * as companyMiddleware from '../companies/companies.middleware';
 import * as userMiddleware from '../users/users.midddleware';
 import * as middleware from './company-staff.middleware';
@@ -23,6 +27,13 @@ router.post(
 );
 
 router.get('/staff/:userId', middleware.checkIfUserIsCompanyStaff, controller.getCompanyStaff);
+
+router.put(
+  '/staff/:userId',
+  schemaValidation(updateCompanyStaffSchema),
+  middleware.checkIfUserIsCompanyStaff,
+  controller.updateCompanyStaff,
+);
 
 router.delete(
   '/staff/:userId',

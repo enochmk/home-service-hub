@@ -36,3 +36,33 @@ export const deleteCompanyStaffSchema = z.object({
 export type DeleteCompanyStaffInput = z.infer<typeof deleteCompanyStaffSchema>['params'];
 
 export type DeleteCompanyStaffRequest = RequestHandler<DeleteCompanyStaffInput, any, any>;
+
+export const updateCompanyStaffSchema = z.object({
+  params: z.object({
+    companyId: z.string().uuid(),
+    userId: z.string().uuid(),
+  }),
+  body: z.object({
+    firstName: z
+      .string()
+      .min(2, 'First name is too short')
+      .max(100, 'First name is too long')
+      .optional(),
+    lastName: z
+      .string()
+      .min(2, 'Last name is too short')
+      .max(100, 'Last name is too long')
+      .optional(),
+    email: z.string().email().optional(),
+    phoneNumber: z.string().optional(),
+    roleId: z.string().uuid().optional(),
+  }),
+});
+
+export type UpdateCompanyStaffInput = z.infer<typeof updateCompanyStaffSchema>['body'];
+
+export type UpdateCompanyStaffRequest = RequestHandler<
+  z.infer<typeof updateCompanyStaffSchema>['params'],
+  any,
+  z.infer<typeof updateCompanyStaffSchema>['body']
+>;

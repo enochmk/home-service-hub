@@ -1,6 +1,6 @@
 import * as model from './company-staff.model';
 import { getLogger } from '../../utils/logger';
-import { CreateCompanyStaffInput } from './company-staff.schema';
+import { CreateCompanyStaffInput, UpdateCompanyStaffInput } from './company-staff.schema';
 
 const logger = getLogger('CompanyStaffService');
 
@@ -41,5 +41,16 @@ export const getAllCompanyStaff = async (companyId: string) => {
   logger.verbose('Fetching all company staff for company...', { companyId });
   const response = await model.getCompanyStaffByCompanyId(companyId);
   logger.info('Company staff fetched successfully', response);
+  return response;
+};
+
+export const updateCompanyStaff = async (
+  companyId: string,
+  userId: string,
+  data: UpdateCompanyStaffInput,
+) => {
+  logger.verbose('Updating company staff...', { companyId, userId, data });
+  const response = await model.updateCompanyStaff(companyId, userId, data);
+  logger.info('Company staff updated successfully', response);
   return response;
 };

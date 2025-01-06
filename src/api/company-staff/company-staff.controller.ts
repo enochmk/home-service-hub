@@ -1,5 +1,9 @@
 import * as service from './company-staff.service';
-import { CreateCompanyStaffRequest, DeleteCompanyStaffRequest } from './company-staff.schema';
+import {
+  CreateCompanyStaffRequest,
+  DeleteCompanyStaffRequest,
+  UpdateCompanyStaffRequest,
+} from './company-staff.schema';
 import { RequestHandler } from 'express';
 
 export const createCompanyStaff: CreateCompanyStaffRequest = async (req, res) => {
@@ -21,5 +25,14 @@ export const getAllCompanyStaff: RequestHandler = async (req, res) => {
 export const getCompanyStaff: RequestHandler = async (req, res) => {
   const { companyId, userId } = req.params;
   const response = await service.getCompanyStaff(companyId, userId);
+  res.status(200).json(response);
+};
+
+export const updateCompanyStaff: UpdateCompanyStaffRequest = async (req, res) => {
+  const response = await service.updateCompanyStaff(
+    req.params.companyId,
+    req.params.userId,
+    req.body,
+  );
   res.status(200).json(response);
 };
