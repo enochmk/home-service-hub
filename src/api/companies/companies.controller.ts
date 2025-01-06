@@ -21,7 +21,7 @@ export const deleteCompany: RequestHandler = async (req, res) => {
 };
 
 export const getCompany: RequestHandler = async (req, res) => {
-  const company = await service.getCompany(req.params.companyId);
+  const company = await service.getCompanyById(req.params.companyId);
   res.status(200).json(company);
 };
 
