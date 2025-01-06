@@ -9,19 +9,19 @@ const router = Router({ mergeParams: true });
 
 router.use(companyMiddleware.checkCompanyExists);
 
-router.get('/admin', controller.getCompanyAdmins);
+router.get('/admins', controller.getCompanyAdmins);
 
 router.post(
-  '/admin',
+  '/admins',
   schemaValidation(addCompanyAdminSchema),
-  userMiddleware.checkUserExists,
+  userMiddleware.checkEmailExists,
   controller.addCompanyAdmin,
 );
 
-router.get('/admin/:userId', userMiddleware.checkUserExists, controller.getCompanyAdminProfile);
+router.get('/admins/:userId', userMiddleware.checkUserExists, controller.getCompanyAdminProfile);
 
 router.delete(
-  '/admin/:userId',
+  '/admins/:userId',
   schemaValidation(removeCompanyAdminSchema),
   userMiddleware.checkUserExists,
   controller.removeCompanyAdmin,

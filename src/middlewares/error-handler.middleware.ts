@@ -24,7 +24,7 @@ export default function errorHandler(error: any, req: Request, res: any, _next: 
       message: error.message,
       code: error.code,
       status: error.status,
-      stack: error.stack,
+      // stack: error.stack,
     },
     requestDetails: {
       headers: req.headers,
