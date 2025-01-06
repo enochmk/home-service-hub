@@ -1,10 +1,32 @@
+import c from 'config';
 import prisma from '../../db/prisma.db';
+import { AddCompanyAdminInput } from './company-admins.schema';
+import { ROLES } from '../../utils/constants';
+
+export const createAdminUser = async (user: AddCompanyAdminInput) => {
+  const createdUser = await prisma.users.create({
+    data: {
+      firstName: user.firstName,
+      lastName: user.lastName,
+      email: user.email,
+      phoneNumber: user.phoneNumber,
+      password: user.password,
+      role: {
+        connect: {
+          name: ROLES.COMPANY_ADMIN,
+        },
+      },
+    },
+  });
+
+  return createdUser;
+};
 
 export const createCompanyAdmin = async (companyId: string, userId: string) => {
   return prisma.companyAdmins.create({
     data: {
       companyId,
-      userId,
+      userId: userId,
     },
     select: {
       company: true,
@@ -23,7 +45,7 @@ export const createCompanyAdmin = async (companyId: string, userId: string) => {
   });
 };
 
-export const deleteCompanyAdmin = async (companyId: string, userId: string) => {
+export const removeAdminFromCompany = async (companyId: string, userId: string) => {
   return prisma.companyAdmins.deleteMany({
     where: {
       companyId,
@@ -75,6 +97,15 @@ export const findCompanyAdminProfile = async (companyId: string, userId: string)
           updatedAt: true,
         },
       },
+    },
+  });
+};
+
+export const deleteCompanyAdmin = async (companyId: string, userId: string) => {
+  await removeAdminFromCompany(companyId, userId);
+  return prisma.users.delete({
+    where: {
+      id: userId,
     },
   });
 };
