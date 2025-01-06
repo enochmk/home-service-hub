@@ -18,24 +18,12 @@ export const getUsers = async (filter?: FindUsersParams) => {
 };
 
 export const createUser = async (data: CreateUserInput) => {
-  // validate roleId
-  const foundRole = await roleModel.findRoleById(data.roleId);
-  if (!foundRole) {
-    throw new createHttpError.NotFound('This role does not exist');
-  }
-
   const user = await model.createUser(data);
   const userWithoutPassword = _.omit(user, 'password');
   return userWithoutPassword;
 };
 
 export const updateUser = async (userId: string, data: UpdateUserInput) => {
-  if (data?.roleId) {
-    const foundRole = await roleModel.findRoleById(data.roleId);
-    if (!foundRole) {
-      throw new createHttpError.NotFound('This role does not exist');
-    }
-  }
   const user = await model.updateUser(userId, data);
   const userWithoutPassword = _.omit(user, 'password');
   return userWithoutPassword;

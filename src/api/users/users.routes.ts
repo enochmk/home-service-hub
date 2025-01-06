@@ -3,6 +3,7 @@ import { Router } from 'express';
 import * as schema from './users.schema';
 import * as controller from './users.controller';
 import * as middleware from './users.midddleware';
+import * as roleMiddleware from '../roles/roles.middleware';
 import schemaValidation from '../../middlewares/schema-validation.middleware';
 import { checkPermission } from '../permissions/permissions.middleware';
 import { PERMISSIONS } from '../../utils/constants';
@@ -18,6 +19,7 @@ router.post(
   schemaValidation(schema.createUserSchema),
   checkPermission([PERMISSIONS['users.create']]),
   middleware.verifyEmailAvailability,
+  roleMiddleware.verifyRoleExists,
   controller.createUser,
 );
 
@@ -49,6 +51,7 @@ router.put(
   schemaValidation(schema.updateUserSchema),
   checkPermission([PERMISSIONS['users.edit']]),
   middleware.verifyUserExists,
+  roleMiddleware.verifyRoleExists,
   controller.updateUser,
 );
 
@@ -66,6 +69,8 @@ router.put(
   '/:userId/password',
   schemaValidation(schema.updateUserPasswordSchema),
   checkPermission([PERMISSIONS['users.edit']]),
+  middleware.verifyUserExists,
+  roleMiddleware.verifyRoleExists,
   controller.updateUserPassword,
 );
 
