@@ -1,5 +1,5 @@
 import * as model from './companies.model';
-import { CreateCompanyRequest, UpdateCompanyRequest } from './companies.schema';
+import { CreateCompanyInput, UpdateCompanyInput } from './companies.schema';
 
 export const getCompanies = async () => {
   return model.getCompanies();
@@ -10,11 +10,11 @@ export const getCompanyById = async (companyId: string) => {
   return company;
 };
 
-export const createCompany = async (data: CreateCompanyRequest) => {
+export const createCompany = async (data: CreateCompanyInput) => {
   return model.createCompany(data);
 };
 
-export const updateCompany = async (companyId: string, data: UpdateCompanyRequest) => {
+export const updateCompany = async (companyId: string, data: UpdateCompanyInput) => {
   return model.updateCompany(companyId, data);
 };
 

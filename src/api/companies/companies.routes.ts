@@ -36,7 +36,7 @@ router.get(
   '/:companyId',
   checkPermission([PERMISSIONS['company.view']]),
   companyMiddleware.checkCompanyExists,
-  controller.getCompany,
+  controller.getCompanyById,
 );
 
 export default router;

@@ -1,13 +1,13 @@
 import prisma from '../../db/prisma.db';
-import { CreateCompanyRequest, UpdateCompanyRequest } from './companies.schema';
+import { CreateCompanyInput, UpdateCompanyInput } from './companies.schema';
 
-export const createCompany = async (data: CreateCompanyRequest) => {
+export const createCompany = async (data: CreateCompanyInput) => {
   return prisma.company.create({
     data,
   });
 };
 
-export const updateCompany = async (companyId: string, data: UpdateCompanyRequest) => {
+export const updateCompany = async (companyId: string, data: UpdateCompanyInput) => {
   return prisma.company.update({
     where: { id: companyId },
     data,
