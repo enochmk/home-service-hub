@@ -1,5 +1,5 @@
 import createHttpError from 'http-errors';
-import * as model from '../models/company-staff.model';
+import * as model from './company-staff.model';
 import { getLogger } from '../../utils/logger';
 
 const logger = getLogger('CompanyStaffService');
