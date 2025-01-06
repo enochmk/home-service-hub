@@ -6,6 +6,7 @@ import userRoutes from './users/users.routes';
 import roleRoutes from './roles/roles.routes';
 import companyRoutes from './companies/companies.routes';
 import companyAdminRoutes from './company-admins/company-admins.routes';
+import companyStaffRoutes from './company-staff/company-staff.routes';
 import * as authMiddleware from './auth/auth.middleware';
 
 const router = Router();
@@ -21,6 +22,7 @@ router.use(authMiddleware.validateCurrentUser);
 router.use('/users', userRoutes);
 router.use('/roles', roleRoutes);
 router.use('/companies/:companyId', companyAdminRoutes);
+router.use('/companies/:companyId', companyStaffRoutes);
 router.use('/companies', companyRoutes);
 
 export default router;
