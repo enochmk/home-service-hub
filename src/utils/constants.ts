@@ -3,8 +3,10 @@ export const MIN_PASSWORD_LENGTH = 6;
 export const MAX_PASSWORD_LENGTH = 100;
 
 export const ROLES = {
-  ADMIN: 'admin',
-  USER: 'user',
+  TECH_ADMIN: 'tech_admin',
+  CLIENT: 'client',
+  COMPANY_ADMIN: 'company_admin',
+  COMPANY_STAFF: 'company_staff',
 } as const;
 
 export const PERMISSIONS = {
@@ -26,6 +28,6 @@ export const STATUS = {
 };
 
 export const ROLE_PERMISSIONS = {
-  [ROLES.ADMIN]: [PERMISSIONS.admin],
-  [ROLES.USER]: [PERMISSIONS['users.view']],
+  [ROLES.TECH_ADMIN]: [PERMISSIONS.admin],
+  [ROLES.CLIENT]: [PERMISSIONS['users.view']],
 } as const;

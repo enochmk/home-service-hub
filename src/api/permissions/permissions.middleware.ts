@@ -11,7 +11,7 @@ export function checkPermission(permissions: string | string[]) {
     }
 
     // bypass if user is admin
-    if (user.roleName === ROLES.ADMIN) return next();
+    if (user.roleName === ROLES.TECH_ADMIN) return next();
 
     // ensure permissions is an array
     const requiredPermissions = Array.isArray(permissions) ? permissions : [permissions];
