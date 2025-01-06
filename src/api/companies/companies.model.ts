@@ -30,6 +30,13 @@ export const findCompanyById = async (companyId: string) => {
   });
 };
 
+export const findCompanyByName = async (companyName: string) => {
+  return prisma.company.findFirst({
+    where: { name: companyName },
+    select: companySelect,
+  });
+};
+
 export const getCompanies = async () => {
   return prisma.company.findMany();
 };

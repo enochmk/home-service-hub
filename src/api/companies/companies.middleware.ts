@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express';
 import * as service from './companies.service';
+import * as model from './companies.model';
 import createHttpError from 'http-errors';
 import { getLogger } from '../../utils/logger';
 
@@ -15,6 +16,16 @@ export const checkCompanyExists: RequestHandler = async (req, res, next) => {
     if (!company) {
       return next(new createHttpError.NotFound(`Company ${companyId} not found`));
     }
+  }
+  return next();
+};
+
+export const checkCompanyNameAvailable: RequestHandler = async (req, res, next) => {
+  const { name } = req.body;
+  logger.verbose('Checking if company name available ... ', { name });
+  const company = await model.findCompanyByName(name);
+  if (company) {
+    return next(new createHttpError.Conflict(`Company with name ${name} already exists`));
   }
   return next();
 };

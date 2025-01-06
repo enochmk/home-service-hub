@@ -1,5 +1,6 @@
 import { Router } from 'express';
 import * as controller from './companies.controller';
+import * as middleware from './companies.middleware';
 import { checkPermission } from '../permissions/permissions.middleware';
 import { PERMISSIONS } from '../../utils/constants';
 import schemaValidation from '../../middlewares/schema-validation.middleware';
@@ -12,6 +13,7 @@ router.post(
   '/',
   schemaValidation(createCompanySchema),
   checkPermission([PERMISSIONS['company.create']]),
+  middleware.checkCompanyNameAvailable,
   controller.createCompany,
 );
 
