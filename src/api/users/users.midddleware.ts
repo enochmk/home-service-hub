@@ -13,7 +13,7 @@ export async function checkUserExists(req: Request, res: Response, next: NextFun
     logger.verbose(`Checking user exists: ${userId}...`);
     const user = await model.findUserById(userId);
     if (!user) {
-      return next(new createHttpError.NotFound(`User:${userId} does not exist`));
+      return next(new createHttpError.NotFound(`User: ${userId} does not exist`));
     }
   }
   return next();
@@ -25,7 +25,7 @@ export async function checkEmailExists(req: Request, res: Response, next: NextFu
   const email = req.body.email;
   const user = await model.findUserByEmail(email);
   if (user) {
-    return next(new createHttpError.BadRequest(`Email:${email} is already in use`));
+    return next(new createHttpError.BadRequest(`Email: ${email} is already in use`));
   }
   res.locals.targetUser = user;
   return next();

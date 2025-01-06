@@ -1,11 +1,15 @@
 import { RequestHandler } from 'express';
+import createHttpError from 'http-errors';
 import * as model from './company-staff.model';
 import * as userModel from '../users/users.model';
-import createHttpError from 'http-errors';
 import { ROLES } from '../../utils/constants';
+import { getLogger } from '../../utils/logger';
 
-export const validateCompanyStaff: RequestHandler = async (req, res, next) => {
+const logger = getLogger('CompanyStaffMiddleware');
+
+export const checkIfUserIsCompanyStaff: RequestHandler = async (req, res, next) => {
   const { userId } = req.params;
+  logger.verbose('Checking if user is company staff...', { userId });
   const user = await userModel.findUserById(userId);
   if (!user) {
     return next(new createHttpError.NotFound('User not found'));
@@ -13,19 +17,12 @@ export const validateCompanyStaff: RequestHandler = async (req, res, next) => {
   if (user.role.name !== ROLES.COMPANY_STAFF) {
     return next(new createHttpError.BadRequest('User is not a company staff'));
   }
-};
-
-export const checkCompanyStaffExists: RequestHandler = async (req, res, next) => {
-  const { companyId, userId } = req.params;
-  const companyStaff = await model.getCompanyStaffByUserId(companyId, userId);
-  if (!companyStaff) {
-    return next(new createHttpError.NotFound('This Company staff not found'));
-  }
   return next();
 };
 
-export const checkStaffAlreadyExists: RequestHandler = async (req, res, next) => {
+export const checkIfUserNotAdded: RequestHandler = async (req, res, next) => {
   const { companyId, userId } = req.params;
+  logger.verbose('Checking if user is not added to company...', { companyId, userId });
   const companyStaff = await model.getCompanyStaffByUserId(companyId, userId);
   if (companyStaff) {
     return next(new createHttpError.Conflict('This Company staff already exists'));
@@ -33,10 +30,22 @@ export const checkStaffAlreadyExists: RequestHandler = async (req, res, next) =>
   return next();
 };
 
-export const checkStaffAlreadyExistsByEmail: RequestHandler = async (req, res, next) => {
-  const { companyId } = req.params;
-  const { email } = req.body;
-  const companyStaff = await model.getCompanyStaffByEmail(companyId, email);
+export const checkIfUserAdded: RequestHandler = async (req, res, next) => {
+  const { companyId, userId } = req.params;
+  logger.verbose('Checking if user is added to company...', { companyId, userId });
+  const companyStaff = await model.getCompanyStaffByUserId(companyId, userId);
+  if (!companyStaff) {
+    return next(new createHttpError.NotFound('This Company staff not found'));
+  }
+  return next();
+};
+
+export const checkUserNotAddedByEmail: RequestHandler = async (req, res, next) => {
+  logger.verbose('Checking if user is not added to company by email...', {
+    companyId: req.params.companyId,
+    email: req.body.email,
+  });
+  const companyStaff = await model.getCompanyStaffByEmail(req.params.companyId, req.body.email);
   if (companyStaff) {
     return next(new createHttpError.Conflict('This Company staff already exists'));
   }

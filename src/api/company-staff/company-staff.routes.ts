@@ -8,26 +8,26 @@ import * as middleware from './company-staff.middleware';
 
 const router = Router({ mergeParams: true });
 
+// Check if company exists
 router.use(companyMiddleware.checkCompanyExists);
 
 router.get('/staff', controller.getCompanyStaff);
 
+// create a company staff
 router.post(
   '/staff',
   schemaValidation(createCompanyStaffSchema),
-  userMiddleware.checkUserExists,
-  middleware.checkStaffAlreadyExistsByEmail,
   userMiddleware.checkEmailExists,
-  middleware.checkStaffAlreadyExistsByEmail,
+  middleware.checkUserNotAddedByEmail,
   controller.createCompanyStaff,
 );
 
-router.get('/staff/:userId', middleware.validateCompanyStaff, controller.getCompanyStaff);
+router.get('/staff/:userId', middleware.checkIfUserIsCompanyStaff, controller.getCompanyStaff);
 
 router.delete(
   '/staff/:userId',
   schemaValidation(deleteCompanyStaffSchema),
-  middleware.validateCompanyStaff,
+  middleware.checkIfUserIsCompanyStaff,
   controller.deleteCompanyStaff,
 );
 
