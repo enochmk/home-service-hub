@@ -14,12 +14,12 @@ export async function checkUserExists(req: Request, res: Response, next: NextFun
   return next();
 }
 
-export async function checkEmailAvailability(req: Request, res: Response, next: NextFunction) {
+export async function checkEmailExists(req: Request, res: Response, next: NextFunction) {
   if (!req.body.email) return next();
   const email = req.body.email;
   const user = await model.findUserByEmail(email);
   if (user) {
-    throw new createHttpError.BadRequest('This email is already in use');
+    throw new createHttpError.BadRequest(`Email:${email} is already in use`);
   }
   res.locals.targetUser = user;
   return next();

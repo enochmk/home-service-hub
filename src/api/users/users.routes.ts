@@ -18,7 +18,7 @@ router.post(
   '/',
   schemaValidation(schema.createUserSchema),
   checkPermission([PERMISSIONS['users.create']]),
-  middleware.checkEmailAvailability,
+  middleware.checkEmailExists,
   roleMiddleware.verifyRoleExists,
   controller.createUser,
 );
