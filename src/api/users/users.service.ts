@@ -3,18 +3,17 @@ import bcrypt from 'bcrypt';
 import createHttpError from 'http-errors';
 import { CreateUserInput, UpdateUserInput } from './users.schema';
 import * as model from './users.model';
-import * as roleModel from '../roles/roles.model';
 import { FindUsersParams } from './users.interface';
+
+export const getUsers = async (filter?: FindUsersParams) => {
+  const users = await model.findUsers(filter);
+  return { data: users };
+};
 
 export const getUser = async (userId: string) => {
   const user = await model.findUserById(userId);
   const userWithoutPassword = _.omit(user, 'password');
   return userWithoutPassword;
-};
-
-export const getUsers = async (filter?: FindUsersParams) => {
-  const users = await model.findUsers(filter);
-  return { data: users };
 };
 
 export const createUser = async (data: CreateUserInput) => {
@@ -33,14 +32,12 @@ export const deleteUser = async (userId: string) => {
   return model.deleteUser(userId);
 };
 
-export const getProfile = async (userId: string) => {
-  const user = await model.findUserById(userId);
+export const getProfile = async (currentLoggedInUserId: string) => {
+  const user = await model.findUserById(currentLoggedInUserId);
   if (!user) {
     throw new createHttpError.NotFound('User not found');
   }
-
-  // remove the password, updatedAt from the response
-  const userWithoutPassword = _.omit(user, ['password', 'roleId']);
+  const userWithoutPassword = _.omit(user, ['password', 'updatedAt']);
   return userWithoutPassword;
 };
 
