@@ -1,10 +1,17 @@
 import * as model from './company-staff.model';
 import { getLogger } from '../../utils/logger';
-import { AddCompanyStaffInput } from './company-staff.schema';
+import { CreateCompanyStaffInput } from './company-staff.schema';
 
 const logger = getLogger('CompanyStaffService');
 
-export const addCompanyStaff = async (companyId: string, data: AddCompanyStaffInput) => {
+export const addUserToCompany = async (companyId: string, userId: string) => {
+  logger.verbose('Adding user to company...', { companyId, userId });
+  const response = await model.addUserToCompany(companyId, userId);
+  logger.info('User added to company successfully', response);
+  return response;
+};
+
+export const createCompanyStaff = async (companyId: string, data: CreateCompanyStaffInput) => {
   logger.verbose('Creating company staff to user table...', data);
   const companyStaff = await model.createUserAsCompanyStaff(data);
   logger.verbose(`Adding company staff to company ${companyId}...`, {
@@ -16,7 +23,7 @@ export const addCompanyStaff = async (companyId: string, data: AddCompanyStaffIn
   return response;
 };
 
-export const removeCompanyStaff = async (companyId: string, userId: string) => {
+export const deleteCompanyStaff = async (companyId: string, userId: string) => {
   logger.verbose('Removing company staff from company...', { companyId, userId });
   const response = await model.removeCompanyStaff(companyId, userId);
   logger.info('Company staff removed successfully', response);

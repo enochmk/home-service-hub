@@ -1,6 +1,6 @@
 import prisma from '../../db/prisma.db';
 import { ROLES } from '../../utils/constants';
-import { AddCompanyStaffInput } from './company-staff.schema';
+import { CreateCompanyStaffInput } from './company-staff.schema';
 
 export const findCompanyStaffByUserId = async (companyId: string, userId: string) => {
   return prisma.companyStaff.findUnique({
@@ -13,14 +13,14 @@ export const findCompanyStaffByUserId = async (companyId: string, userId: string
   });
 };
 
-export const createUserAsCompanyStaff = async (user: AddCompanyStaffInput) => {
+export const createUserAsCompanyStaff = async (data: CreateCompanyStaffInput) => {
   const createdUser = await prisma.users.create({
     data: {
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email,
-      phoneNumber: user.phoneNumber,
-      password: user.password,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      email: data.email,
+      phoneNumber: data.phoneNumber,
+      password: data.password,
       role: {
         connect: {
           name: ROLES.COMPANY_STAFF,
@@ -73,6 +73,29 @@ export const getCompanyStaffByUserId = async (companyId: string, userId: string)
     },
     include: {
       user: true,
+    },
+  });
+};
+
+export const getCompanyStaffByEmail = async (companyId: string, email: string) => {
+  return prisma.companyStaff.findFirst({
+    where: {
+      companyId,
+      user: {
+        email,
+      },
+    },
+    include: {
+      user: true,
+    },
+  });
+};
+
+export const addUserToCompany = async (companyId: string, userId: string) => {
+  return prisma.companyStaff.create({
+    data: {
+      companyId,
+      userId,
     },
   });
 };

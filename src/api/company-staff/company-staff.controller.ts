@@ -1,14 +1,14 @@
 import * as service from './company-staff.service';
-import { AddCompanyStaffRequest, RemoveCompanyStaffRequest } from './company-staff.schema';
+import { CreateCompanyStaffRequest, DeleteCompanyStaffRequest } from './company-staff.schema';
 import { RequestHandler } from 'express';
 
-export const addCompanyStaff: AddCompanyStaffRequest = async (req, res) => {
-  const response = await service.addCompanyStaff(req.params.companyId, req.body);
+export const createCompanyStaff: CreateCompanyStaffRequest = async (req, res) => {
+  const response = await service.createCompanyStaff(req.params.companyId, req.body);
   res.status(201).json(response);
 };
 
-export const removeCompanyStaff: RemoveCompanyStaffRequest = async (req, res) => {
-  const response = await service.removeCompanyStaff(req.params.companyId, req.params.userId);
+export const deleteCompanyStaff: DeleteCompanyStaffRequest = async (req, res) => {
+  const response = await service.deleteCompanyStaff(req.params.companyId, req.params.userId);
   res.status(200).json(response);
 };
 

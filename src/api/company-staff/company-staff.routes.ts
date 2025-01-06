@@ -1,31 +1,34 @@
 import { Router } from 'express';
 import * as controller from './company-staff.controller';
 import schemaValidation from '../../middlewares/schema-validation.middleware';
-import { addCompanyStaffSchema, removeCompanyStaffSchema } from './company-staff.schema';
+import { createCompanyStaffSchema, deleteCompanyStaffSchema } from './company-staff.schema';
 import * as companyMiddleware from '../companies/companies.middleware';
 import * as userMiddleware from '../users/users.midddleware';
+import * as middleware from './company-staff.middleware';
 
 const router = Router({ mergeParams: true });
 
 router.use(companyMiddleware.checkCompanyExists);
 
-// router.get('/staff', controller.getCompanyStaff);
+router.get('/staff', controller.getCompanyStaff);
 
 router.post(
   '/staff',
-  schemaValidation(addCompanyStaffSchema),
+  schemaValidation(createCompanyStaffSchema),
   userMiddleware.checkUserExists,
+  middleware.checkStaffAlreadyExistsByEmail,
   userMiddleware.checkEmailExists,
-  controller.addCompanyStaff,
+  middleware.checkStaffAlreadyExistsByEmail,
+  controller.createCompanyStaff,
 );
 
-// router.get('/staff/:userId', userMiddleware.checkUserExists, controller.getCompanyStaffProfile);
+router.get('/staff/:userId', middleware.validateCompanyStaff, controller.getCompanyStaff);
 
 router.delete(
   '/staff/:userId',
-  schemaValidation(removeCompanyStaffSchema),
-  userMiddleware.checkUserExists,
-  controller.removeCompanyStaff,
+  schemaValidation(deleteCompanyStaffSchema),
+  middleware.validateCompanyStaff,
+  controller.deleteCompanyStaff,
 );
 
 export default router;
