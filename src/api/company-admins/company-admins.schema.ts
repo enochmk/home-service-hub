@@ -20,19 +20,12 @@ export type AddCompanyAdminRequest = RequestHandler<
 >;
 
 export const removeCompanyAdminSchema = z.object({
-  body: z.object({
-    userId: z.string().uuid(),
-  }),
   params: z.object({
+    userId: z.string().uuid(),
     companyId: z.string().uuid(),
   }),
 });
 
-export type RemoveCompanyAdminInput = z.infer<typeof removeCompanyAdminSchema>['body'];
 export type RemoveCompanyAdminParams = z.infer<typeof removeCompanyAdminSchema>['params'];
 
-export type RemoveCompanyAdminRequest = RequestHandler<
-  RemoveCompanyAdminParams,
-  any,
-  RemoveCompanyAdminInput
->;
+export type RemoveCompanyAdminRequest = RequestHandler<RemoveCompanyAdminParams, any, any>;
