@@ -5,10 +5,11 @@ export const companyAdminSelect: Prisma.companyAdminsSelect = {
   user: {
     select: {
       id: true,
-      email: true,
       firstName: true,
       lastName: true,
-      role: true,
+      email: true,
+      phoneNumber: true,
+      role: false,
       createdAt: true,
       updatedAt: true,
     },

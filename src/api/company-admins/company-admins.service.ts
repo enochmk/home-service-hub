@@ -5,7 +5,7 @@ const logger = getLogger('CompanyAdminsService');
 
 export const addCompanyAdmin = async (companyId: string, userId: string) => {
   logger.verbose('Adding company admin', { companyId, userId });
-  const response = await model.createCompanyAdmin(companyId, userId);
+  const response = await model.addCompanyAdmin(companyId, userId);
   logger.info('Company admin added', { response });
   return response;
 };
@@ -19,8 +19,9 @@ export const removeCompanyAdmin = async (companyId: string, userId: string) => {
 
 export const getCompanyAdminsByCompanyId = async (companyId: string) => {
   logger.verbose('Fetching company admins', { companyId });
-  const response = await model.findCompanyAdmins(companyId);
-  logger.info('Company admins fetched', { companyId });
+  const data = await model.findCompanyAdmins(companyId);
+  const response = data.map((item) => item.user);
+  logger.info('Company admins fetched', response);
   return response;
 };
 
