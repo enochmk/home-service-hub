@@ -8,9 +8,9 @@ import { getLogger } from '../../utils/logger';
 
 const logger = getLogger('UsersService');
 
-export const getUsers = async (filter?: FindUsersParams) => {
-  logger.verbose('Fetching users...', filter);
-  const users = await model.findUsers(filter);
+export const getUsers = async () => {
+  logger.verbose('Fetching users...');
+  const users = await model.findUsers();
   logger.info('Users fetched successfully', users);
   return { data: users };
 };

@@ -7,7 +7,6 @@ import {
   UpdateUserPasswordRequest,
   UpdateUserRequest,
 } from './users.schema';
-import { FindUsersParams } from './users.interface';
 
 export const createUser: CreateUserRequest = async (req, res) => {
   const user = await service.createUser(req.body);
@@ -25,8 +24,7 @@ export const getUser: GetUserRequest = async (req, res) => {
 };
 
 export const getUsers: RequestHandler = async (req, res) => {
-  const filter: FindUsersParams = req.query;
-  const response = await service.getUsers(filter);
+  const response = await service.getUsers();
   res.status(200).json(response);
 };
 
