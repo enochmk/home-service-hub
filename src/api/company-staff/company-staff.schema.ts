@@ -1,68 +1,29 @@
 import { RequestHandler } from 'express';
 import z from 'zod';
-import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '../../utils/constants';
 
-export const createCompanyStaffSchema = z.object({
+export const addCompanyStaffSchema = z.object({
   params: z.object({
     companyId: z.string().uuid(),
   }),
   body: z.object({
-    firstName: z.string().min(2, 'First name is too short').max(100, 'First name is too long'),
-    lastName: z.string().min(2, 'Last name is too short').max(100, 'Last name is too long'),
-    email: z.string().email(),
-    phoneNumber: z.string(),
-    password: z
-      .string()
-      .min(MIN_PASSWORD_LENGTH, 'Password is too short')
-      .max(MAX_PASSWORD_LENGTH, 'Password is too long'),
-    roleId: z.string().uuid().optional(),
+    userId: z.string().uuid(),
   }),
 });
-export type CreateCompanyStaffInput = z.infer<typeof createCompanyStaffSchema>['body'];
+export type AddCompanyStaffInput = z.infer<typeof addCompanyStaffSchema>['body'];
 
-export type CreateCompanyStaffRequest = RequestHandler<
-  z.infer<typeof createCompanyStaffSchema>['params'],
+export type AddCompanyStaffRequest = RequestHandler<
+  z.infer<typeof addCompanyStaffSchema>['params'],
   any,
-  z.infer<typeof createCompanyStaffSchema>['body']
+  z.infer<typeof addCompanyStaffSchema>['body']
 >;
 
-export const deleteCompanyStaffSchema = z.object({
+export const removeCompanyStaffSchema = z.object({
   params: z.object({
     companyId: z.string().uuid(),
     userId: z.string().uuid(),
   }),
 });
 
-export type DeleteCompanyStaffInput = z.infer<typeof deleteCompanyStaffSchema>['params'];
+export type RemoveCompanyStaffInput = z.infer<typeof removeCompanyStaffSchema>['params'];
 
-export type DeleteCompanyStaffRequest = RequestHandler<DeleteCompanyStaffInput, any, any>;
-
-export const updateCompanyStaffSchema = z.object({
-  params: z.object({
-    companyId: z.string().uuid(),
-    userId: z.string().uuid(),
-  }),
-  body: z.object({
-    firstName: z
-      .string()
-      .min(2, 'First name is too short')
-      .max(100, 'First name is too long')
-      .optional(),
-    lastName: z
-      .string()
-      .min(2, 'Last name is too short')
-      .max(100, 'Last name is too long')
-      .optional(),
-    email: z.string().email().optional(),
-    phoneNumber: z.string().optional(),
-    roleId: z.string().uuid().optional(),
-  }),
-});
-
-export type UpdateCompanyStaffInput = z.infer<typeof updateCompanyStaffSchema>['body'];
-
-export type UpdateCompanyStaffRequest = RequestHandler<
-  z.infer<typeof updateCompanyStaffSchema>['params'],
-  any,
-  z.infer<typeof updateCompanyStaffSchema>['body']
->;
+export type RemoveCompanyStaffRequest = RequestHandler<RemoveCompanyStaffInput, any, any>;

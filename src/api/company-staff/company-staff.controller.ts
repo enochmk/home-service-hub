@@ -1,20 +1,6 @@
-import * as service from './company-staff.service';
-import {
-  CreateCompanyStaffRequest,
-  DeleteCompanyStaffRequest,
-  UpdateCompanyStaffRequest,
-} from './company-staff.schema';
 import { RequestHandler } from 'express';
-
-export const createCompanyStaff: CreateCompanyStaffRequest = async (req, res) => {
-  const response = await service.createCompanyStaff(req.params.companyId, req.body);
-  res.status(201).json(response);
-};
-
-export const deleteCompanyStaff: DeleteCompanyStaffRequest = async (req, res) => {
-  const response = await service.deleteCompanyStaff(req.params.companyId, req.params.userId);
-  res.status(200).json(response);
-};
+import * as service from './company-staff.service';
+import { AddCompanyStaffRequest, RemoveCompanyStaffRequest } from './company-staff.schema';
 
 export const getAllCompanyStaff: RequestHandler = async (req, res) => {
   const { companyId } = req.params;
@@ -28,11 +14,12 @@ export const getCompanyStaff: RequestHandler = async (req, res) => {
   res.status(200).json(response);
 };
 
-export const updateCompanyStaff: UpdateCompanyStaffRequest = async (req, res) => {
-  const response = await service.updateCompanyStaff(
-    req.params.companyId,
-    req.params.userId,
-    req.body,
-  );
+export const addCompanyStaff: AddCompanyStaffRequest = async (req, res) => {
+  const response = await service.createCompanyStaff(req.params.companyId, req.body.userId);
+  res.status(201).json(response);
+};
+
+export const removeCompanyStaff: RemoveCompanyStaffRequest = async (req, res) => {
+  const response = await service.removeCompanyStaff(req.params.companyId, req.params.userId);
   res.status(200).json(response);
 };
