@@ -8,6 +8,16 @@ import {
   UpdateUserRequest,
 } from './users.schema';
 
+export const getUsers: RequestHandler = async (req, res) => {
+  const response = await service.getUsers();
+  res.status(200).json(response);
+};
+
+export const getUser: GetUserRequest = async (req, res) => {
+  const user = await service.getUser(req.params.userId);
+  res.status(200).json(user);
+};
+
 export const createUser: CreateUserRequest = async (req, res) => {
   const user = await service.createUser(req.body);
   res.status(201).json(user);
@@ -16,16 +26,6 @@ export const createUser: CreateUserRequest = async (req, res) => {
 export const updateUser: UpdateUserRequest = async (req, res) => {
   const user = await service.updateUser(req.params.userId, req.body);
   res.status(200).json(user);
-};
-
-export const getUser: GetUserRequest = async (req, res) => {
-  const user = await service.getUser(req.params.userId);
-  res.status(200).json(user);
-};
-
-export const getUsers: RequestHandler = async (req, res) => {
-  const response = await service.getUsers();
-  res.status(200).json(response);
 };
 
 export const deleteUser: GetUserRequest = async (req, res) => {

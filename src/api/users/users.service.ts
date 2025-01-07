@@ -3,7 +3,6 @@ import bcrypt from 'bcrypt';
 import createHttpError from 'http-errors';
 import { CreateUserInput, UpdateUserInput } from './users.schema';
 import * as model from './users.model';
-import { FindUsersParams } from './users.interface';
 import { getLogger } from '../../utils/logger';
 
 const logger = getLogger('UsersService');
