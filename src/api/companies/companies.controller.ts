@@ -17,12 +17,12 @@ export const createCompany: CreateCompanyRequest = async (req, res) => {
   res.status(201).json(company);
 };
 
-export const updateCompany: UpdateCompanyRequest = async (req, res) => {
+export const updateCompanyById: UpdateCompanyRequest = async (req, res) => {
   const company = await service.updateCompany(req.params.companyId, req.body);
   res.status(200).json(company);
 };
 
-export const deleteCompany: GetCompanyRequest = async (req, res) => {
+export const deleteCompanyById: GetCompanyRequest = async (req, res) => {
   await service.deleteCompany(req.params.companyId);
   res.status(204).send();
 };

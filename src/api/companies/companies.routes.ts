@@ -24,14 +24,14 @@ router.put(
   schemaValidation(updateCompanySchema),
   checkPermission([PERMISSIONS['company.update']]),
   companyMiddleware.checkCompanyExists,
-  controller.updateCompany,
+  controller.updateCompanyById,
 );
 
 router.delete(
   '/:companyId',
   checkPermission([PERMISSIONS['company.delete']]),
   companyMiddleware.checkCompanyExists,
-  controller.deleteCompany,
+  controller.deleteCompanyById,
 );
 
 router.get(

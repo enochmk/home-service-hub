@@ -27,7 +27,7 @@ router.post(
 router.get('/me', controller.getProfile);
 
 // get current user permissions
-router.get('/me/permissions', controller.getUserPermissions);
+router.get('/me/permissions', controller.getUserPermissionsByRoleId);
 
 // change current user password
 router.put(
@@ -42,7 +42,7 @@ router.get(
   schemaValidation(schema.getUserSchema),
   checkPermission([PERMISSIONS['users.view']]),
   middleware.checkUserExists,
-  controller.getUser,
+  controller.getUserById,
 );
 
 // update specified user :userId details <optional>
@@ -52,7 +52,7 @@ router.put(
   checkPermission([PERMISSIONS['users.edit']]),
   middleware.checkUserExists,
   roleMiddleware.verifyRoleExists,
-  controller.updateUser,
+  controller.updateUserById,
 );
 
 // delete specified user :userId
@@ -61,7 +61,7 @@ router.delete(
   schemaValidation(schema.getUserSchema),
   checkPermission([PERMISSIONS['users.delete']]),
   middleware.checkUserExists,
-  controller.deleteUser,
+  controller.deleteUserById,
 );
 
 // update specified user :userId password
@@ -71,7 +71,7 @@ router.put(
   checkPermission([PERMISSIONS['users.edit']]),
   middleware.checkUserExists,
   roleMiddleware.verifyRoleExists,
-  controller.updateUserPassword,
+  controller.updateUserPasswordByUserId,
 );
 
 export default router;
