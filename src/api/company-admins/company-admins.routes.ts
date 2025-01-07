@@ -18,7 +18,7 @@ router.post(
   controller.addCompanyAdmin,
 );
 
-router.get('/admins/:userId', userMiddleware.checkUserExists, controller.getCompanyAdminProfile);
+router.get('/admins/:userId', userMiddleware.checkUserExists, controller.getCompanyAdmin);
 
 router.delete(
   '/admins/:userId',

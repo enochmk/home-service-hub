@@ -1,18 +1,9 @@
 import { RequestHandler } from 'express';
 import z from 'zod';
-import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '../../utils/constants';
 
 export const addCompanyAdminSchema = z.object({
   body: z.object({
-    firstName: z.string().min(2, 'First name is too short').max(100, 'First name is too long'),
-    lastName: z.string().min(2, 'Last name is too short').max(100, 'Last name is too long'),
-    email: z.string().email(),
-    phoneNumber: z.string(),
-    password: z
-      .string()
-      .min(MIN_PASSWORD_LENGTH, 'Password is too short')
-      .max(MAX_PASSWORD_LENGTH, 'Password is too long'),
-    roleId: z.string().uuid().optional(),
+    userId: z.string().uuid(),
   }),
   params: z.object({
     companyId: z.string().uuid(),
