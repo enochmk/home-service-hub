@@ -26,6 +26,7 @@ router.delete(
   '/admins/:userId',
   schemaValidation(removeCompanyAdminSchema),
   userMiddleware.checkUserExists,
+  middleware.checkIfUserIsAdded,
   controller.removeCompanyAdmin,
 );
 

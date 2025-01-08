@@ -12,7 +12,7 @@ export const addCompanyAdmin = async (companyId: string, userId: string) => {
 
 export const removeCompanyAdmin = async (companyId: string, userId: string) => {
   logger.verbose('Removing company admin', { companyId, userId });
-  const response = await removeCompanyAdmin(companyId, userId);
+  const response = await model.removeAdminFromCompany(companyId, userId);
   logger.info('Company admin removed', { companyId, userId });
   return response;
 };

@@ -9,8 +9,8 @@ export const addCompanyAdmin: AddCompanyAdminRequest = async (req, res) => {
 
 export const removeCompanyAdmin: RemoveCompanyAdminRequest = async (req, res) => {
   const { companyId, userId } = req.params;
-  const response = await service.removeCompanyAdmin(companyId, userId);
-  res.status(200).json(response);
+  await service.removeCompanyAdmin(companyId, userId);
+  res.status(204).send();
 };
 
 export const getCompanyAdmins: RequestHandler = async (req, res) => {

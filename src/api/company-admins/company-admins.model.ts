@@ -40,12 +40,3 @@ export const findCompanyAdminByCompanyIdAndUserId = async (companyId: string, us
     select: { ...companyAdminSelect, company: false },
   });
 };
-
-export const deleteCompanyAdmin = async (companyId: string, userId: string) => {
-  await removeAdminFromCompany(companyId, userId);
-  return prisma.users.delete({
-    where: {
-      id: userId,
-    },
-  });
-};
