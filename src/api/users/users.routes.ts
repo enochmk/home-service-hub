@@ -23,18 +23,8 @@ router.post(
   controller.createUser,
 );
 
-// get current user profile
-router.get('/me', controller.getProfile);
-
 // get current user permissions
 router.get('/me/permissions', controller.getUserPermissionsByRoleId);
-
-// change current user password
-router.put(
-  '/me/change-password',
-  schemaValidation(schema.changeOwnPasswordSchema),
-  controller.changeOwnPassword,
-);
 
 // get specified user :userId
 router.get(

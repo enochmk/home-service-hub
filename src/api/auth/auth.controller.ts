@@ -42,3 +42,8 @@ export const changeOwnPassword: ChangeOwnPasswordRequest = async (req, res) => {
   await service.changePassword(res.locals.user.id, req.body.oldPassword, req.body.newPassword);
   res.status(204).send();
 };
+
+export const getProfile: RequestHandler = async (req, res) => {
+  // const response = await service.getUserProfile(res.locals.user.id);
+  res.status(200).json(res.locals.user);
+};

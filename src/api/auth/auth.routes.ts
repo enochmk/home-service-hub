@@ -38,4 +38,7 @@ router.put(
   controller.changeOwnPassword,
 );
 
+// get current user profile
+router.get('/me', middleware.verifyJWT, middleware.validateCurrentUser, controller.getProfile);
+
 export default router;
