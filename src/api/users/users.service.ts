@@ -69,7 +69,7 @@ export const updateUserPassword = async (userId: string, password: string) => {
   }
 
   const hashPassword = bcrypt.hashSync(password, 10);
-  await model.updatePassword(userId, hashPassword);
+  await model.updatePassword(userId, hashPassword, false);
   logger.info('User password updated successfully', { userId });
   return {
     message: `User's Password update successfully`,
@@ -94,7 +94,7 @@ export const changeOwnPassword = async (
   }
 
   const hashPassword = bcrypt.hashSync(newPassword, 10);
-  await model.updatePassword(userId, hashPassword);
+  await model.updatePassword(userId, hashPassword, false);
   logger.info('Password updated successfully', { userId });
   return {
     message: `Password update successfully`,

@@ -89,13 +89,18 @@ export const getPermissionsByRoleId = async (roleId: string) => {
   return role?.rolePermissions.map((rp) => rp.permission.name) || [];
 };
 
-export const updatePassword = async (userId: string, hashPassword: string) => {
+export const updatePassword = async (
+  userId: string,
+  hashPassword: string,
+  shouldUpdatePassword?: boolean,
+) => {
   return prisma.users.update({
     where: {
       id: userId,
     },
     data: {
       password: hashPassword,
+      shouldUpdatePassword: shouldUpdatePassword || false,
       updatedAt: new Date(),
     },
     include: {
