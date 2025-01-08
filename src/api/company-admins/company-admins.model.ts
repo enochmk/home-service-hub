@@ -29,7 +29,7 @@ export const findCompanyAdmins = async (companyId: string) => {
   });
 };
 
-export const findCompanyAdminByUserId = async (companyId: string, userId: string) => {
+export const findCompanyAdminByCompanyIdAndUserId = async (companyId: string, userId: string) => {
   return prisma.companyAdmins.findUnique({
     where: {
       userId_companyId: {

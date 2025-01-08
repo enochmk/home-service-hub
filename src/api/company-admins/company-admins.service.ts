@@ -27,7 +27,7 @@ export const getCompanyAdminsByCompanyId = async (companyId: string) => {
 
 export const getCompanyAdminByUserId = async (companyId: string, userId: string) => {
   logger.verbose('Fetching company admin profile', { companyId, userId });
-  const response = await model.findCompanyAdminByUserId(companyId, userId);
+  const response = await model.findCompanyAdminByCompanyIdAndUserId(companyId, userId);
   logger.info('Company admin fetched', response);
   return response;
 };
