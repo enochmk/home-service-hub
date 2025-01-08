@@ -77,3 +77,20 @@ export const forgotPasswordSchema = z.object({
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>['body'];
 
 export type ForgotPasswordRequest = RequestHandler<any, any, ForgotPasswordInput>;
+
+export const changeOwnPasswordSchema = z.object({
+  body: z.object({
+    oldPassword: z
+      .string()
+      .min(MIN_PASSWORD_LENGTH, 'Old Password is too short')
+      .max(MAX_PASSWORD_LENGTH, 'Old Password is too long'),
+    newPassword: z
+      .string()
+      .min(MIN_PASSWORD_LENGTH, 'New Password is too short')
+      .max(MAX_PASSWORD_LENGTH, 'New Password is too long'),
+  }),
+});
+
+export type ChangeOwnPasswordInput = z.infer<typeof changeOwnPasswordSchema>['body'];
+
+export type ChangeOwnPasswordRequest = RequestHandler<any, any, ChangeOwnPasswordInput>;

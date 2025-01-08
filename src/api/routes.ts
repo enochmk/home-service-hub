@@ -17,6 +17,7 @@ router.get('/health', (_req, res) => {
 router.use('/auth', authRoutes);
 router.use(authMiddleware.verifyJWT);
 router.use(authMiddleware.validateCurrentUser);
+router.use(authMiddleware.shouldUpdatePassword);
 router.use('/users', userRoutes);
 router.use('/roles', roleRoutes);
 router.use('/companies', companyRoutes);

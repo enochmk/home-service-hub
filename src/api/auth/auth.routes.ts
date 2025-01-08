@@ -30,4 +30,12 @@ router.put(
   controller.resetPassword,
 );
 
+router.put(
+  '/change-password',
+  schemaValidation(schema.changeOwnPasswordSchema),
+  middleware.verifyJWT,
+  middleware.validateCurrentUser,
+  controller.changeOwnPassword,
+);
+
 export default router;

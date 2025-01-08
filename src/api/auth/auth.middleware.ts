@@ -2,6 +2,9 @@ import { NextFunction, Request, Response } from 'express';
 import createHttpError from 'http-errors';
 import { decodeToken } from './auth.utils';
 import * as model from './auth.model';
+import { getLogger } from '../../utils/logger';
+
+const logger = getLogger('AuthMiddleware');
 
 export async function verifyJWT(req: Request, res: Response, next: NextFunction) {
   const authorization = req.headers?.authorization;
@@ -29,10 +32,25 @@ export async function verifyJWT(req: Request, res: Response, next: NextFunction)
 // check if user is active
 export async function validateCurrentUser(req: Request, res: Response, next: NextFunction) {
   const userId = res.locals.user?.id;
+  logger.verbose(`Validating current user ${userId}...`, { user: res.locals.user });
   if (!userId) return next(new createHttpError.Unauthorized('Invalid token. Please login again'));
-  // check if user is active
   const user = await model.findUserById(userId);
-  if (!user) return next(new createHttpError.Unauthorized('User not found'));
-  if (!user.active) return next(new createHttpError.Unauthorized('User is not active'));
+  if (!user) {
+    return next(new createHttpError.Unauthorized('User not found'));
+  }
+  if (!user.active) {
+    return next(new createHttpError.Unauthorized('User is not active'));
+  }
+  return next();
+}
+
+export async function shouldUpdatePassword(req: Request, res: Response, next: NextFunction) {
+  const user = res.locals.user;
+  logger.verbose(`Checking if user: ${user?.emial} should update password...`, { user });
+  if (user?.shouldUpdatePassword) {
+    return next(
+      new createHttpError.Unauthorized('Please update your password before you can proceed'),
+    );
+  }
   return next();
 }

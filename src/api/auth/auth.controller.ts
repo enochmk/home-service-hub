@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express';
 import {
+  ChangeOwnPasswordRequest,
   ForgotPasswordRequest,
   ResetPasswordRequest,
   SignInRequest,
@@ -34,5 +35,10 @@ export const forgotPassword: ForgotPasswordRequest = async (req, res) => {
 export const resetPassword: ResetPasswordRequest = async (req, res) => {
   const passwordResetToken = req.params.passwordResetToken;
   await service.resetPassword(passwordResetToken, req.body.password);
+  res.status(204).send();
+};
+
+export const changeOwnPassword: ChangeOwnPasswordRequest = async (req, res) => {
+  await service.changePassword(res.locals.user.id, req.body.oldPassword, req.body.newPassword);
   res.status(204).send();
 };

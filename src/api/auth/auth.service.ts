@@ -9,7 +9,7 @@ import { ROLES } from '../../utils/constants';
 import { getLogger } from '../../utils/logger';
 import { IUserSessionData } from './auth.interface';
 
-const logger = getLogger('auth.service');
+const logger = getLogger('AuthService');
 
 export const signIn = async (email: string, password: string) => {
   const user = await model.findUserByEmail(email);
@@ -37,6 +37,7 @@ export const signIn = async (email: string, password: string) => {
     roleId: user.role?.id,
     roleName: user.role?.name,
     permissions: userPermissions,
+    shouldUpdatePassword: user.shouldUpdatePassword,
   };
 
   const token = generateToken(payload);
@@ -84,11 +85,13 @@ export const getUserProfile = async (userId: string) => {
 };
 
 export const changePassword = async (userId: string, oldPassword: string, newPassword: string) => {
+  logger.verbose(`Changing password for user: ${userId} `, { userId });
   const user = await model.findUserById(userId);
   if (!user) {
     throw new createHttpError.NotFound('User not found');
   }
 
+  logger.verbose('Comparing old password');
   const isPasswordMatch = bcrypt.compareSync(oldPassword, user.password);
   if (!isPasswordMatch) {
     throw new createHttpError.Forbidden(
@@ -96,9 +99,11 @@ export const changePassword = async (userId: string, oldPassword: string, newPas
     );
   }
 
+  logger.verbose('Hashing new password');
   const password = bcrypt.hashSync(newPassword, 10);
   await model.changePassword(userId, password);
 
+  logger.info('Password changed successfully');
   return { message: 'Password changed successfully' };
 };
 
@@ -115,7 +120,7 @@ export const forgotPassword = async (email: string) => {
   // TODO: Send the token to the user's email
   // await sendPasswordResetEmail(user.email, token);
 
-  logger.info('Password reset token: ', { passwordResetToken });
+  logger.info('Password reset token');
   return { message: 'Password reset link sent to your email', passwordResetToken };
 };
 
