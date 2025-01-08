@@ -9,6 +9,8 @@ import {
 } from './users.schema';
 
 export const getUsers: RequestHandler = async (req, res) => {
+  console.log(res.locals.user);
+  console.log(res.locals.company);
   const response = await service.getUsers();
   res.status(200).json(response);
 };
