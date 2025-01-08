@@ -17,6 +17,8 @@ export async function seedRoles() {
 
 export async function seedPermissions() {
   logger.verbose('Seeding permissions...');
+  // delete all existing permissions
+  await prisma.permissions.deleteMany();
   const permissions = Object.values(PERMISSIONS);
   for (const permission of permissions) {
     await prisma.permissions.upsert({
@@ -30,6 +32,8 @@ export async function seedPermissions() {
   for (const role of roles) {
     const roleRecord = await prisma.roles.findUnique({ where: { name: role } });
     if (!roleRecord) continue;
+    // delete all role permissions
+    await prisma.rolePermissions.deleteMany({ where: { roleId: roleRecord.id } });
     const rolePermissions = ROLE_PERMISSIONS[role];
     for (const permission of rolePermissions) {
       const permissionRecord = await prisma.permissions.findUnique({ where: { name: permission } });
