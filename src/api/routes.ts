@@ -7,6 +7,7 @@ import roleRoutes from './roles/roles.routes';
 import companyRoutes from './companies/companies.routes';
 import companyAdminsRoutes from './company-admins/company-admins.routes';
 import * as authMiddleware from './auth/auth.middleware';
+import * as companyAdminMiddleware from './company-admins/company-admins.middleware';
 
 const router = Router();
 
@@ -18,7 +19,7 @@ router.get('/health', (_req, res) => {
 router.use('/auth', authRoutes);
 router.use(authMiddleware.verifyJWT);
 router.use(authMiddleware.validateCurrentUser);
-// router.use(authMiddleware.shouldUpdatePassword); redundant middleware
+router.use(companyAdminMiddleware.loadCompanies);
 router.use('/users', userRoutes);
 router.use('/roles', roleRoutes);
 router.use('/companies/:companyId', companyAdminsRoutes);

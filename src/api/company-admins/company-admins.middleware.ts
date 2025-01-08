@@ -4,6 +4,7 @@ import * as model from './company-admins.model';
 import createHttpError from 'http-errors';
 import { ROLES } from '../../utils/constants';
 import { getLogger } from '../../utils/logger';
+import { IUserSessionData } from '../auth/auth.interface';
 
 const logger = getLogger('CompanyAdminsMiddleware');
 
@@ -41,5 +42,17 @@ export const checkIfUserIsAdded = async (req: Request, res: Response, next: Next
   if (!adminUser) {
     return next(new createHttpError.Conflict('This user is not added to this company'));
   }
+  return next();
+};
+
+export const loadCompanies = async (req: Request, res: Response, next: NextFunction) => {
+  const user = res.locals.user as IUserSessionData;
+  const userId = user.id;
+  const roleName = user.roleName;
+  if (roleName !== ROLES.COMPANY_ADMIN) return next();
+  logger.verbose('Loading companies for company admin', { userId });
+  const companyAdmin = await model.findCompanyAdminByUserId(userId);
+  res.locals.user.company = companyAdmin?.company;
+  res.locals.company = companyAdmin?.company;
   return next();
 };

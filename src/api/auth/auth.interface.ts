@@ -9,5 +9,9 @@ export interface IUserSessionData {
   shouldUpdatePassword: boolean;
   permissions: string[];
   active?: boolean;
+  company?: {
+    id: string;
+    name: string;
+  };
   [key: string]: any;
 }

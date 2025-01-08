@@ -4,6 +4,7 @@ import * as schema from './auth.schema';
 import * as controller from './auth.controller';
 import * as middleware from './auth.middleware';
 import schemaValidation from '../../middlewares/schema-validation.middleware';
+import * as companyAdminMiddleware from '../company-admins/company-admins.middleware';
 
 const router = Router();
 
@@ -39,6 +40,12 @@ router.put(
 );
 
 // get current user profile
-router.get('/me', middleware.verifyJWT, middleware.validateCurrentUser, controller.getProfile);
+router.get(
+  '/me',
+  middleware.verifyJWT,
+  middleware.validateCurrentUser,
+  companyAdminMiddleware.loadCompanies,
+  controller.getProfile,
+);
 
 export default router;

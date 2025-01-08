@@ -40,3 +40,12 @@ export const findCompanyAdminByCompanyIdAndUserId = async (companyId: string, us
     select: { ...companyAdminSelect, company: false },
   });
 };
+
+export const findCompanyAdminByUserId = async (userId: string) => {
+  return prisma.companyAdmins.findFirst({
+    where: {
+      userId,
+    },
+    select: { ...companyAdminSelect, company: true },
+  });
+};
