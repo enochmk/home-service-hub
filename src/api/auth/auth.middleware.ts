@@ -36,7 +36,6 @@ export async function verifyJWT(req: Request, res: Response, next: NextFunction)
 // check if user is active
 export async function validateCurrentUser(req: Request, res: Response, next: NextFunction) {
   const userId = res.locals.user?.id;
-  console.log({ userId });
   logger.verbose(`Validating current user ${userId}...`, { user: res.locals.user });
   if (!userId) return next(new createHttpError.Unauthorized('Invalid token. Please login again'));
   const user = await model.findUserById(userId);
@@ -46,8 +45,7 @@ export async function validateCurrentUser(req: Request, res: Response, next: Nex
   if (!user.active) {
     return next(new createHttpError.Unauthorized('User is not active'));
   }
-  // res.status(200).json(user);
-  next();
+  return next();
 }
 
 export async function shouldUpdatePassword(req: Request, res: Response, next: NextFunction) {
