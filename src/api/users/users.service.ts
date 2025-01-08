@@ -24,7 +24,8 @@ export const getUser = async (userId: string) => {
 
 export const createUser = async (data: CreateUserInput) => {
   logger.verbose('Creating user...', data);
-  const user = await model.createUser(data);
+  const hashPassword = bcrypt.hashSync(data.password, 10);
+  const user = await model.createUser({ ...data, password: hashPassword });
   const userWithoutPassword = _.omit(user, 'password');
   logger.info('User created successfully', { userWithoutPassword });
   return userWithoutPassword;

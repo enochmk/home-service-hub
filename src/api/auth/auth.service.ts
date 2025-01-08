@@ -48,19 +48,18 @@ export const signIn = async (email: string, password: string) => {
 };
 
 export const signUp = async (data: SignUpInput) => {
-  // Check if the user already exists
   const user = await model.findUserByEmail(data.email);
   if (user) {
     throw new createHttpError.Conflict('A user with this email already exists');
   }
 
   // Hash the password
-  const password = bcrypt.hashSync(data.password, 10);
+  const hashPassword = bcrypt.hashSync(data.password, 10);
 
   // Create the user
   const newUser = await model.createUser({
     ...data,
-    password,
+    password: hashPassword,
     roleName: ROLES.CLIENT,
   });
 

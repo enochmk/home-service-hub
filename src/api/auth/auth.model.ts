@@ -27,6 +27,7 @@ export const changePassword = async (userId: string, hashPassword: string) => {
     },
     data: {
       password: hashPassword,
+      shouldUpdatePassword: false,
     },
   });
   return updatedUser;

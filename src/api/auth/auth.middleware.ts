@@ -33,7 +33,7 @@ export async function verifyJWT(req: Request, res: Response, next: NextFunction)
   }
 }
 
-// check if user is active
+// check if user is active, should update password
 export async function validateCurrentUser(req: Request, res: Response, next: NextFunction) {
   const userId = res.locals.user?.id;
   logger.verbose(`Validating current user ${userId}...`, { user: res.locals.user });
@@ -45,16 +45,26 @@ export async function validateCurrentUser(req: Request, res: Response, next: Nex
   if (!user.active) {
     return next(new createHttpError.Unauthorized('User is not active'));
   }
-  return next();
-}
 
-export async function shouldUpdatePassword(req: Request, res: Response, next: NextFunction) {
-  const user = res.locals.user;
-  logger.verbose(`Checking if user: ${user?.emial} should update password...`, { user });
+  logger.verbose(`Checking if user: ${user?.email} should update password...`, { user });
   if (user?.shouldUpdatePassword) {
     return next(
       new createHttpError.Unauthorized('Please update your password before you can proceed'),
     );
   }
+  // res.locals.user = user;
+  return next();
+}
+
+export async function shouldUpdatePassword(req: Request, res: Response, next: NextFunction) {
+  const userId = res.locals.user.id;
+  const user = await model.findUserById(userId);
+  logger.verbose(`Checking if user: ${user?.email} should update password...`, { user });
+  if (user?.shouldUpdatePassword) {
+    return next(
+      new createHttpError.Unauthorized('Please update your password before you can proceed'),
+    );
+  }
+  // res.locals.user = user;
   return next();
 }
