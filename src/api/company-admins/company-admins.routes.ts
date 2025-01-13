@@ -7,6 +7,7 @@ import * as companyMiddleware from '../companies/companies.middleware';
 import * as userMiddleware from '../users/users.midddleware';
 
 const router = Router({ mergeParams: true });
+
 router.use(companyMiddleware.checkCompanyExists);
 
 router.get('/admins', controller.getCompanyAdmins);
