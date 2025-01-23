@@ -1,5 +1,5 @@
 import prisma from '../../db/prisma.db';
-import { FindUsersParams } from './users.interface';
+import { usersInclude, UserQueryOptions } from './users.interface';
 import { CreateUserInput, UpdateUserInput } from './users.schema';
 
 export const findUserById = async (userId: string) => {
@@ -7,9 +7,7 @@ export const findUserById = async (userId: string) => {
     where: {
       id: userId,
     },
-    include: {
-      role: true,
-    },
+    select: usersInclude,
   });
 };
 
@@ -18,18 +16,14 @@ export const findUserByEmail = async (email: string) => {
     where: {
       email: email,
     },
-    include: {
-      role: true,
-    },
+    select: usersInclude,
   });
 };
 
 export const createUser = async (data: CreateUserInput) => {
   return prisma.users.create({
     data: data,
-    include: {
-      role: true,
-    },
+    select: usersInclude,
   });
 };
 
@@ -39,9 +33,7 @@ export const updateUser = async (userId: string, data: UpdateUserInput) => {
       id: userId,
     },
     data: { ...data, updatedAt: new Date() },
-    include: {
-      role: true,
-    },
+    select: usersInclude,
   });
 };
 
@@ -62,9 +54,7 @@ export const updateUserPassword = async (userId: string, password: string) => {
       password: password,
       updatedAt: new Date(),
     },
-    include: {
-      role: true,
-    },
+    select: usersInclude,
   });
 };
 
@@ -103,43 +93,17 @@ export const updatePassword = async (
       shouldUpdatePassword: shouldUpdatePassword || false,
       updatedAt: new Date(),
     },
-    include: {
-      role: true,
-    },
+    select: usersInclude,
   });
 };
 
-export const findUsers = async (query?: FindUsersParams) => {
-  const { sort, limit, page } = query || {};
-  const skip = limit && page ? limit * (page - 1) : 0;
-  let where = {};
-  if (query?.email) {
-    where = { ...where, email: { contains: query.email } };
-  }
-
-  if (query?.firstName) {
-    where = { ...where, firstName: { contains: query.firstName } };
-  }
-
-  if (query?.lastName) {
-    where = { ...where, lastName: { contains: query.lastName } };
-  }
-
+export const findUsers = async (query?: UserQueryOptions) => {
+  const { filters, orderBy, limit, offset } = query || {};
   return prisma.users.findMany({
-    select: {
-      id: true,
-      email: true,
-      phoneNumber: true,
-      firstName: true,
-      lastName: true,
-      active: true,
-      role: true,
-    },
-    orderBy: {
-      firstName: sort || 'asc',
-    },
-    where: where,
-    take: Number(limit) || 10,
-    skip: skip || 0,
+    where: filters,
+    orderBy: orderBy || { firstName: 'asc' },
+    take: limit,
+    skip: offset,
+    select: usersInclude,
   });
 };

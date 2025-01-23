@@ -4,12 +4,13 @@ import createHttpError from 'http-errors';
 import { CreateUserInput, UpdateUserInput } from './users.schema';
 import * as model from './users.model';
 import { getLogger } from '../../utils/logger';
+import { UserQueryOptions } from './users.interface';
 
 const logger = getLogger('UsersService');
 
-export const getUsers = async () => {
+export const getUsers = async (queryOptions?: UserQueryOptions) => {
   logger.verbose('Fetching users...');
-  const users = await model.findUsers();
+  const users = await model.findUsers(queryOptions);
   logger.info('Users fetched successfully', users);
   return { data: users };
 };
