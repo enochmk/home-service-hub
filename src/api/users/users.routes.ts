@@ -32,6 +32,7 @@ router.get(
   schemaValidation(schema.getUserSchema),
   checkPermission([PERMISSIONS['users.view']]),
   middleware.checkUserExists,
+  middleware.isUserPartOfAdminCompany,
   controller.getUserById,
 );
 
@@ -41,6 +42,7 @@ router.put(
   schemaValidation(schema.updateUserSchema),
   checkPermission([PERMISSIONS['users.edit']]),
   middleware.checkUserExists,
+  middleware.isUserPartOfAdminCompany,
   roleMiddleware.verifyRoleExists,
   controller.updateUserById,
 );
@@ -51,6 +53,7 @@ router.delete(
   schemaValidation(schema.getUserSchema),
   checkPermission([PERMISSIONS['users.delete']]),
   middleware.checkUserExists,
+  middleware.isUserPartOfAdminCompany,
   controller.deleteUserById,
 );
 
@@ -60,6 +63,7 @@ router.put(
   schemaValidation(schema.updateUserPasswordSchema),
   checkPermission([PERMISSIONS['users.edit']]),
   middleware.checkUserExists,
+  middleware.isUserPartOfAdminCompany,
   roleMiddleware.verifyRoleExists,
   controller.updateUserPasswordByUserId,
 );

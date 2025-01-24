@@ -4,6 +4,7 @@ import _ from 'lodash';
 import { decodeToken } from './auth.utils';
 import * as model from './auth.model';
 import { getLogger } from '../../utils/logger';
+import { ROLES } from '../../utils/constants';
 
 const logger = getLogger('AuthMiddleware');
 
@@ -66,5 +67,18 @@ export async function shouldUpdatePassword(req: Request, res: Response, next: Ne
     );
   }
   // res.locals.user = user;
+  return next();
+}
+
+export async function checkUserCompanyAssociation(req: Request, res: Response, next: NextFunction) {
+  const roleName = res.locals.user.roleName;
+  if (roleName !== ROLES.COMPANY_ADMIN) return next();
+  if (!res.locals.company) {
+    return next(
+      new createHttpError.Forbidden(
+        'You are not associated with any company. Please contact admin',
+      ),
+    );
+  }
   return next();
 }

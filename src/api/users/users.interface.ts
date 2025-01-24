@@ -11,8 +11,8 @@ export const usersInclude: Prisma.usersSelect = {
   phoneNumber: true,
   shouldUpdatePassword: true,
   role: true,
-  // companyAdmins: true,
-  // companyStaffs: true,
+  companyAdmins: true,
+  companyStaffs: true,
   createdAt: true,
   updatedAt: true,
 };

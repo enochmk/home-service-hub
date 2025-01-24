@@ -2,6 +2,7 @@ import { NextFunction, Request, Response } from 'express';
 import createHttpError from 'http-errors';
 import * as model from './users.model';
 import { getLogger } from '../../utils/logger';
+import { ROLES } from '../../utils/constants';
 
 const logger = getLogger('UsersMiddleware');
 
@@ -28,5 +29,20 @@ export async function checkEmailExists(req: Request, res: Response, next: NextFu
     return next(new createHttpError.BadRequest(`Email: ${email} is already in use`));
   }
   res.locals.targetUser = user;
+  return next();
+}
+
+export async function isUserPartOfAdminCompany(req: Request, res: Response, next: NextFunction) {
+  if (res.locals.user.roleName !== ROLES.COMPANY_ADMIN) return next();
+  const companyId = res.locals.company.id;
+  if (!companyId) return next();
+  const targetUserId = req.params.userId;
+  logger.verbose(`Checking user belongs to admin's company...`, { targetUserId, companyId });
+  const targetUser = await model.findUserById(targetUserId);
+  const isCompanyMember =
+    targetUser?.companyAdmins?.[0]?.companyId === companyId ||
+    targetUser?.companyStaffs?.[0]?.companyId === companyId;
+  if (!isCompanyMember)
+    return next(new createHttpError.BadRequest('This user does not belong to your company'));
   return next();
 }

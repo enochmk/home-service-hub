@@ -20,6 +20,7 @@ router.use('/auth', authRoutes);
 router.use(authMiddleware.verifyJWT);
 router.use(authMiddleware.validateCurrentUser);
 router.use(companyAdminMiddleware.loadCompanies);
+router.use(authMiddleware.checkUserCompanyAssociation);
 router.use('/users', userRoutes);
 router.use('/roles', roleRoutes);
 router.use('/companies/:companyId', companyAdminsRoutes);

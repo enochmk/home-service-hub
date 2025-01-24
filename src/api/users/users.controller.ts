@@ -11,13 +11,13 @@ import { UserQueryOptions } from './users.interface';
 import { ROLES } from '../../utils/constants';
 
 export const getUsers: RequestHandler = async (req, res) => {
-  const offet =
-    (parseInt((req.query?.page as string) || '1', 10) - 1) *
-    parseInt((req.query.limit as string) || '10', 10);
-
+  const page = parseInt((req.query?.page as string) || '1', 10);
+  const limit = parseInt((req.query?.limit as string) || '10', 10);
+  const offet = (page - 1) * limit;
+  const sort = req.query?.sort === 'asc' || req.query?.sort === 'desc' ? req.query.sort : 'asc';
   const queryOptions: UserQueryOptions = {
-    limit: req.query?.limit ? parseInt(req.query.limit as string, 10) : 10,
-    sort: req.query?.sort === 'asc' || req.query?.sort === 'desc' ? req.query.sort : 'asc',
+    limit: limit,
+    sort: sort,
     offset: offet,
     filters: req.query.q
       ? {
