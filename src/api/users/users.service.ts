@@ -5,6 +5,7 @@ import { CreateUserInput, UpdateUserInput } from './users.schema';
 import * as model from './users.model';
 import { getLogger } from '../../utils/logger';
 import { UserQueryOptions } from './users.interface';
+import { ROLES } from '../../utils/constants';
 
 const logger = getLogger('UsersService');
 
@@ -29,6 +30,20 @@ export const createUser = async (data: CreateUserInput) => {
   const user = await model.createUser({ ...data, password: hashPassword });
   const userWithoutPassword = _.omit(user, 'password');
   logger.info('User created successfully', { userWithoutPassword });
+  return userWithoutPassword;
+};
+
+export const createUserAsCompanyStaff = async (data: CreateUserInput, companyId: string) => {
+  logger.verbose('Creating user as company staff...', { data, companyId });
+  const hashPassword = bcrypt.hashSync(data.password, 10);
+  const role = await model.findRoleByName(ROLES.COMPANY_STAFF);
+  if (!role) throw new createHttpError.NotFound('Role not found');
+  // override roleId with company staff role id
+  data.roleId = role.id;
+  const user = await model.createUser({ ...data, password: hashPassword });
+  await model.addUserToCompanyStaff(user.id, companyId);
+  const userWithoutPassword = _.omit(user, 'password');
+  logger.info('User created as company staff successfully', { userWithoutPassword });
   return userWithoutPassword;
 };
 
@@ -100,5 +115,19 @@ export const changeOwnPassword = async (
   logger.info('Password updated successfully', { userId });
   return {
     message: `Password update successfully`,
+  };
+};
+
+export const addUserToCompanyStaff = async (userId: string, companyId: string) => {
+  logger.verbose('Adding user to company...', { userId, companyId });
+  const user = await model.findUserById(userId);
+  if (!user) {
+    throw new createHttpError.NotFound('User not found');
+  }
+
+  await model.addUserToCompanyStaff(userId, companyId);
+  logger.info('User added to company successfully', { userId, companyId });
+  return {
+    message: 'User added to company successfully',
   };
 };

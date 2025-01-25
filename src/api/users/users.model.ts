@@ -107,3 +107,35 @@ export const findUsers = async (query?: UserQueryOptions) => {
     select: usersInclude,
   });
 };
+
+export const addUserToCompanyStaff = async (userId: string, companyId: string) => {
+  return prisma.users.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      companyStaffs: {
+        create: {
+          companyId: companyId,
+        },
+      },
+    },
+    select: usersInclude,
+  });
+};
+
+export const findRoleByName = async (roleName: string) => {
+  return prisma.roles.findFirst({
+    where: {
+      name: roleName,
+    },
+  });
+};
+
+export const findRoleById = async (roleId: string) => {
+  return prisma.roles.findUnique({
+    where: {
+      id: roleId,
+    },
+  });
+};
