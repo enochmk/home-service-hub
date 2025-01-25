@@ -40,9 +40,7 @@ export async function isUserPartOfAdminCompany(req: Request, res: Response, next
   const targetUserId = req.params.userId;
   logger.verbose(`Checking user belongs to admin's company...`, { targetUserId, companyId });
   const targetUser = await model.findUserById(targetUserId);
-  const isCompanyMember =
-    targetUser?.companyAdmins?.[0]?.companyId === companyId ||
-    targetUser?.companyStaffs?.[0]?.companyId === companyId;
+  const isCompanyMember = targetUser?.userCompany?.companyId === companyId;
   if (!isCompanyMember)
     return next(new createHttpError.BadRequest('This user does not belong to your company'));
   return next();

@@ -1,18 +1,18 @@
 import prisma from '../../db/prisma.db';
-import { companyAdminSelect } from './company-admins.interface';
+import { userCompanySelect } from './company-admins.interface';
 
 export const addCompanyAdmin = async (companyId: string, userId: string) => {
-  return prisma.companyAdmins.create({
+  return prisma.userCompany.create({
     data: {
       companyId,
       userId: userId,
     },
-    select: companyAdminSelect,
+    select: userCompanySelect,
   });
 };
 
 export const removeAdminFromCompany = async (companyId: string, userId: string) => {
-  return prisma.companyAdmins.deleteMany({
+  return prisma.userCompany.deleteMany({
     where: {
       companyId,
       userId,
@@ -21,31 +21,31 @@ export const removeAdminFromCompany = async (companyId: string, userId: string) 
 };
 
 export const findCompanyAdmins = async (companyId: string) => {
-  return prisma.companyAdmins.findMany({
+  return prisma.userCompany.findMany({
     where: {
       companyId,
     },
-    select: { ...companyAdminSelect, company: false },
+    select: { ...userCompanySelect, company: false },
   });
 };
 
 export const findCompanyAdminByCompanyIdAndUserId = async (companyId: string, userId: string) => {
-  return prisma.companyAdmins.findUnique({
+  return prisma.userCompany.findUnique({
     where: {
       userId_companyId: {
         companyId,
         userId,
       },
     },
-    select: { ...companyAdminSelect, company: false },
+    select: { ...userCompanySelect, company: false },
   });
 };
 
 export const findCompanyAdminByUserId = async (userId: string) => {
-  return prisma.companyAdmins.findFirst({
+  return prisma.userCompany.findFirst({
     where: {
       userId,
     },
-    select: { ...companyAdminSelect, company: true },
+    select: { ...userCompanySelect, company: true },
   });
 };

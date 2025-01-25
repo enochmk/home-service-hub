@@ -39,17 +39,8 @@ export const getUsers: RequestHandler = async (req, res) => {
       OR: [
         ...(queryOptions.filters?.OR || []),
         {
-          companyStaffs: {
-            some: {
-              companyId: companyId,
-            },
-          },
-        },
-        {
-          companyAdmins: {
-            some: {
-              companyId: companyId,
-            },
+          userCompany: {
+            companyId: companyId,
           },
         },
       ],

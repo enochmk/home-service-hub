@@ -1,6 +1,6 @@
 import { Prisma } from '@prisma/client';
 
-export const companyAdminSelect: Prisma.companyAdminsSelect = {
+export const userCompanySelect: Prisma.userCompanySelect = {
   company: true,
   user: {
     select: {

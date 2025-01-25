@@ -114,7 +114,7 @@ export const addUserToCompanyStaff = async (userId: string, companyId: string) =
       id: userId,
     },
     data: {
-      companyStaffs: {
+      userCompany: {
         create: {
           companyId: companyId,
         },

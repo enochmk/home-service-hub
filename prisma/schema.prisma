@@ -21,8 +21,7 @@ model users {
   updatedAt            DateTime         @updatedAt
   role                 roles            @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   passwordResets       passwordResets[]
-  companyAdmins        companyAdmins[]
-  companyStaffs        companyStaff[]
+  userCompany          userCompany?
 }
 
 model roles {
@@ -60,32 +59,18 @@ model rolePermissions {
 }
 
 model company {
-  id            String          @id @default(uuid())
-  name          String          @unique
-  createdAt     DateTime        @default(now())
-  updatedAt     DateTime        @updatedAt
-  companyAdmins companyAdmins[]
-  companyStaffs companyStaff[]
+  id          String        @id @default(uuid())
+  name        String        @unique
+  createdAt   DateTime      @default(now())
+  userCompany userCompany[]
 }
 
-model companyAdmins {
-  id        String @id @default(uuid())
-  userId    String
+model userCompany {
+  id        String  @id @default(uuid())
+  userId    String  @unique
   companyId String
-
-  user    users   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  company company @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-
-  @@unique([userId, companyId])
-}
-
-model companyStaff {
-  id        String @id @default(uuid())
-  userId    String
-  companyId String
-
-  user    users   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  company company @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user      users   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  company   company @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([userId, companyId])
 }
