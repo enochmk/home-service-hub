@@ -2,7 +2,7 @@ import { Router } from 'express';
 import * as controller from './user-company.controller';
 import * as middleware from './user-company.middleware';
 import schemaValidation from '../../middlewares/schema-validation.middleware';
-import { addCompanyUserSchema, removeCompanyAdminSchema } from './user-company.schema';
+import { addCompanyUserSchema, removeCompanyUserSchema } from './user-company.schema';
 import * as companyMiddleware from '../companies/companies.middleware';
 import * as userMiddleware from '../users/users.midddleware';
 
@@ -16,7 +16,7 @@ router.post(
   '/users',
   schemaValidation(addCompanyUserSchema),
   userMiddleware.checkUserExists,
-  middleware.isUserCompanyAdmin,
+  middleware.isEligibleForCompanyJoin,
   middleware.checkIfUserIsNotAdded,
   controller.addUserToCompany,
 );
@@ -25,7 +25,7 @@ router.get('/users/:userId', userMiddleware.checkUserExists, controller.getCompa
 
 router.delete(
   '/users/:userId',
-  schemaValidation(removeCompanyAdminSchema),
+  schemaValidation(removeCompanyUserSchema),
   userMiddleware.checkUserExists,
   middleware.checkIfUserIsAdded,
   controller.removeUserFromCompany,

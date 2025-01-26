@@ -8,18 +8,17 @@ import { IUserSessionData } from '../auth/auth.interface';
 
 const logger = getLogger('CompanyAdminsMiddleware');
 
-export const isUserCompanyAdmin = async (req: Request, res: Response, next: NextFunction) => {
-  const adminUserId = req.body.userId;
-  logger.verbose(`Checking if user is a company admin ${adminUserId}`, { adminUserId });
-  const adminUser = await userModel.findUserById(adminUserId);
-  if (!adminUser) {
+export const isEligibleForCompanyJoin = async (req: Request, res: Response, next: NextFunction) => {
+  const targertUserId = req.body.userId;
+  logger.verbose(`Checking if user's role can join a company ${targertUserId}`);
+  const foundUser = await userModel.findUserById(targertUserId);
+  if (!foundUser) {
     return next(new createHttpError.NotFound('User not found'));
   }
-
-  if (adminUser.role.name !== ROLES.COMPANY_ADMIN) {
-    return next(new createHttpError.BadRequest('This user is not a company admin.'));
+  const SUPPORTED_ROLES: string[] = [ROLES.COMPANY_ADMIN, ROLES.COMPANY_STAFF];
+  if (!SUPPORTED_ROLES.includes(foundUser.role.name)) {
+    return next(new createHttpError.BadRequest('User role is not allowed to join a company'));
   }
-
   return next();
 };
 
