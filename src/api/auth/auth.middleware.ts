@@ -58,7 +58,7 @@ export async function validateCurrentUser(req: Request, res: Response, next: Nex
 }
 
 export async function shouldUpdatePassword(req: Request, res: Response, next: NextFunction) {
-  const userId = res.locals.user.id;
+  const userId = res.locals.user!.id;
   const user = await model.findUserById(userId);
   logger.verbose(`Checking if user: ${user?.email} should update password...`, { user });
   if (user?.shouldUpdatePassword) {
@@ -71,7 +71,7 @@ export async function shouldUpdatePassword(req: Request, res: Response, next: Ne
 }
 
 export async function checkUserCompanyAssociation(req: Request, res: Response, next: NextFunction) {
-  const roleName = res.locals.user.roleName;
+  const roleName = res.locals.user!.roleName;
   if (roleName !== ROLES.COMPANY_ADMIN) return next();
   if (!res.locals.company) {
     return next(
