@@ -2,9 +2,9 @@ import prisma from '../../db/prisma.db';
 import { companySelect } from './companies.interface';
 import { CreateCompanyInput, UpdateCompanyInput } from './companies.schema';
 
-export const createCompany = async (data: CreateCompanyInput) => {
+export const createCompany = async (data: CreateCompanyInput, createdByUserId: string) => {
   return prisma.company.create({
-    data,
+    data: { ...data, createdById: createdByUserId },
     select: companySelect,
   });
 };

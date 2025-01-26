@@ -4,6 +4,13 @@ import { CreateCompanyInput, UpdateCompanyInput } from './companies.schema';
 
 const logger = getLogger('CompanyService');
 
+export const createCompany = async (companyData: CreateCompanyInput, createdByUserId: string) => {
+  logger.verbose('Creating company ...', companyData);
+  const response = await model.createCompany(companyData, createdByUserId);
+  logger.info('Company created successfully', response);
+  return response;
+};
+
 export const getCompanies = async () => {
   logger.verbose('Fetching companies ...');
   const response = await model.getCompanies();
@@ -16,13 +23,6 @@ export const getCompanyById = async (companyId: string) => {
   const company = await model.findCompanyById(companyId);
   logger.info('Company fetched successfully', company);
   return company;
-};
-
-export const createCompany = async (data: CreateCompanyInput) => {
-  logger.verbose('Creating company ...', data);
-  const response = await model.createCompany(data);
-  logger.info('Company created successfully', response);
-  return response;
 };
 
 export const updateCompany = async (companyId: string, data: UpdateCompanyInput) => {
