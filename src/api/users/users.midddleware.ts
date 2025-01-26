@@ -9,7 +9,7 @@ const logger = getLogger('UsersMiddleware');
 
 export async function checkUserExists(req: Request, res: Response, next: NextFunction) {
   const userIds = [req.params?.userId, req.body?.userId].filter(Boolean);
-  logger.verbose('Checking user exists...', userIds);
+  logger.verbose('Checking target user exists...', userIds);
   if (userIds.length === 0) return next();
   for (const userId of userIds) {
     logger.verbose(`Checking user exists: ${userId}...`);

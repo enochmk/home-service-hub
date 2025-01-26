@@ -2,7 +2,7 @@ import { Router } from 'express';
 import * as controller from './user-company.controller';
 import * as middleware from './user-company.middleware';
 import schemaValidation from '../../middlewares/schema-validation.middleware';
-import { addCompanyAdminSchema, removeCompanyAdminSchema } from './user-company.schema';
+import { addCompanyUserSchema, removeCompanyAdminSchema } from './user-company.schema';
 import * as companyMiddleware from '../companies/companies.middleware';
 import * as userMiddleware from '../users/users.midddleware';
 
@@ -10,25 +10,25 @@ const router = Router({ mergeParams: true });
 
 router.use(companyMiddleware.checkCompanyExists);
 
-router.get('/admins', controller.getCompanyAdmins);
+router.get('/users', controller.getCompanyUsers);
 
 router.post(
-  '/admins',
-  schemaValidation(addCompanyAdminSchema),
+  '/users',
+  schemaValidation(addCompanyUserSchema),
   userMiddleware.checkUserExists,
   middleware.isUserCompanyAdmin,
   middleware.checkIfUserIsNotAdded,
-  controller.addCompanyAdmin,
+  controller.addUserToCompany,
 );
 
-router.get('/admins/:userId', userMiddleware.checkUserExists, controller.getCompanyAdmin);
+router.get('/users/:userId', userMiddleware.checkUserExists, controller.getCompanyUserByUserId);
 
 router.delete(
-  '/admins/:userId',
+  '/users/:userId',
   schemaValidation(removeCompanyAdminSchema),
   userMiddleware.checkUserExists,
   middleware.checkIfUserIsAdded,
-  controller.removeCompanyAdmin,
+  controller.removeUserFromCompany,
 );
 
 export default router;
