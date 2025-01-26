@@ -18,7 +18,6 @@ export async function verifyJWT(req: Request, res: Response, next: NextFunction)
   try {
     const token = authorization.split(' ')[1];
     const decoded = decodeToken(token);
-
     res.locals.user = decoded;
     return next();
   } catch (error: any) {
@@ -34,8 +33,9 @@ export async function verifyJWT(req: Request, res: Response, next: NextFunction)
 // check if user is active, should update password
 export async function validateCurrentUser(req: Request, res: Response, next: NextFunction) {
   const userId = res.locals.user?.id;
-  logger.verbose(`Validating current user ${userId}...`, { user: res.locals.user });
+  logger.verbose(`Validating current user ${userId}...`);
   if (!userId) return next(new createHttpError.Unauthorized('Invalid token. Please login again'));
+
   const user = await model.findUserById(userId);
   if (!user) {
     return next(new createHttpError.Unauthorized('User not found'));
@@ -50,7 +50,6 @@ export async function validateCurrentUser(req: Request, res: Response, next: Nex
       new createHttpError.Unauthorized('Please update your password before you can proceed'),
     );
   }
-  // res.locals.user = user;
   return next();
 }
 
@@ -63,7 +62,6 @@ export async function shouldUpdatePassword(req: Request, res: Response, next: Ne
       new createHttpError.Unauthorized('Please update your password before you can proceed'),
     );
   }
-  // res.locals.user = user;
   return next();
 }
 
