@@ -5,7 +5,7 @@ const logger = getLogger('UserCompanyService');
 
 export const addUserToCompany = async (companyId: string, userId: string) => {
   logger.verbose('Adding user to company', { companyId, userId });
-  const response = await model.addCompanyUser(companyId, userId);
+  const response = await model.addUserToCompany(companyId, userId);
   logger.info('User added to company', { response });
   return response;
 };
