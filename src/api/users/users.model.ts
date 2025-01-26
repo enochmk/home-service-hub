@@ -2,6 +2,27 @@ import prisma from '../../db/prisma.db';
 import { usersInclude, UserQueryOptions } from './users.interface';
 import { CreateUserInput, UpdateUserInput } from './users.schema';
 
+export const createUser = async (data: CreateUserInput) => {
+  return prisma.users.create({
+    data: data,
+    select: usersInclude,
+  });
+};
+
+export const createUserWithCompany = async (data: CreateUserInput, companyId: string) => {
+  return prisma.users.create({
+    data: {
+      ...data,
+      userCompany: {
+        create: {
+          companyId: companyId,
+        },
+      },
+    },
+    select: usersInclude,
+  });
+};
+
 export const findUserById = async (userId: string) => {
   return prisma.users.findUnique({
     where: {
@@ -16,13 +37,6 @@ export const findUserByEmail = async (email: string) => {
     where: {
       email: email,
     },
-    select: usersInclude,
-  });
-};
-
-export const createUser = async (data: CreateUserInput) => {
-  return prisma.users.create({
-    data: data,
     select: usersInclude,
   });
 };

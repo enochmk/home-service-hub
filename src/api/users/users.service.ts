@@ -5,9 +5,27 @@ import { CreateUserInput, UpdateUserInput } from './users.schema';
 import * as model from './users.model';
 import { getLogger } from '../../utils/logger';
 import { UserQueryOptions } from './users.interface';
-import { ROLES } from '../../utils/constants';
 
 const logger = getLogger('UsersService');
+
+export const createUser = async (data: CreateUserInput) => {
+  logger.verbose('Creating user...', data);
+  const hashPassword = bcrypt.hashSync(data.password, 10);
+  const user = await model.createUser({ ...data, password: hashPassword });
+  const userWithoutPassword = _.omit(user, 'password');
+  logger.info('User created successfully', { userWithoutPassword });
+  return userWithoutPassword;
+};
+
+export const createCompanyUser = async (userData: CreateUserInput, companyId: string) => {
+  logger.verbose('Creating company user...', userData);
+  const hashPassword = bcrypt.hashSync(userData.password, 10);
+  const data = { ...userData, password: hashPassword };
+  const user = await model.createUserWithCompany(data, companyId);
+  const userWithoutPassword = _.omit(user, 'password');
+  logger.info('Company User created successfully', { userWithoutPassword });
+  return userWithoutPassword;
+};
 
 export const getUsers = async (queryOptions?: UserQueryOptions) => {
   logger.verbose('Fetching users...');
@@ -21,29 +39,6 @@ export const getUser = async (userId: string) => {
   const user = await model.findUserById(userId);
   const userWithoutPassword = _.omit(user, 'password');
   logger.info('User fetched successfully', { userWithoutPassword });
-  return userWithoutPassword;
-};
-
-export const createUser = async (data: CreateUserInput) => {
-  logger.verbose('Creating user...', data);
-  const hashPassword = bcrypt.hashSync(data.password, 10);
-  const user = await model.createUser({ ...data, password: hashPassword });
-  const userWithoutPassword = _.omit(user, 'password');
-  logger.info('User created successfully', { userWithoutPassword });
-  return userWithoutPassword;
-};
-
-export const createUserAsCompanyStaff = async (data: CreateUserInput, companyId: string) => {
-  logger.verbose('Creating user as company staff...', { data, companyId });
-  const hashPassword = bcrypt.hashSync(data.password, 10);
-  const role = await model.findRoleByName(ROLES.COMPANY_STAFF);
-  if (!role) throw new createHttpError.NotFound('Role not found');
-  // override roleId with company staff role id
-  data.roleId = role.id;
-  const user = await model.createUser({ ...data, password: hashPassword });
-  await model.addUserToCompanyStaff(user.id, companyId);
-  const userWithoutPassword = _.omit(user, 'password');
-  logger.info('User created as company staff successfully', { userWithoutPassword });
   return userWithoutPassword;
 };
 

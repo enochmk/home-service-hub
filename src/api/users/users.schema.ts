@@ -24,7 +24,6 @@ export const createUserSchema = z.object({
       .min(MIN_PASSWORD_LENGTH, 'Password is too short')
       .max(MAX_PASSWORD_LENGTH, 'Password is too long'),
     shouldUpdatePassword: z.boolean().default(false).optional(),
-    companyId: z.string().uuid().optional(),
   }),
 });
 
@@ -49,7 +48,6 @@ export const updateUserSchema = z.object({
         .max(100, 'Last name is too long')
         .optional(),
       roleId: z.string().uuid().optional(),
-      companyId: z.string().uuid().optional(),
       email: z.string().email().optional(),
       active: z.boolean().optional(),
       shouldUpdatePassword: z.boolean().default(false).optional(),

@@ -35,7 +35,7 @@ export async function checkEmailExists(req: Request, res: Response, next: NextFu
 
 export async function isUserPartOfAdminCompany(req: Request, res: Response, next: NextFunction) {
   if (res.locals.user!.roleName !== ROLES.COMPANY_ADMIN) return next();
-  const companyId = res.locals.company.id;
+  const companyId = res.locals.company!.id;
   if (!companyId) return next();
   const targetUserId = req.params.userId;
   logger.verbose(`Checking user belongs to admin's company...`, { targetUserId, companyId });
@@ -49,7 +49,6 @@ export async function isUserPartOfAdminCompany(req: Request, res: Response, next
 export const authorizeCreateUser: CreateUserRequest = async (req, res, next) => {
   const roleName = res.locals.user!.roleName;
   if (roleName === ROLES.COMPANY_ADMIN) {
-    const companyId = res.locals.company.id;
     const roleId = req.body.roleId;
     const role = await model.findRoleById(roleId);
     if (!role) {
@@ -58,7 +57,6 @@ export const authorizeCreateUser: CreateUserRequest = async (req, res, next) => 
     if (role.name === ROLES.TECH_ADMIN) {
       return next(new createHttpError.BadRequest('You cannot create a tech admin'));
     }
-    req.body.companyId = companyId;
     return next();
   }
 

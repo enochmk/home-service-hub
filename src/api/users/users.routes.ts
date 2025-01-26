@@ -10,10 +10,8 @@ import { PERMISSIONS } from '../../utils/constants';
 
 const router = Router();
 
-// get all users
 router.get('/', checkPermission([PERMISSIONS['users.list']]), controller.getUsers);
 
-// create a new user
 router.post(
   '/',
   schemaValidation(schema.createUserSchema),
@@ -23,10 +21,8 @@ router.post(
   controller.createUser,
 );
 
-// get current user permissions
 router.get('/me/permissions', controller.getUserPermissionsByRoleId);
 
-// get specified user :userId
 router.get(
   '/:userId',
   schemaValidation(schema.getUserSchema),
@@ -36,7 +32,6 @@ router.get(
   controller.getUserById,
 );
 
-// update specified user :userId details <optional>
 router.put(
   '/:userId',
   schemaValidation(schema.updateUserSchema),
@@ -47,7 +42,6 @@ router.put(
   controller.updateUserById,
 );
 
-// delete specified user :userId
 router.delete(
   '/:userId',
   schemaValidation(schema.getUserSchema),
@@ -57,7 +51,6 @@ router.delete(
   controller.deleteUserById,
 );
 
-// update specified user :userId password
 router.put(
   '/:userId/password',
   schemaValidation(schema.updateUserPasswordSchema),

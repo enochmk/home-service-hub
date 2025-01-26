@@ -10,6 +10,17 @@ import {
 import { UserQueryOptions } from './users.interface';
 import { ROLES } from '../../utils/constants';
 
+export const createUser: CreateUserRequest = async (req, res) => {
+  if (res.locals?.company?.id) {
+    const companyId = res.locals.company.id;
+    const user = await service.createCompanyUser(req.body, companyId);
+    res.status(201).json(user);
+    return;
+  }
+  const user = await service.createUser(req.body);
+  res.status(201).json(user);
+};
+
 export const getUsers: RequestHandler = async (req, res) => {
   const page = parseInt((req.query?.page as string) || '1', 10);
   const limit = parseInt((req.query?.limit as string) || '10', 10);
@@ -54,11 +65,6 @@ export const getUsers: RequestHandler = async (req, res) => {
 export const getUserById: GetUserRequest = async (req, res) => {
   const user = await service.getUser(req.params.userId);
   res.status(200).json(user);
-};
-
-export const createUser: CreateUserRequest = async (req, res) => {
-  const user = await service.createUser(req.body);
-  res.status(201).json(user);
 };
 
 export const updateUserById: UpdateUserRequest = async (req, res) => {
