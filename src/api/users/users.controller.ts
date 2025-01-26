@@ -44,7 +44,7 @@ export const getUsers: RequestHandler = async (req, res) => {
   // add company filter for company admin to return users of the same company
   const roleName = res.locals.user!.roleName;
   if (roleName === ROLES.COMPANY_ADMIN) {
-    const companyId = res.locals?.company?.id;
+    const companyId = res.locals.company!.id;
     queryOptions.filters = {
       ...queryOptions.filters,
       OR: [
@@ -58,7 +58,19 @@ export const getUsers: RequestHandler = async (req, res) => {
     };
   }
 
-  const response = await service.getUsers(queryOptions);
+  const { data, totalCount } = await service.getUsers(queryOptions);
+  const totalPages = Math.ceil(totalCount / limit);
+  const nextPage = page < totalPages ? page + 1 : null;
+  const prevPage = page > 1 ? page - 1 : null;
+  const response = {
+    totalCount,
+    limit,
+    page,
+    totalPages,
+    nextPage,
+    prevPage,
+    data,
+  };
   res.status(200).json(response);
 };
 

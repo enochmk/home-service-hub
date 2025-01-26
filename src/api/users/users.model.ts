@@ -153,3 +153,10 @@ export const findRoleById = async (roleId: string) => {
     },
   });
 };
+
+export const getUserCount = async (query?: UserQueryOptions) => {
+  const { filters } = query || {};
+  return prisma.users.count({
+    where: filters,
+  });
+};

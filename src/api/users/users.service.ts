@@ -30,8 +30,9 @@ export const createCompanyUser = async (userData: CreateUserInput, companyId: st
 export const getUsers = async (queryOptions?: UserQueryOptions) => {
   logger.verbose('Fetching users...');
   const users = await model.findUsers(queryOptions);
+  const totalCount = await model.getUserCount(queryOptions);
   logger.info('Users fetched successfully', users);
-  return { data: users };
+  return { data: users, totalCount };
 };
 
 export const getUser = async (userId: string) => {
