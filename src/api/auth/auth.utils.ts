@@ -1,5 +1,6 @@
 import jwt from 'jsonwebtoken';
 import crypto from 'crypto';
+import _ from 'lodash';
 import { IUserSessionData } from './auth.interface';
 
 const JWT_SECRET = process.env['JWT_SECRET'] || 'secret';
@@ -14,6 +15,9 @@ export const generateToken = (payload: IUserSessionData): string => {
 export const decodeToken = (token: string): IUserSessionData => {
   try {
     const decoded = jwt.verify(token, JWT_SECRET);
+    _.unset(decoded, 'iat');
+    _.unset(decoded, 'exp');
+    _.unset(decoded, 'nbf');
     return decoded as IUserSessionData;
   } catch (error: any) {
     let { message } = error;

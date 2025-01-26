@@ -1,6 +1,5 @@
 import { NextFunction, Request, Response } from 'express';
 import createHttpError from 'http-errors';
-import _ from 'lodash';
 import { decodeToken } from './auth.utils';
 import * as model from './auth.model';
 import { getLogger } from '../../utils/logger';
@@ -19,9 +18,7 @@ export async function verifyJWT(req: Request, res: Response, next: NextFunction)
   try {
     const token = authorization.split(' ')[1];
     const decoded = decodeToken(token);
-    _.unset(decoded, 'iat');
-    _.unset(decoded, 'exp');
-    _.unset(decoded, 'nbf');
+
     res.locals.user = decoded;
     return next();
   } catch (error: any) {
