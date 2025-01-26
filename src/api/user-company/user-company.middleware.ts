@@ -1,6 +1,6 @@
 import { NextFunction, Request, Response } from 'express';
 import * as userModel from '../users/users.model';
-import * as model from './company-admins.model';
+import * as model from './user-company.model';
 import createHttpError from 'http-errors';
 import { ROLES } from '../../utils/constants';
 import { getLogger } from '../../utils/logger';

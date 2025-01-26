@@ -7,7 +7,7 @@ import roleRoutes from './roles/roles.routes';
 // import companyAdminsRoutes from './company-admins/company-admins.routes';
 import companyRoutes from './companies/companies.routes';
 import * as authMiddleware from './auth/auth.middleware';
-import * as companyAdminMiddleware from './company-admins/company-admins.middleware';
+import * as companyAdminMiddleware from './user-company/user-company.middleware';
 
 const router = Router();
 

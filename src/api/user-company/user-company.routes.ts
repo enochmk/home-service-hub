@@ -1,8 +1,8 @@
 import { Router } from 'express';
-import * as controller from './company-admins.controller';
-import * as middleware from './company-admins.middleware';
+import * as controller from './user-company.controller';
+import * as middleware from './user-company.middleware';
 import schemaValidation from '../../middlewares/schema-validation.middleware';
-import { addCompanyAdminSchema, removeCompanyAdminSchema } from './company-admins.schema';
+import { addCompanyAdminSchema, removeCompanyAdminSchema } from './user-company.schema';
 import * as companyMiddleware from '../companies/companies.middleware';
 import * as userMiddleware from '../users/users.midddleware';
 

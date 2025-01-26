@@ -1,5 +1,5 @@
 import prisma from '../../db/prisma.db';
-import { userCompanySelect } from './company-admins.interface';
+import { userCompanySelect } from './user-company.interface';
 
 export const addCompanyAdmin = async (companyId: string, userId: string) => {
   return prisma.userCompany.create({

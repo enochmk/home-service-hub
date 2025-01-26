@@ -1,5 +1,5 @@
 import { getLogger } from '../../utils/logger';
-import * as model from './company-admins.model';
+import * as model from './user-company.model';
 
 const logger = getLogger('CompanyAdminsService');
 

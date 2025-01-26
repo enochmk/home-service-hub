@@ -4,7 +4,7 @@ import * as schema from './auth.schema';
 import * as controller from './auth.controller';
 import * as middleware from './auth.middleware';
 import schemaValidation from '../../middlewares/schema-validation.middleware';
-import * as companyAdminMiddleware from '../company-admins/company-admins.middleware';
+import * as companyAdminMiddleware from '../user-company/user-company.middleware';
 
 const router = Router();
 

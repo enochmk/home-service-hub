@@ -1,6 +1,6 @@
 import { RequestHandler } from 'express';
-import * as service from './company-admins.service';
-import { AddCompanyAdminRequest, RemoveCompanyAdminRequest } from './company-admins.schema';
+import * as service from './user-company.service';
+import { AddCompanyAdminRequest, RemoveCompanyAdminRequest } from './user-company.schema';
 
 export const addCompanyAdmin: AddCompanyAdminRequest = async (req, res) => {
   const response = await service.addCompanyAdmin(req.params.companyId, req.body.userId);
