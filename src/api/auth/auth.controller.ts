@@ -20,15 +20,13 @@ export const signUp: SignUpRequest = async (req, res) => {
 };
 
 export const signOut: RequestHandler = async (req, res) => {
-  const userId = res.locals.user.id;
+  const userId = res.locals.user!.id;
   await service.signOut(userId);
   res.status(204).send();
 };
 
 export const forgotPassword: ForgotPasswordRequest = async (req, res) => {
   const response = await service.forgotPassword(req.body.email);
-  // TODO: revert back to this code
-  // res.status(204).send();
   res.status(200).json(response);
 };
 
@@ -39,11 +37,10 @@ export const resetPassword: ResetPasswordRequest = async (req, res) => {
 };
 
 export const changeOwnPassword: ChangeOwnPasswordRequest = async (req, res) => {
-  await service.changePassword(res.locals.user.id, req.body.oldPassword, req.body.newPassword);
+  await service.changePassword(res.locals.user!.id, req.body.oldPassword, req.body.newPassword);
   res.status(204).send();
 };
 
 export const getProfile: RequestHandler = async (req, res) => {
-  // const response = await service.getUserProfile(res.locals.user.id);
   res.status(200).json(res.locals.user);
 };

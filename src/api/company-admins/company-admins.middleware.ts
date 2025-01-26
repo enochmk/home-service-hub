@@ -52,7 +52,7 @@ export const loadCompanies = async (req: Request, res: Response, next: NextFunct
   if (roleName !== ROLES.COMPANY_ADMIN) return next();
   logger.verbose('Loading companies for company admin', { userId });
   const companyAdmin = await model.findCompanyAdminByUserId(userId);
-  res.locals.user.company = companyAdmin?.company;
+  res.locals.user!.company = companyAdmin?.company;
   res.locals.company = companyAdmin?.company;
   return next();
 };
