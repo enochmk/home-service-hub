@@ -28,19 +28,20 @@ router.get(
   '/:userId',
   schemaValidation(schema.getUserSchema),
   checkPermission([PERMISSIONS['users.view']]),
-  middleware.checkUserExists,
-  middleware.isUserPartOfAdminCompany,
+  middleware.checkUserExistsByParam,
+  middleware.isPartOfAdminCompany,
   controller.getUserById,
 );
 
-// handler to update a user by :userId
+// handler to update a user details by :userId
 router.put(
   '/:userId',
   schemaValidation(schema.updateUserSchema),
   checkPermission([PERMISSIONS['users.edit']]),
-  middleware.checkUserExists,
-  middleware.isUserPartOfAdminCompany,
+  middleware.checkUserExistsByParam,
+  middleware.isPartOfAdminCompany,
   roleMiddleware.verifyRoleExists,
+  middleware.checkEmailAvailability,
   controller.updateUserById,
 );
 
@@ -49,8 +50,8 @@ router.delete(
   '/:userId',
   schemaValidation(schema.getUserSchema),
   checkPermission([PERMISSIONS['users.delete']]),
-  middleware.checkUserExists,
-  middleware.isUserPartOfAdminCompany,
+  middleware.checkUserExistsByParam,
+  middleware.isPartOfAdminCompany,
   controller.deleteUserById,
 );
 
@@ -59,8 +60,8 @@ router.put(
   '/:userId/password',
   schemaValidation(schema.updateUserPasswordSchema),
   checkPermission([PERMISSIONS['users.edit']]),
-  middleware.checkUserExists,
-  middleware.isUserPartOfAdminCompany,
+  middleware.checkUserExistsByParam,
+  middleware.isPartOfAdminCompany,
   roleMiddleware.verifyRoleExists,
   controller.updateUserPasswordByUserId,
 );

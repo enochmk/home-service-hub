@@ -15,18 +15,22 @@ router.get('/users', controller.getCompanyUsers);
 router.post(
   '/users',
   schemaValidation(addCompanyUserSchema),
-  userMiddleware.checkUserExists,
+  userMiddleware.checkUserExistByParamsUserId,
   middleware.isEligibleForCompanyJoin,
   middleware.checkIfUserIsNotAdded,
   controller.addUserToCompany,
 );
 
-router.get('/users/:userId', userMiddleware.checkUserExists, controller.getCompanyUserByUserId);
+router.get(
+  '/users/:userId',
+  userMiddleware.checkUserExistByParamsUserId,
+  controller.getCompanyUserByUserId,
+);
 
 router.delete(
   '/users/:userId',
   schemaValidation(removeCompanyUserSchema),
-  userMiddleware.checkUserExists,
+  userMiddleware.checkUserExistByParamsUserId,
   middleware.checkIfUserIsAdded,
   controller.removeUserFromCompany,
 );
