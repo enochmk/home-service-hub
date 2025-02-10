@@ -36,6 +36,7 @@ export const createUser: CreateUserRequest = async (req, res) => {
 };
 
 export const getUsers: RequestHandler = async (req, res) => {
+  logger.verbose('Fetching users...', req.query);
   const page = parseInt((req.query?.page as string) || '1', 10);
   const limit = parseInt((req.query?.limit as string) || '10', 10);
   const offet = (page - 1) * limit;
@@ -67,11 +68,13 @@ export const getUsers: RequestHandler = async (req, res) => {
   const data = await model.findUsers(queryOptions);
   const totalCount = await model.getUserCount(queryOptions);
   const totalPages = Math.ceil(Number(totalCount) / limit);
-
-  res.status(200).json({ pagination: { page, limit, totalPages, totalCount }, data });
+  const response = { pagination: { page, limit, totalPages, totalCount }, data };
+  logger.info('Users fetched successfully', response);
+  res.status(200).json(response);
 };
 
 export const getUserById: GetUserRequest = async (req, res) => {
+  logger.verbose('Fetching user...', req.params);
   const userId = req.params.id as string;
   let where: Prisma.usersWhereInput = { id: userId };
 
@@ -93,7 +96,7 @@ export const getUserById: GetUserRequest = async (req, res) => {
 };
 
 export const updateUserById: UpdateUserRequest = async (req, res) => {
-  const user = await service.updateUser(req.params.userId, req.body);
+  const user = await model.updateUser(req.params.userId, req.body);
   res.status(200).json(user);
 };
 

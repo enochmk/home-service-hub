@@ -8,21 +8,6 @@ import { UserQueryOptions } from './users.interface';
 
 const logger = getLogger('UsersService');
 
-export const getUsers = async (queryOptions?: UserQueryOptions) => {
-  logger.verbose('Fetching users...');
-  const users = await model.findUsers(queryOptions);
-  logger.info('Users fetched successfully', users);
-  return users;
-};
-
-export const getUser = async (userId: string) => {
-  logger.verbose('Fetching user...', { userId });
-  const user = await model.findUserById(userId);
-  const userWithoutPassword = _.omit(user, 'password');
-  logger.info('User fetched successfully', { userWithoutPassword });
-  return userWithoutPassword;
-};
-
 export const updateUser = async (userId: string, data: UpdateUserInput) => {
   const user = await model.updateUser(userId, data);
   const userWithoutPassword = _.omit(user, 'password');

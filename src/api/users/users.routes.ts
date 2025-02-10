@@ -10,8 +10,7 @@ import { PERMISSIONS } from '../../utils/constants';
 
 const router = Router();
 
-router.get('/', checkPermission([PERMISSIONS['users.list']]), controller.getUsers);
-
+// handler to create a new user
 router.post(
   '/',
   schemaValidation(schema.createUserSchema),
@@ -21,8 +20,10 @@ router.post(
   controller.createUser,
 );
 
-router.get('/me/permissions', controller.getUserPermissionsByRoleId);
+// handler to get all users
+router.get('/', checkPermission([PERMISSIONS['users.list']]), controller.getUsers);
 
+// handler to get a user by :userId
 router.get(
   '/:userId',
   schemaValidation(schema.getUserSchema),
@@ -32,6 +33,7 @@ router.get(
   controller.getUserById,
 );
 
+// handler to update a user by :userId
 router.put(
   '/:userId',
   schemaValidation(schema.updateUserSchema),
@@ -42,6 +44,7 @@ router.put(
   controller.updateUserById,
 );
 
+// handler to delete a user by :userId
 router.delete(
   '/:userId',
   schemaValidation(schema.getUserSchema),
@@ -51,6 +54,7 @@ router.delete(
   controller.deleteUserById,
 );
 
+// handler to update a user password by :userId
 router.put(
   '/:userId/password',
   schemaValidation(schema.updateUserPasswordSchema),
@@ -60,5 +64,8 @@ router.put(
   roleMiddleware.verifyRoleExists,
   controller.updateUserPasswordByUserId,
 );
+
+// handler to get all permissions of current user
+router.get('/me/permissions', controller.getUserPermissionsByRoleId);
 
 export default router;
