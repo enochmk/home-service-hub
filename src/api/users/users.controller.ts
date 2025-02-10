@@ -11,7 +11,6 @@ import {
 import { UserQueryOptions } from './users.interface';
 import { ROLES } from '../../utils/constants';
 import { Prisma } from '@prisma/client';
-import prisma from '../../db/prisma.db';
 
 export const createUser: CreateUserRequest = async (req, res) => {
   if (res.locals?.company?.id) {
