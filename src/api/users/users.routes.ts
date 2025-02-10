@@ -63,7 +63,7 @@ router.put(
   middleware.checkUserExistsByParam,
   middleware.isPartOfAdminCompany,
   roleMiddleware.verifyRoleExists,
-  controller.updateUserPasswordByUserId,
+  controller.changeUserPassword,
 );
 
 export default router;

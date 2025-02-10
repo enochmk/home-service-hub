@@ -68,6 +68,7 @@ export const updateUserPasswordSchema = z.object({
       .string()
       .min(MIN_PASSWORD_LENGTH, 'Password is too short')
       .max(MAX_PASSWORD_LENGTH, 'Password is too long'),
+    shouldUpdatePassword: z.boolean().default(false).optional(),
   }),
 });
 

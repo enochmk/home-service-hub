@@ -103,18 +103,13 @@ export const deleteUserById: GetUserRequest = async (req, res) => {
   res.status(204).send();
 };
 
-export const getProfile: RequestHandler = async (req, res) => {
-  const user = await service.getProfile(res.locals.user!.id);
-  res.status(200).json(user);
-};
-
-export const changeOwnPassword: ChangeOwnPasswordRequest = async (req, res) => {
-  const userId = res.locals.user!.id;
-  await service.changeOwnPassword(userId, req.body.oldPassword, req.body.newPassword);
-  res.status(204).send();
-};
-
-export const updateUserPasswordByUserId: UpdateUserPasswordRequest = async (req, res) => {
-  await service.updateUserPassword(req.params.userId, req.body.password);
+export const changeUserPassword: UpdateUserPasswordRequest = async (req, res) => {
+  const userId = req.params.userId;
+  const password = req.body.password;
+  const shouldUpdatePassword = req.body.shouldUpdatePassword || false;
+  logger.verbose('Updating user password...', { userId, shouldUpdatePassword });
+  const hashPassword = bcrypt.hashSync(password, 10);
+  await model.updatePassword(userId, hashPassword, shouldUpdatePassword);
+  logger.info(`User: ${userId} password updated`);
   res.status(204).send();
 };
