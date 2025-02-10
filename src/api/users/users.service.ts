@@ -32,13 +32,6 @@ export const getProfile = async (currentLoggedInUserId: string) => {
   return userWithoutPassword;
 };
 
-export const getUserPermissionsByRoleId = async (roleId: string) => {
-  logger.verbose('Fetching user permissions', { roleId });
-  const response = await model.getPermissionsByRoleId(roleId);
-  logger.info('User permissions fetched successfully', { response });
-  return response;
-};
-
 export const updateUserPassword = async (userId: string, password: string) => {
   logger.verbose('Updating user password...', { userId });
   const user = await model.findUserById(userId);

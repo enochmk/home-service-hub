@@ -7,6 +7,7 @@ import {
   SignUpRequest,
 } from './auth.schema';
 import * as service from './auth.service';
+import * as model from './auth.model';
 
 export const signIn: SignInRequest = async (req, res) => {
   const { email, password } = req.body;
@@ -43,4 +44,9 @@ export const changeOwnPassword: ChangeOwnPasswordRequest = async (req, res) => {
 
 export const getProfile: RequestHandler = async (req, res) => {
   res.status(200).json(res.locals.user);
+};
+
+export const getPermissions: RequestHandler = async (req, res) => {
+  const permissions = await model.getPermissionsByRoleId(res.locals.user!.roleId);
+  res.status(200).json({ permissions });
 };

@@ -49,4 +49,12 @@ router.get(
   controller.getProfile,
 );
 
+// get current user permissions
+router.get(
+  '/permissions',
+  middleware.verifyJWT,
+  middleware.validateCurrentUser,
+  controller.getPermissions,
+);
+
 export default router;

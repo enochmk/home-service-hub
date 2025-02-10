@@ -108,11 +108,6 @@ export const getProfile: RequestHandler = async (req, res) => {
   res.status(200).json(user);
 };
 
-export const getUserPermissionsByRoleId: RequestHandler = async (req, res) => {
-  const permissions = await service.getUserPermissionsByRoleId(res.locals.user!.roleId);
-  res.status(200).json({ permissions });
-};
-
 export const changeOwnPassword: ChangeOwnPasswordRequest = async (req, res) => {
   const userId = res.locals.user!.id;
   await service.changeOwnPassword(userId, req.body.oldPassword, req.body.newPassword);

@@ -66,7 +66,4 @@ router.put(
   controller.updateUserPasswordByUserId,
 );
 
-// handler to get all permissions of current user
-router.get('/me/permissions', controller.getUserPermissionsByRoleId);
-
 export default router;
