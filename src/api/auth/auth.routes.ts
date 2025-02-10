@@ -31,6 +31,7 @@ router.put(
   controller.resetPassword,
 );
 
+// user change own password
 router.put(
   '/change-password',
   schemaValidation(schema.changeOwnPasswordSchema),
