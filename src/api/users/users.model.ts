@@ -167,3 +167,19 @@ export const getUserCount = async (query?: UserQueryOptions) => {
     where: filters,
   });
 };
+
+export const addUserToCompany = async (userId: string, companyId: string) => {
+  return prisma.users.update({
+    where: {
+      id: userId,
+    },
+    data: {
+      userCompany: {
+        create: {
+          companyId: companyId,
+        },
+      },
+    },
+    select: usersInclude,
+  });
+};

@@ -11,15 +11,27 @@ import {
 import { UserQueryOptions } from './users.interface';
 import { ROLES } from '../../utils/constants';
 import { Prisma } from '@prisma/client';
+import { getLogger } from '../../utils/logger';
+import _ from 'lodash';
+import bcrypt from 'bcrypt';
+import createHttpError from 'http-errors';
+
+const logger = getLogger('UsersController');
 
 export const createUser: CreateUserRequest = async (req, res) => {
+  logger.verbose('Creating user...', req.body);
+  const hashPassword = bcrypt.hashSync(req.body.password, 10);
+  const user = await model.createUser({ ...req.body, password: hashPassword });
+  logger.info('User created successfully', user);
+
+  // add user to company if company is present in the request
   if (res.locals?.company?.id) {
     const companyId = res.locals.company.id;
-    const user = await service.createCompanyUser(req.body, companyId);
-    res.status(201).json(user);
-    return;
+    const userId = user.id;
+    logger.info('Adding user to company...', { userId, companyId });
+    await model.addUserToCompany(userId, companyId);
   }
-  const user = await service.createUser(req.body);
+
   res.status(201).json(user);
 };
 

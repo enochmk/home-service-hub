@@ -8,25 +8,6 @@ import { UserQueryOptions } from './users.interface';
 
 const logger = getLogger('UsersService');
 
-export const createUser = async (data: CreateUserInput) => {
-  logger.verbose('Creating user...', data);
-  const hashPassword = bcrypt.hashSync(data.password, 10);
-  const user = await model.createUser({ ...data, password: hashPassword });
-  const userWithoutPassword = _.omit(user, 'password');
-  logger.info('User created successfully', { userWithoutPassword });
-  return userWithoutPassword;
-};
-
-export const createCompanyUser = async (userData: CreateUserInput, companyId: string) => {
-  logger.verbose('Creating company user...', userData);
-  const hashPassword = bcrypt.hashSync(userData.password, 10);
-  const data = { ...userData, password: hashPassword };
-  const user = await model.createUserWithCompany(data, companyId);
-  const userWithoutPassword = _.omit(user, 'password');
-  logger.info('Company User created successfully', { userWithoutPassword });
-  return userWithoutPassword;
-};
-
 export const getUsers = async (queryOptions?: UserQueryOptions) => {
   logger.verbose('Fetching users...');
   const users = await model.findUsers(queryOptions);
