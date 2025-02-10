@@ -3,7 +3,7 @@ import createHttpError from 'http-errors';
 import * as model from './users.model';
 import { getLogger } from '../../utils/logger';
 import { ROLES } from '../../utils/constants';
-import { CreateUserRequest } from './users.schema';
+import { CreateUserInput } from './users.schema';
 
 const logger = getLogger('UsersMiddleware');
 
@@ -54,8 +54,11 @@ export async function isUserPartOfAdminCompany(req: Request, res: Response, next
   return next();
 }
 
-export const authorizeCreateUser: CreateUserRequest = async (req, res, next) => {
-  const roleName = res.locals.user?.roleName;
+export async function authorizeCreateUser(
+  req: Request<any, any, CreateUserInput>,
+  res: Response,
+  next: NextFunction,
+) {
   // Check if user is a company admin
   if (res.locals.user?.roleName === ROLES.COMPANY_ADMIN) {
     const roleId = req.body.roleId;
@@ -66,15 +69,15 @@ export const authorizeCreateUser: CreateUserRequest = async (req, res, next) => 
     }
     // Check if role is a tech admin
     if (role.name === ROLES.TECH_ADMIN) {
-      return next(new createHttpError.BadRequest('You cannot create a tech admin'));
+      return next(new createHttpError.Forbidden('You cannot create a tech admin'));
     }
     return next();
   }
 
   // Check if user is a tech admin
-  if (roleName !== ROLES.TECH_ADMIN) {
+  if (res.locals.user?.roleName !== ROLES.TECH_ADMIN) {
     return next(new createHttpError.Forbidden('You are not authorized to create a user'));
   }
 
   return next();
-};
+}

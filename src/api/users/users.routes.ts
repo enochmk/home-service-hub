@@ -21,7 +21,7 @@ router.post(
 );
 
 // handler to get all users
-router.get('/', checkPermission([PERMISSIONS['users.list']]), controller.getUsers);
+router.get('/', checkPermission([PERMISSIONS['users.list']]), controller.getAllUsers);
 
 // handler to get a user by :userId
 router.get(

@@ -1,3 +1,4 @@
+import bcrypt from 'bcrypt';
 import { RequestHandler } from 'express';
 import * as service from './users.service';
 import * as model from './users.model';
@@ -12,9 +13,6 @@ import { UserQueryOptions } from './users.interface';
 import { ROLES } from '../../utils/constants';
 import { Prisma } from '@prisma/client';
 import { getLogger } from '../../utils/logger';
-import _ from 'lodash';
-import bcrypt from 'bcrypt';
-import createHttpError from 'http-errors';
 
 const logger = getLogger('UsersController');
 
@@ -35,8 +33,8 @@ export const createUser: CreateUserRequest = async (req, res) => {
   res.status(201).json(user);
 };
 
-export const getUsers: RequestHandler = async (req, res) => {
-  logger.verbose('Fetching users...', req.query);
+export const getAllUsers: RequestHandler = async (req, res) => {
+  logger.verbose('Fetching all users...', req.query);
   const page = parseInt((req.query?.page as string) || '1', 10);
   const limit = parseInt((req.query?.limit as string) || '10', 10);
   const offet = (page - 1) * limit;
