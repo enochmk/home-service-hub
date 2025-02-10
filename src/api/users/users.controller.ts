@@ -1,9 +1,7 @@
 import bcrypt from 'bcrypt';
 import { RequestHandler } from 'express';
-import * as service from './users.service';
 import * as model from './users.model';
 import {
-  ChangeOwnPasswordRequest,
   CreateUserRequest,
   GetUserRequest,
   UpdateUserPasswordRequest,
