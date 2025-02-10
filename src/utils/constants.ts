@@ -24,6 +24,11 @@ export const PERMISSIONS = {
   'company.update': 'company.update',
   'company.delete': 'company.delete',
   'company.view': 'company.view',
+  'company.create-user': 'company.create-user',
+  'company.update-user': 'company.update-user',
+  'company.delete-user': 'company.delete-user',
+  'company.view-user': 'company.view-user',
+  'company.view-users': 'company.view-users',
 } as const;
 
 export const STATUS = {
