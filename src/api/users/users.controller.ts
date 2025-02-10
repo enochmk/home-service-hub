@@ -97,7 +97,7 @@ export const updateUserById: UpdateUserRequest = async (req, res) => {
 };
 
 export const deleteUserById: GetUserRequest = async (req, res) => {
-  await service.deleteUser(req.params.userId);
+  await model.deleteUser(req.params.userId);
   res.status(204).send();
 };
 
