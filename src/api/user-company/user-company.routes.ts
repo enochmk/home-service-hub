@@ -12,22 +12,25 @@ const router = Router({ mergeParams: true });
 
 router.use(companyMiddleware.checkCompanyExists);
 
+// Add user to company
+router.post(
+  '/users',
+  schemaValidation(addCompanyUserSchema),
+  checkPermission([PERMISSIONS['company.create-users']]),
+  userMiddleware.checkUserExists,
+  middleware.isEligibleForCompanyJoin,
+  middleware.checkIfUserIsNotAdded,
+  controller.addUserToCompany,
+);
+
+// Get company users
 router.get(
   '/users',
   checkPermission([PERMISSIONS['company.view-users']]),
   controller.getCompanyUsers,
 );
 
-router.post(
-  '/users',
-  schemaValidation(addCompanyUserSchema),
-  checkPermission([PERMISSIONS['company.create-users']]),
-  userMiddleware.checkUserExistsByParam,
-  middleware.isEligibleForCompanyJoin,
-  middleware.checkIfUserIsNotAdded,
-  controller.addUserToCompany,
-);
-
+// Get company user by userId
 router.get(
   '/users/:userId',
   checkPermission([PERMISSIONS['company.view-user']]),
@@ -35,6 +38,7 @@ router.get(
   controller.getCompanyUserByUserId,
 );
 
+// Remove user from company
 router.delete(
   '/users/:userId',
   schemaValidation(removeCompanyUserSchema),

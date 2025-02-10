@@ -24,6 +24,7 @@ export const checkCompanyNameAvailable: RequestHandler = async (req, res, next) 
   const { name } = req.body;
   logger.verbose('Checking if company name available ... ', { name });
   const company = await model.findCompanyByName(name);
+  // ! If company with the same name already exists, return 409 Conflict
   if (company) {
     return next(new createHttpError.Conflict(`Company with name ${name} already exists`));
   }
