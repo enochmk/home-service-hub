@@ -1,5 +1,6 @@
 import { RequestHandler } from 'express';
 import * as service from './users.service';
+import * as model from './users.model';
 import {
   ChangeOwnPasswordRequest,
   CreateUserRequest,
@@ -9,6 +10,8 @@ import {
 } from './users.schema';
 import { UserQueryOptions } from './users.interface';
 import { ROLES } from '../../utils/constants';
+import { Prisma } from '@prisma/client';
+import prisma from '../../db/prisma.db';
 
 export const createUser: CreateUserRequest = async (req, res) => {
   if (res.locals?.company?.id) {
@@ -25,57 +28,56 @@ export const getUsers: RequestHandler = async (req, res) => {
   const page = parseInt((req.query?.page as string) || '1', 10);
   const limit = parseInt((req.query?.limit as string) || '10', 10);
   const offet = (page - 1) * limit;
-  const sort = req.query?.sort === 'asc' || req.query?.sort === 'desc' ? req.query.sort : 'asc';
-  const queryOptions: UserQueryOptions = {
-    limit: limit,
-    sort: sort,
-    offset: offet,
-    filters: req.query.q
-      ? {
-          OR: [
-            { firstName: { contains: req.query.q as string, mode: 'insensitive' } },
-            { lastName: { contains: req.query.q as string, mode: 'insensitive' } },
-            { email: { contains: req.query.q as string, mode: 'insensitive' } },
-          ],
-        }
-      : undefined,
-  };
+  const sort = req.query.sort as 'asc' | 'desc' | undefined;
+
+  let where: Prisma.usersWhereInput | undefined = req.query.q
+    ? {
+        OR: [
+          { firstName: { contains: req.query.q as string, mode: 'insensitive' } },
+          { lastName: { contains: req.query.q as string, mode: 'insensitive' } },
+          { email: { contains: req.query.q as string, mode: 'insensitive' } },
+        ],
+      }
+    : {};
 
   // add company filter for company admin to return users of the same company
-  const roleName = res.locals.user!.roleName;
-  if (roleName === ROLES.COMPANY_ADMIN) {
-    const companyId = res.locals.company!.id;
-    queryOptions.filters = {
-      ...queryOptions.filters,
-      OR: [
-        ...(queryOptions.filters?.OR || []),
-        {
-          userCompany: {
-            companyId: companyId,
-          },
-        },
-      ],
-    };
+  if (res.locals.user?.roleName === ROLES.COMPANY_ADMIN) {
+    const companyId = res.locals.company?.id;
+    where = { ...where, userCompany: { companyId: companyId } };
   }
 
-  const { data, totalCount } = await service.getUsers(queryOptions);
-  const totalPages = Math.ceil(totalCount / limit);
-  const nextPage = page < totalPages ? page + 1 : null;
-  const prevPage = page > 1 ? page - 1 : null;
-  const response = {
-    totalCount,
-    limit,
-    page,
-    totalPages,
-    nextPage,
-    prevPage,
-    data,
+  const queryOptions: UserQueryOptions = {
+    limit: limit,
+    sort: sort || 'asc',
+    offset: offet,
+    filters: where,
   };
-  res.status(200).json(response);
+
+  const data = await model.findUsers(queryOptions);
+  const totalCount = await model.getUserCount(queryOptions);
+  const totalPages = Math.ceil(Number(totalCount) / limit);
+
+  res.status(200).json({ pagination: { page, limit, totalPages, totalCount }, data });
 };
 
 export const getUserById: GetUserRequest = async (req, res) => {
-  const user = await service.getUser(req.params.userId);
+  const userId = req.params.id as string;
+  let where: Prisma.usersWhereInput = { id: userId };
+
+  // add company filter for company admin to return users of the same company
+  if (res.locals.user?.roleName === ROLES.COMPANY_ADMIN) {
+    const companyId = res.locals.company?.id;
+    where = { ...where, userCompany: { companyId: companyId } };
+  }
+
+  const user = await model.findUser({ filters: where });
+
+  // check if user is not found
+  if (!user) {
+    res.status(404).json({ message: 'User not found' });
+    return;
+  }
+
   res.status(200).json(user);
 };
 

@@ -122,6 +122,13 @@ export const findUsers = async (query?: UserQueryOptions) => {
   });
 };
 
+export const findUser = async (query: UserQueryOptions) => {
+  return prisma.users.findFirst({
+    where: query.filters,
+    select: usersInclude,
+  });
+};
+
 export const addUserToCompanyStaff = async (userId: string, companyId: string) => {
   return prisma.users.update({
     where: {
