@@ -1,5 +1,4 @@
 import { RequestHandler } from 'express';
-import * as service from './companies.service';
 import * as model from './companies.model';
 import createHttpError from 'http-errors';
 import { getLogger } from '../../utils/logger';
@@ -12,7 +11,7 @@ export const checkCompanyExists: RequestHandler = async (req, res, next) => {
   if (companyIds.length === 0) return next();
   for (const companyId of companyIds) {
     logger.verbose(`Checking company with id :${companyId}... `);
-    const company = await service.getCompanyById(companyId);
+    const company = await model.findCompanyById(companyId);
     if (!company) {
       return next(new createHttpError.NotFound(`Company ${companyId} not found`));
     }
