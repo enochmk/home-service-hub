@@ -80,12 +80,14 @@ export const signUp: SignUpRequest = async (req, res) => {
 };
 
 export const signOut: RequestHandler = async (req, res) => {
+  logger.verbose('Signing out user');
   res.status(204).send();
 };
 
 export const forgotPassword: ForgotPasswordRequest = async (req, res) => {
   const { email } = req.body;
   const user = await model.findUserByEmail(email);
+  // ! Check if the user exists
   if (!user) {
     throw new createHttpError.NotFound('User not found');
   }
@@ -142,7 +144,7 @@ export const changeOwnPassword: ChangeOwnPasswordRequest = async (req, res) => {
     throw new createHttpError.NotFound('User not found');
   }
 
-  logger.verbose('Comparing old password');
+  logger.verbose('Comparing old password...');
   const isPasswordMatch = bcrypt.compareSync(oldPassword, user.password);
 
   // ! Check if the old password is correct
@@ -152,7 +154,7 @@ export const changeOwnPassword: ChangeOwnPasswordRequest = async (req, res) => {
     );
   }
 
-  logger.verbose('Hashing new password');
+  logger.verbose('Hashing new password...');
   const password = bcrypt.hashSync(newPassword, 10);
   await model.changePassword(userId, password);
   logger.info('Password changed successfully');
