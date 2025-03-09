@@ -8,13 +8,13 @@ datasource db {
 }
 
 model users {
-  id                   String           @id @default(uuid())
+  id                   Int              @id @default(autoincrement())
   firstName            String
   lastName             String
   email                String           @unique
   phoneNumber          String
   password             String
-  roleId               String
+  roleId               Int
   active               Boolean          @default(true)
   shouldUpdatePassword Boolean          @default(false)
   createdAt            DateTime         @default(now())
@@ -23,21 +23,22 @@ model users {
   passwordResets       passwordResets[]
   userCompany          userCompany?
   company              company[]
+  requests             requests[]
 
   @@index([firstName, lastName], name: "users_full_name_idx")
   @@index([phoneNumber], name: "users_phone_number_idx")
 }
 
 model roles {
-  id              String            @id @default(uuid())
+  id              Int               @id @default(autoincrement())
   name            String            @unique
   rolePermissions rolePermissions[]
   users           users[]
 }
 
 model passwordResets {
-  id        String   @id @default(uuid())
-  userId    String
+  id        Int      @id @default(autoincrement())
+  userId    Int
   token     String   @unique
   isExpired Boolean  @default(false)
   createdAt DateTime @default(now())
@@ -49,15 +50,15 @@ model passwordResets {
 }
 
 model permissions {
-  id              String            @id @default(uuid())
+  id              Int               @id @default(autoincrement())
   name            String            @unique
   rolePermissions rolePermissions[]
 }
 
 model rolePermissions {
-  id           String      @id @default(uuid())
-  roleId       String
-  permissionId String
+  id           Int         @id @default(autoincrement())
+  roleId       Int
+  permissionId Int
   role         roles       @relation(fields: [roleId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   permission   permissions @relation(fields: [permissionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
@@ -65,20 +66,67 @@ model rolePermissions {
 }
 
 model company {
-  id          String        @id @default(uuid())
+  id          Int           @id @default(autoincrement())
   name        String        @unique
+  createdById Int
   createdAt   DateTime      @default(now())
-  createdById String
   createdBy   users         @relation(fields: [createdById], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userCompany userCompany[]
+  requests    requests[]
 }
 
 model userCompany {
-  id        String  @id @default(uuid())
-  userId    String  @unique
-  companyId String
+  id        Int     @id @default(autoincrement())
+  userId    Int     @unique
+  companyId Int
   user      users   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   company   company @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 
   @@unique([userId, companyId])
+}
+
+model regions {
+  id        Int         @id @default(autoincrement())
+  name      String      @unique
+  createdAt DateTime    @default(now())
+  locations locations[]
+}
+
+model locations {
+  id        Int        @id @default(autoincrement())
+  regionId  Int
+  city      String
+  address   String
+  googleMap String
+  ghanaGPS  String
+  createdAt DateTime   @default(now())
+  region    regions    @relation(fields: [regionId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  requests  requests[]
+}
+
+model taskTypes {
+  id        Int      @id @default(autoincrement())
+  name      String   @unique
+  createdAt DateTime @default(now())
+}
+
+model statuses {
+  id        Int        @id @default(autoincrement())
+  name      String     @unique
+  createdAt DateTime   @default(now())
+  requests  requests[]
+}
+
+model requests {
+  id          Int       @id @default(autoincrement())
+  statusId    Int
+  locationId  Int
+  createdById Int
+  companyId   Int?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  status      statuses  @relation(fields: [statusId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdBy   users     @relation(fields: [createdById], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  company     company?  @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  location    locations @relation(fields: [locationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
