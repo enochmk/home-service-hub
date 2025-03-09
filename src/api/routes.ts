@@ -1,11 +1,13 @@
 import 'express-async-errors';
 
 import { Router } from 'express';
+
 import authRoutes from './auth/auth.routes';
 import userRoutes from './users/users.routes';
 import roleRoutes from './roles/roles.routes';
 import userCompanyRoutes from './user-company/user-company.routes';
 import companyRoutes from './companies/companies.routes';
+
 import * as authMiddleware from './auth/auth.middleware';
 import * as userCompanyMiddleware from './user-company/user-company.middleware';
 

@@ -20,7 +20,7 @@ export const findUserByEmail = async (email: string) => {
   return foundUser;
 };
 
-export const changePassword = async (userId: string, hashPassword: string) => {
+export const changePassword = async (userId: number, hashPassword: string) => {
   const updatedUser = await prisma.users.update({
     where: {
       id: userId,
@@ -63,7 +63,7 @@ export const findRoleByName = async (name: string) => {
   return role;
 };
 
-export const findUserById = async (userId: string) => {
+export const findUserById = async (userId: number) => {
   const foundUser = await prisma.users.findFirst({
     where: {
       id: userId,
@@ -80,7 +80,7 @@ export const findUserById = async (userId: string) => {
   return foundUser;
 };
 
-export const addPasswordResetToken = async (userId: string, token: string) => {
+export const addPasswordResetToken = async (userId: number, token: string) => {
   const user = await prisma.passwordResets.create({
     data: {
       userId,
@@ -100,7 +100,7 @@ export const findPasswordResetToken = async (token: string) => {
   return passwordReset;
 };
 
-export const expirePasswordResetToken = async (userId: string) => {
+export const expirePasswordResetToken = async (userId: number) => {
   const passwordReset = await prisma.passwordResets.update({
     data: {
       isExpired: true,
@@ -113,7 +113,7 @@ export const expirePasswordResetToken = async (userId: string) => {
   return passwordReset;
 };
 
-export const getPermissionsByRoleId = async (roleId: string) => {
+export const getPermissionsByRoleId = async (roleId: number) => {
   const role = await prisma.roles.findFirst({
     where: {
       id: roleId,

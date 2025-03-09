@@ -1,16 +1,16 @@
 export interface IUserSessionData {
-  id: string;
+  id: number;
   firstName: string;
   lastName: string;
   email: string;
   phoneNumber: string;
-  roleId: string;
+  roleId: number;
   roleName: string;
   shouldUpdatePassword: boolean;
   permissions: string[];
   active?: boolean;
   company?: {
-    id: string;
+    id: number;
     name: string;
   };
   [key: string]: any;

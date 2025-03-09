@@ -37,9 +37,11 @@ export async function validateCurrentUser(req: Request, res: Response, next: Nex
   if (!userId) return next(new createHttpError.Unauthorized('Invalid token. Please login again'));
 
   const user = await model.findUserById(userId);
+
   if (!user) {
     return next(new createHttpError.Unauthorized('User not found'));
   }
+
   if (!user.active) {
     return next(new createHttpError.Unauthorized('User is not active'));
   }
@@ -50,6 +52,7 @@ export async function validateCurrentUser(req: Request, res: Response, next: Nex
       new createHttpError.Unauthorized('Please update your password before you can proceed'),
     );
   }
+
   return next();
 }
 
