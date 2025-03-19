@@ -7,6 +7,7 @@ import userRoutes from './users/users.routes';
 import roleRoutes from './roles/roles.routes';
 import userCompanyRoutes from './user-company/user-company.routes';
 import companyRoutes from './companies/companies.routes';
+import regionsRouter from './regions/regions.routes';
 
 import * as authMiddleware from './auth/auth.middleware';
 import * as userCompanyMiddleware from './user-company/user-company.middleware';
@@ -27,5 +28,6 @@ router.use('/users', userRoutes);
 router.use('/roles', roleRoutes);
 router.use('/companies/:companyId', userCompanyRoutes);
 router.use('/companies', companyRoutes);
+router.use('/regions', regionsRouter);
 
 export default router;
