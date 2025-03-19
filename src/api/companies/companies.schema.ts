@@ -13,7 +13,7 @@ export type CreateCompanyRequest = RequestHandler<any, any, CreateCompanyInput>;
 
 export const updateCompanySchema = z.object({
   params: z.object({
-    companyId: z.string().uuid(),
+    companyId: z.string(),
   }),
   body: z.object({
     name: z.string().min(3).max(120),
@@ -30,12 +30,12 @@ export type UpdateCompanyRequest = RequestHandler<
 
 export const getCompanySchema = z.object({
   params: z.object({
-    companyId: z.string().uuid(),
+    companyId: z.string(),
   }),
 });
 
 export type GetCompanyRequest = RequestHandler<
-  z.infer<typeof updateCompanySchema>['params'],
+  z.infer<typeof getCompanySchema>['params'],
   any,
   any
 >;

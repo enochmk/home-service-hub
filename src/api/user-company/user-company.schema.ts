@@ -2,11 +2,11 @@ import { RequestHandler } from 'express';
 import z from 'zod';
 
 export const addCompanyUserSchema = z.object({
-  body: z.object({
-    userId: z.string().uuid(),
-  }),
   params: z.object({
-    companyId: z.string().uuid(),
+    companyId: z.string(),
+  }),
+  body: z.object({
+    userId: z.number(),
   }),
 });
 
@@ -17,8 +17,8 @@ export type AddCompanyUserRequest = RequestHandler<AddCompanyUserParams, any, Ad
 
 export const removeCompanyUserSchema = z.object({
   params: z.object({
-    userId: z.string().uuid(),
-    companyId: z.string().uuid(),
+    userId: z.string(),
+    companyId: z.string(),
   }),
 });
 

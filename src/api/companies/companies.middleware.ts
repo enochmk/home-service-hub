@@ -6,11 +6,13 @@ import { getLogger } from '../../utils/logger';
 const logger = getLogger('CompanyMiddleware');
 
 export const checkCompanyExists: RequestHandler = async (req, res, next) => {
-  const companyIds = [req.params?.companyId, req.body?.companyId].filter(Boolean);
+  const companyIds = [parseInt(req.params?.companyId), parseInt(req.body?.companyId)].filter(
+    Boolean,
+  );
   logger.verbose('Checking if company exists ... ', { companyIds });
   if (companyIds.length === 0) return next();
   for (const companyId of companyIds) {
-    logger.verbose(`Checking company with id :${companyId}... `);
+    logger.verbose(`Checking company with id: ${companyId}... `);
     const company = await model.findCompanyById(companyId);
     if (!company) {
       return next(new createHttpError.NotFound(`Company ${companyId} not found`));
