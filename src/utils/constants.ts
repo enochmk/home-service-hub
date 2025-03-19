@@ -39,10 +39,11 @@ export const STATUS = {
 export const ROLE_PERMISSIONS = {
   [ROLES.TECH_ADMIN]: [PERMISSIONS.admin],
   [ROLES.COMPANY_ADMIN]: [
-    PERMISSIONS['company.create'],
-    PERMISSIONS['company.update'],
-    PERMISSIONS['company.delete'],
-    PERMISSIONS['company.view'],
+    PERMISSIONS['company.create-user'],
+    PERMISSIONS['company.update-user'],
+    PERMISSIONS['company.delete-user'],
+    PERMISSIONS['company.view-user'],
+    PERMISSIONS['company.view-users'],
     PERMISSIONS['users.edit'],
     PERMISSIONS['users.create'],
     PERMISSIONS['users.delete'],
