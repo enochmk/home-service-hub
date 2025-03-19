@@ -92,17 +92,23 @@ export const getUserById: GetUserRequest = async (req, res) => {
 };
 
 export const updateUserById: UpdateUserRequest = async (req, res) => {
-  const user = await model.updateUser(req.params.userId, req.body);
+  const userId = parseInt(req.params.userId, 10);
+  logger.verbose('Updating user...', { userId, data: req.body });
+  const user = await model.updateUser(userId, req.body);
+  logger.info('User updated successfully', user);
   res.status(200).json(user);
 };
 
 export const deleteUserById: GetUserRequest = async (req, res) => {
-  await model.deleteUser(req.params.userId);
+  logger.verbose('Deleting user...', req.params);
+  const userId = parseInt(req.params.userId, 10);
+  await model.deleteUser(userId);
+  logger.info(`User: ${userId} deleted`);
   res.status(204).send();
 };
 
 export const changeUserPassword: UpdateUserPasswordRequest = async (req, res) => {
-  const userId = req.params.userId;
+  const userId = parseInt(req.params.userId, 10);
   const password = req.body.password;
   const shouldUpdatePassword = req.body.shouldUpdatePassword || false;
   logger.verbose('Updating user password...', { userId, shouldUpdatePassword });

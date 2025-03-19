@@ -12,6 +12,7 @@ export default function schemaValidation(schema: AnyZodObject) {
       });
       next();
     } catch (error: any) {
+      console.log(error);
       const errorMessage = 'Schema validation failed';
       throw createHttpError(400, errorMessage, error.errors);
     }

@@ -47,8 +47,9 @@ export const updateUserSchema = z.object({
         .min(2, 'Last name is too short')
         .max(100, 'Last name is too long')
         .optional(),
-      roleId: z.number().int().positive(),
+      roleId: z.number().int().positive().optional(),
       email: z.string().email().optional(),
+      phoneNumber: z.string().optional(),
       active: z.boolean().optional(),
       shouldUpdatePassword: z.boolean().default(false).optional(),
     })
