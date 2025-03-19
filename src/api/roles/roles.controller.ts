@@ -29,7 +29,7 @@ export const removePermissionFromRole: RolePermissionRequest = async (req, res) 
 };
 
 export const getPermissionsByRole: RequestHandler = async (req, res) => {
-  const { roleId } = req.params;
+  const roleId = parseInt(req.params.roleId);
   const permissions = await model.getPermissionsByRole(roleId);
   // ! If role not found, return 404 Not Found
   if (!permissions) {

@@ -1,6 +1,6 @@
 import prisma from '../../db/prisma.db';
 
-export const findPermission = async (roleId: string, permissionId: string) => {
+export const findPermission = async (roleId: number, permissionId: number) => {
   return prisma.rolePermissions.findFirst({
     where: {
       roleId,
@@ -9,7 +9,7 @@ export const findPermission = async (roleId: string, permissionId: string) => {
   });
 };
 
-export const addPermissionToRole = async (roleId: string, permissionId: string) => {
+export const addPermissionToRole = async (roleId: number, permissionId: number) => {
   return prisma.rolePermissions.create({
     data: {
       roleId,
@@ -18,7 +18,7 @@ export const addPermissionToRole = async (roleId: string, permissionId: string) 
   });
 };
 
-export const removePermissionFromRole = async (roleId: string, permissionId: string) => {
+export const removePermissionFromRole = async (roleId: number, permissionId: number) => {
   return prisma.rolePermissions.deleteMany({
     where: {
       roleId,
@@ -27,7 +27,7 @@ export const removePermissionFromRole = async (roleId: string, permissionId: str
   });
 };
 
-export const getPermissionsByRole = async (roleId: string) => {
+export const getPermissionsByRole = async (roleId: number) => {
   const role = await prisma.roles.findUnique({
     where: { id: roleId },
     include: {
@@ -56,7 +56,7 @@ export const getAllRoles = async () => {
   return prisma.roles.findMany();
 };
 
-export const findRoleById = async (roleId: string) => {
+export const findRoleById = async (roleId: number) => {
   return prisma.roles.findFirst({
     where: {
       id: roleId,
