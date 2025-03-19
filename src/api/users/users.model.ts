@@ -9,7 +9,7 @@ export const createUser = async (data: CreateUserInput) => {
   });
 };
 
-export const createUserWithCompany = async (data: CreateUserInput, companyId: string) => {
+export const createUserWithCompany = async (data: CreateUserInput, companyId: number) => {
   return prisma.users.create({
     data: {
       ...data,
@@ -23,7 +23,7 @@ export const createUserWithCompany = async (data: CreateUserInput, companyId: st
   });
 };
 
-export const findUserById = async (userId: string) => {
+export const findUserById = async (userId: number) => {
   return prisma.users.findUnique({
     where: {
       id: userId,
@@ -41,7 +41,7 @@ export const findUserByEmail = async (email: string) => {
   });
 };
 
-export const updateUser = async (userId: string, data: UpdateUserInput) => {
+export const updateUser = async (userId: number, data: UpdateUserInput) => {
   return prisma.users.update({
     where: {
       id: userId,
@@ -51,7 +51,7 @@ export const updateUser = async (userId: string, data: UpdateUserInput) => {
   });
 };
 
-export const deleteUser = async (userId: string) => {
+export const deleteUser = async (userId: number) => {
   return prisma.users.delete({
     where: {
       id: userId,
@@ -59,7 +59,7 @@ export const deleteUser = async (userId: string) => {
   });
 };
 
-export const updateUserPassword = async (userId: string, password: string) => {
+export const updateUserPassword = async (userId: number, password: string) => {
   return prisma.users.update({
     where: {
       id: userId,
@@ -73,7 +73,7 @@ export const updateUserPassword = async (userId: string, password: string) => {
 };
 
 export const updatePassword = async (
-  userId: string,
+  userId: number,
   hashPassword: string,
   shouldUpdatePassword?: boolean,
 ) => {
@@ -108,7 +108,7 @@ export const findUser = async (query: UserQueryOptions) => {
   });
 };
 
-export const addUserToCompanyStaff = async (userId: string, companyId: string) => {
+export const addUserToCompanyStaff = async (userId: number, companyId: number) => {
   return prisma.users.update({
     where: {
       id: userId,
@@ -132,7 +132,7 @@ export const findRoleByName = async (roleName: string) => {
   });
 };
 
-export const findRoleById = async (roleId: string) => {
+export const findRoleById = async (roleId: number) => {
   return prisma.roles.findUnique({
     where: {
       id: roleId,
@@ -147,7 +147,7 @@ export const getUserCount = async (query?: UserQueryOptions) => {
   });
 };
 
-export const addUserToCompany = async (userId: string, companyId: string) => {
+export const addUserToCompany = async (userId: number, companyId: number) => {
   return prisma.users.update({
     where: {
       id: userId,

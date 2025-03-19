@@ -1,7 +1,7 @@
 import prisma from '../../db/prisma.db';
 import { userCompanySelect } from './user-company.interface';
 
-export const addUserToCompany = async (companyId: string, userId: string) => {
+export const addUserToCompany = async (companyId: number, userId: number) => {
   return prisma.userCompany.create({
     data: {
       companyId,
@@ -11,7 +11,7 @@ export const addUserToCompany = async (companyId: string, userId: string) => {
   });
 };
 
-export const removeUserFromCompany = async (companyId: string, userId: string) => {
+export const removeUserFromCompany = async (companyId: number, userId: number) => {
   return prisma.userCompany.deleteMany({
     where: {
       companyId,
@@ -20,7 +20,7 @@ export const removeUserFromCompany = async (companyId: string, userId: string) =
   });
 };
 
-export const findCompanyUsers = async (companyId: string) => {
+export const findCompanyUsers = async (companyId: number) => {
   return prisma.userCompany.findMany({
     where: {
       companyId,
@@ -29,7 +29,7 @@ export const findCompanyUsers = async (companyId: string) => {
   });
 };
 
-export const findCompanyUserByCompanyIdAndUserId = async (companyId: string, userId: string) => {
+export const findCompanyUserByCompanyIdAndUserId = async (companyId: number, userId: number) => {
   return prisma.userCompany.findUnique({
     where: {
       userId_companyId: {
@@ -41,7 +41,7 @@ export const findCompanyUserByCompanyIdAndUserId = async (companyId: string, use
   });
 };
 
-export const findCompanyUserByUserId = async (userId: string) => {
+export const findCompanyUserByUserId = async (userId: number) => {
   return prisma.userCompany.findFirst({
     where: {
       userId,

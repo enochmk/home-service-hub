@@ -5,7 +5,7 @@ declare global {
     interface Locals {
       user?: IUserSessionData;
       company?: {
-        id: string;
+        id: int;
         name: string;
       };
     }

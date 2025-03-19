@@ -4,7 +4,7 @@ import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '../../utils/constants'
 
 export const getUserSchema = z.object({
   params: z.object({
-    userId: z.string().uuid(),
+    userId: z.number().int().positive(),
   }),
 });
 
@@ -16,7 +16,7 @@ export const createUserSchema = z.object({
   body: z.object({
     firstName: z.string().min(2, 'First name is too short').max(100, 'First name is too long'),
     lastName: z.string().min(2, 'Last name is too short').max(100, 'Last name is too long'),
-    roleId: z.string().uuid(),
+    roleId: z.number().int().positive(),
     email: z.string().email(),
     phoneNumber: z.string(),
     password: z
@@ -33,7 +33,7 @@ export type CreateUserRequest = RequestHandler<any, any, CreateUserInput>;
 
 export const updateUserSchema = z.object({
   params: z.object({
-    userId: z.string().uuid(),
+    userId: z.number().int().positive(),
   }),
   body: z
     .object({
@@ -47,7 +47,7 @@ export const updateUserSchema = z.object({
         .min(2, 'Last name is too short')
         .max(100, 'Last name is too long')
         .optional(),
-      roleId: z.string().uuid().optional(),
+      roleId: z.number().int().positive().optional(),
       email: z.string().email().optional(),
       active: z.boolean().optional(),
       shouldUpdatePassword: z.boolean().default(false).optional(),
@@ -61,7 +61,7 @@ export type UpdateUserRequest = RequestHandler<any, any, UpdateUserInput>;
 
 export const updateUserPasswordSchema = z.object({
   params: z.object({
-    userId: z.string().uuid(),
+    userId: z.number().int().positive(),
   }),
   body: z.object({
     password: z
