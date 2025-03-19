@@ -34,6 +34,11 @@ export const PERMISSIONS = {
   'regions.delete': 'regions.delete',
   'regions.view': 'regions.view',
   'regions.list': 'regions.list',
+  'locations.create': 'locations.create',
+  'locations.update': 'locations.update',
+  'locations.delete': 'locations.delete',
+  'locations.view': 'locations.view',
+  'locations.list': 'locations.list',
 } as const;
 
 export const STATUS = {
