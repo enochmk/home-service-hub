@@ -29,6 +29,11 @@ export const PERMISSIONS = {
   'company.delete-user': 'company.delete-user',
   'company.view-user': 'company.view-user',
   'company.view-users': 'company.view-users',
+  'regions.create': 'regions.create',
+  'regions.update': 'regions.update',
+  'regions.delete': 'regions.delete',
+  'regions.view': 'regions.view',
+  'regions.list': 'regions.list',
 } as const;
 
 export const STATUS = {
