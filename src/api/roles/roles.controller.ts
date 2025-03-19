@@ -5,7 +5,7 @@ import { RolePermissionRequest } from './roles.schema';
 
 export const addPermissionToRole: RolePermissionRequest = async (req, res) => {
   const roleId = parseInt(req.params.roleId);
-  const permissionId = parseInt(req.body.permissionId);
+  const permissionId = req.body.permissionId;
   const existingPermission = await model.findPermission(roleId, permissionId);
   // ! If permission already exists, return 409 Conflict
   if (existingPermission) {
@@ -17,7 +17,7 @@ export const addPermissionToRole: RolePermissionRequest = async (req, res) => {
 
 export const removePermissionFromRole: RolePermissionRequest = async (req, res) => {
   const roleId = parseInt(req.params.roleId);
-  const permissionId = parseInt(req.body.permissionId);
+  const permissionId = req.body.permissionId;
   const existingPermission = await model.findPermission(roleId, permissionId);
   // ! If permission not found, return 404 Not Found
   if (!existingPermission) {

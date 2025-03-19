@@ -6,7 +6,7 @@ export const rolePermissionSchema = z.object({
     roleId: z.string(),
   }),
   body: z.object({
-    permissionId: z.string(),
+    permissionId: z.number(),
   }),
 });
 
