@@ -22,13 +22,9 @@ export const isEligibleForCompanyJoin = async (req: Request, res: Response, next
   return next();
 };
 
-export const checkIfUserIsNotAdded = async (
-  req: Request<{ companyId: number }, any, { userId: number }>,
-  res: Response,
-  next: NextFunction,
-) => {
+export const checkIfUserIsNotAdded = async (req: Request, res: Response, next: NextFunction) => {
   const adminUserId = req.body.userId;
-  const companyId = req.params.companyId;
+  const companyId = parseInt(req.params.companyId);
   logger.verbose(`Checking if user: ${adminUserId} is not added to company: ${companyId}`);
   const adminUser = await model.findCompanyUserByCompanyIdAndUserId(companyId, adminUserId);
   if (adminUser) {

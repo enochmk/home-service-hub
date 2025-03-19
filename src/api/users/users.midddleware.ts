@@ -88,14 +88,10 @@ export async function authorizeCreateUser(
   return next();
 }
 
-export async function checkUserExistsByParam(
-  req: Request<{ userId?: number }, any, any>,
-  res: Response,
-  next: NextFunction,
-) {
+export async function checkUserExistsByParam(req: Request, res: Response, next: NextFunction) {
   // Check if user exists
   if (req.params?.userId) {
-    const userId = req.params.userId;
+    const userId = parseInt(req.params.userId);
     logger.verbose(`Checking user exists: ${userId}...`);
     const userFound = await model.findUserById(userId);
     // ! If user does not exist, return 404

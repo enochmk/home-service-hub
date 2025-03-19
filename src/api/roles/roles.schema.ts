@@ -3,10 +3,10 @@ import { RequestHandler } from 'express';
 
 export const rolePermissionSchema = z.object({
   params: z.object({
-    roleId: z.number().int().positive(),
+    roleId: z.string(),
   }),
   body: z.object({
-    permissionId: z.number().int().positive(),
+    permissionId: z.string(),
   }),
 });
 

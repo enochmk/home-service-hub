@@ -22,24 +22,24 @@ export const getCompanies: RequestHandler = async (req, res) => {
 };
 
 export const getCompanyById: GetCompanyRequest = async (req, res) => {
-  const companyId = req.params.companyId;
+  const companyId = parseInt(req.params.companyId);
   logger.verbose(`Fetching company with id ${companyId} ...`);
   const company = await model.findCompanyById(companyId);
-  logger.info('Company fetched successfully', company);
+  logger.info('Company fetched successfully', { company });
   res.status(200).json(company);
 };
 
 export const updateCompanyById: UpdateCompanyRequest = async (req, res) => {
-  const companyId = req.params.companyId;
+  const companyId = parseInt(req.params.companyId);
   const data = req.body;
-  logger.verbose(`Updating company with id ${companyId} ...`, data);
+  logger.verbose(`Updating company with id ${companyId} ...`, { data });
   const response = await model.updateCompany(companyId, data);
-  logger.info('Company updated successfully', response);
+  logger.info('Company updated successfully', { response });
   res.status(200).json(response);
 };
 
 export const deleteCompanyById: GetCompanyRequest = async (req, res) => {
-  const companyId = req.params.companyId;
+  const companyId = parseInt(req.params.companyId);
   logger.verbose(`Deleting company with id ${companyId} ...`);
   const response = await model.deleteCompany(companyId);
   logger.info('Company deleted successfully', response);

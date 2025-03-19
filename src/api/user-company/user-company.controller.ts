@@ -7,13 +7,16 @@ const logger = getLogger('UserCompanyController');
 
 export const addUserToCompany: AddCompanyUserRequest = async (req, res) => {
   logger.verbose('Adding user to company');
-  const response = await model.addUserToCompany(req.params.companyId, req.body.userId);
+  const companyId = parseInt(req.params.companyId);
+  const userId = parseInt(req.body.userId);
+  const response = await model.addUserToCompany(companyId, userId);
   logger.info('User added to company', { response });
   res.status(201).json(response);
 };
 
 export const removeUserFromCompany: RemoveCompanyUserRequest = async (req, res) => {
-  const { companyId, userId } = req.params;
+  const companyId = parseInt(req.params.companyId);
+  const userId = parseInt(req.params.userId);
   logger.verbose('Removing user from company', { companyId, userId });
   await model.removeUserFromCompany(companyId, userId);
   logger.info('User removed from company', { companyId, userId });
@@ -21,7 +24,7 @@ export const removeUserFromCompany: RemoveCompanyUserRequest = async (req, res) 
 };
 
 export const getCompanyUsers: RequestHandler = async (req, res) => {
-  const { companyId } = req.params;
+  const companyId = parseInt(req.params.companyId);
   logger.verbose('Fetching users by companyId', { companyId });
   const data = await model.findCompanyUsers(companyId);
   const response = data.map((item) => item.user);
@@ -30,9 +33,10 @@ export const getCompanyUsers: RequestHandler = async (req, res) => {
 };
 
 export const getCompanyUserByUserId: RequestHandler = async (req, res) => {
-  const { companyId, userId } = req.params;
+  const companyId = parseInt(req.params.companyId);
+  const userId = parseInt(req.params.userId);
   logger.verbose('Fetching user by userId', { companyId, userId });
   const response = await model.findCompanyUserByCompanyIdAndUserId(companyId, userId);
-  logger.info('Company user fetched', response);
+  logger.info('Company user fetched', { response });
   res.status(200).json(response);
 };
