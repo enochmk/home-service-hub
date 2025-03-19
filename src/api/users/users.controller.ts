@@ -71,7 +71,7 @@ export const getAllUsers: RequestHandler = async (req, res) => {
 
 export const getUserById: GetUserRequest = async (req, res) => {
   logger.verbose('Fetching user...', req.params);
-  const userId = req.params.id as string;
+  const userId = req.params.id;
   let where: Prisma.usersWhereInput = { id: userId };
 
   // add company filter for company admin to return users of the same company

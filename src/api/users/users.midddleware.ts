@@ -38,15 +38,21 @@ export async function checkEmailAvailability(req: Request, res: Response, next: 
   return next();
 }
 
-export async function isPartOfAdminCompany(req: Request, res: Response, next: NextFunction) {
+export async function isPartOfAdminCompany(
+  req: Request<any, any, any>,
+  res: Response,
+  next: NextFunction,
+) {
   if (res.locals.user?.roleName === ROLES.COMPANY_ADMIN) {
-    if (!res.locals.company!.id) return next();
+    if (!res.locals.company!.id) {
+      return next();
+    }
     const companyId = res.locals.company!.id;
-    const targetUserId = req.params.userId;
+    const targetUserId = parseInt(req.params.userId);
     logger.verbose("Checking if target user belongs to current user's company...");
     const targetUser = await model.findUserById(targetUserId);
     const isMemberOfCompany = targetUser?.userCompany?.companyId === companyId;
-    // ! If user does not belong to company, return 400
+    // ! If user does not belong to company, return 403
     if (!isMemberOfCompany) {
       return next(new createHttpError.Forbidden('This user does not belong to your company'));
     }
@@ -82,7 +88,11 @@ export async function authorizeCreateUser(
   return next();
 }
 
-export async function checkUserExistsByParam(req: Request, res: Response, next: NextFunction) {
+export async function checkUserExistsByParam(
+  req: Request<{ userId?: number }, any, any>,
+  res: Response,
+  next: NextFunction,
+) {
   // Check if user exists
   if (req.params?.userId) {
     const userId = req.params.userId;
