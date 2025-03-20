@@ -17,12 +17,14 @@ import requestsRouter from './requests/requests.routes';
 
 import * as authMiddleware from './auth/auth.middleware';
 import * as userCompanyMiddleware from './user-company/user-company.middleware';
+import contextLogger from '../middlewares/context-logger.middleware';
 
 const router = Router();
 
 router.use('/auth', authRouter);
 router.use('/health', healthRouter);
 router.use(authMiddleware.verifyJWT);
+router.use(contextLogger);
 router.use(authMiddleware.validateCurrentUser);
 router.use(userCompanyMiddleware.loadCompanies);
 router.use(authMiddleware.checkUserCompanyAssociation);

@@ -11,26 +11,32 @@ const TIMESTAMP_FORMAT = 'YYYY-MM-DD HH:mm:ss';
 const formatter = {
   file: format.printf((log: any): string => {
     const requestId = rtracer.id();
-    const { message, level, timestamp, label, ...rest } = log;
+    const {
+      message,
+      level,
+      timestamp,
+      label,
+      user, // Include user details in the log
+      ...rest
+    } = log;
     return JSON.stringify({
       timestamp,
       requestId,
       level,
       label,
+      user, // Include user details in the log
       message,
       metadata: redactSensitiveData(rest),
     });
   }),
   console: format.printf((log: any): string => {
-    const { timestamp, level, message, label, ...rest } = log;
-    if (label) {
-      return `[${timestamp}][${level?.toUpperCase()}]: [${label}] - ${message} ${
-        Object.keys(rest).length ? JSON.stringify(rest) : ''
-      }`;
-    }
-    return `[${timestamp}][${level?.toUpperCase()}]: ${message} ${
-      Object.keys(rest).length ? JSON.stringify(rest) : ''
-    }`;
+    const { timestamp, level, message, label, user, ...rest } = log;
+    const userInfo = user ? `[User: ${user.email || user.id}] ` : '';
+    const restInfo = Object.keys(rest).length ? JSON.stringify(rest) : '';
+    const baseLog = `[${timestamp}][${level?.toUpperCase()}]: ${message} ${userInfo} ${restInfo}`;
+    return label
+      ? `[${timestamp}][${level?.toUpperCase()}]: ${userInfo}[${label}] - ${message} ${restInfo}`
+      : baseLog;
   }),
 };
 
@@ -59,6 +65,7 @@ const logger = winston.createLogger({
     winston.format.errors({ stack: true }),
   ),
 });
+
 export const getLogger = (label: string, service?: string) => {
   const childLogger = logger.child({ label });
   if (service) {
