@@ -23,14 +23,18 @@ export const signIn: SignInRequest = async (req, res) => {
 
   // ! Check if the user exists
   if (!user) {
-    throw new createHttpError.Forbidden('Invalid credentials. Please check and try again');
+    throw new createHttpError.Forbidden(
+      'Invalid credentials. Please check and try again',
+    );
   }
 
   const isPasswordMatch = bcrypt.compareSync(password, user.password);
 
   // ! Check if the password is correct
   if (!isPasswordMatch) {
-    throw new createHttpError.Forbidden('Invalid credentials. Please check and try again');
+    throw new createHttpError.Forbidden(
+      'Invalid credentials. Please check and try again',
+    );
   }
 
   // ! Check if the user is active
@@ -100,7 +104,12 @@ export const forgotPassword: ForgotPasswordRequest = async (req, res) => {
   // await sendPasswordResetEmail(user.email, token);
 
   logger.info('Password reset token');
-  res.status(200).json({ message: 'Password reset link sent to your email', passwordResetToken });
+  res
+    .status(200)
+    .json({
+      message: 'Password reset link sent to your email',
+      passwordResetToken,
+    });
 };
 
 export const resetPassword: ResetPasswordRequest = async (req, res) => {
@@ -167,6 +176,8 @@ export const getProfile: RequestHandler = async (req, res) => {
 };
 
 export const getPermissions: RequestHandler = async (req, res) => {
-  const permissions = await model.getPermissionsByRoleId(res.locals.user!.roleId);
+  const permissions = await model.getPermissionsByRoleId(
+    res.locals.user!.roleId,
+  );
   res.status(200).json({ permissions });
 };

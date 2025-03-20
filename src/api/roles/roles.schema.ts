@@ -10,6 +10,12 @@ export const rolePermissionSchema = z.object({
   }),
 });
 
-export type RolePermissionParams = z.infer<typeof rolePermissionSchema>['params'];
+export type RolePermissionParams = z.infer<
+  typeof rolePermissionSchema
+>['params'];
 export type RolePermissionBody = z.infer<typeof rolePermissionSchema>['body'];
-export type RolePermissionRequest = RequestHandler<RolePermissionParams, any, RolePermissionBody>;
+export type RolePermissionRequest = RequestHandler<
+  RolePermissionParams,
+  any,
+  RolePermissionBody
+>;

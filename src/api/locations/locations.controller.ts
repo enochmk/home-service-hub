@@ -31,7 +31,11 @@ export const createLocation: CreateRequest = async (req, res) => {
   res.status(201).json(newLocation);
 };
 
-type UpdateRequest = RequestHandler<{ locationId: string }, unknown, UpdateLocationInput>;
+type UpdateRequest = RequestHandler<
+  { locationId: string },
+  unknown,
+  UpdateLocationInput
+>;
 export const updateLocation: UpdateRequest = async (req, res) => {
   const locationId = parseInt(req.params.locationId);
   logger.verbose('Updating location', { locationId });

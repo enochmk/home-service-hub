@@ -30,7 +30,11 @@ export const createTaskType: CreateRequest = async (req, res) => {
   res.status(201).json(data);
 };
 
-type UpdateRequest = RequestHandler<{ taskTypeId: string }, any, UpdateTaskTypeInput>;
+type UpdateRequest = RequestHandler<
+  { taskTypeId: string },
+  any,
+  UpdateTaskTypeInput
+>;
 export const updateTaskType: UpdateRequest = async (req, res) => {
   const taskTypeId = parseInt(req.params.taskTypeId);
   logger.verbose('Updating task type', { taskTypeId, ...req.body });

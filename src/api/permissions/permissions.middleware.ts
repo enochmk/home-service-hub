@@ -7,14 +7,18 @@ export function checkPermission(permissions: string | string[]) {
   return (_req: Request, res: Response, next: NextFunction) => {
     const user = res.locals.user as IUserSessionData;
     if (!user || !user.roleId || !user?.permissions) {
-      return next(new createHttpError.Forbidden('Access denied. Permission required'));
+      return next(
+        new createHttpError.Forbidden('Access denied. Permission required'),
+      );
     }
 
     // bypass if user is admin
     if (user.roleName === ROLES.TECH_ADMIN) return next();
 
     // ensure permissions is an array
-    const requiredPermissions = Array.isArray(permissions) ? permissions : [permissions];
+    const requiredPermissions = Array.isArray(permissions)
+      ? permissions
+      : [permissions];
 
     // check if user has all required permissions
     const hasAllPermissions = requiredPermissions.every((permission) =>

@@ -9,7 +9,10 @@ export const createUser = async (data: CreateUserInput) => {
   });
 };
 
-export const createUserWithCompany = async (data: CreateUserInput, companyId: number) => {
+export const createUserWithCompany = async (
+  data: CreateUserInput,
+  companyId: number,
+) => {
   return prisma.users.create({
     data: {
       ...data,
@@ -108,7 +111,10 @@ export const findUser = async (query: UserQueryOptions) => {
   });
 };
 
-export const addUserToCompanyStaff = async (userId: number, companyId: number) => {
+export const addUserToCompanyStaff = async (
+  userId: number,
+  companyId: number,
+) => {
   return prisma.users.update({
     where: {
       id: userId,

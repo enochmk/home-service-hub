@@ -33,10 +33,14 @@ export async function seedPermissions() {
     const roleRecord = await prisma.roles.findUnique({ where: { name: role } });
     if (!roleRecord) continue;
     // delete all role permissions
-    await prisma.rolePermissions.deleteMany({ where: { roleId: roleRecord.id } });
+    await prisma.rolePermissions.deleteMany({
+      where: { roleId: roleRecord.id },
+    });
     const rolePermissions = ROLE_PERMISSIONS[role];
     for (const permission of rolePermissions) {
-      const permissionRecord = await prisma.permissions.findUnique({ where: { name: permission } });
+      const permissionRecord = await prisma.permissions.findUnique({
+        where: { name: permission },
+      });
       if (!permissionRecord) continue;
 
       await prisma.rolePermissions.upsert({

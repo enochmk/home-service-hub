@@ -44,7 +44,10 @@ const transporter = {
   }),
   console: new winston.transports.Console({
     level: 'verbose',
-    format: winston.format.combine(formatter.console, winston.format.colorize({ all: true })),
+    format: winston.format.combine(
+      formatter.console,
+      winston.format.colorize({ all: true }),
+    ),
   }),
 };
 

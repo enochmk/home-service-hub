@@ -41,8 +41,12 @@ export const getAllUsers: RequestHandler = async (req, res) => {
   let where: Prisma.usersWhereInput | undefined = req.query.q
     ? {
         OR: [
-          { firstName: { contains: req.query.q as string, mode: 'insensitive' } },
-          { lastName: { contains: req.query.q as string, mode: 'insensitive' } },
+          {
+            firstName: { contains: req.query.q as string, mode: 'insensitive' },
+          },
+          {
+            lastName: { contains: req.query.q as string, mode: 'insensitive' },
+          },
           { email: { contains: req.query.q as string, mode: 'insensitive' } },
         ],
       }
@@ -64,7 +68,10 @@ export const getAllUsers: RequestHandler = async (req, res) => {
   const data = await model.findUsers(queryOptions);
   const totalCount = await model.getUserCount(queryOptions);
   const totalPages = Math.ceil(Number(totalCount) / limit);
-  const response = { pagination: { page, limit, totalPages, totalCount }, data };
+  const response = {
+    pagination: { page, limit, totalPages, totalCount },
+    data,
+  };
   logger.info('Users fetched successfully', response);
   res.status(200).json(response);
 };
@@ -107,7 +114,10 @@ export const deleteUserById: GetUserRequest = async (req, res) => {
   res.status(204).send();
 };
 
-export const changeUserPassword: UpdateUserPasswordRequest = async (req, res) => {
+export const changeUserPassword: UpdateUserPasswordRequest = async (
+  req,
+  res,
+) => {
   const userId = parseInt(req.params.userId, 10);
   const password = req.body.password;
   const shouldUpdatePassword = req.body.shouldUpdatePassword || false;

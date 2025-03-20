@@ -6,7 +6,11 @@ import logger from './logger';
 const asyncLocalStorage = new AsyncLocalStorage<{ requestId: string }>();
 
 // Middleware to Initialize AsyncLocalStorage
-export function generateRequestId(req: Request, res: Response, next: NextFunction) {
+export function generateRequestId(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   const requestId = uuidv4();
   asyncLocalStorage.run({ requestId }, () => {
     req['requestId'] = requestId; // Attach it to the request object
@@ -23,7 +27,11 @@ export function getRequestId(): string | undefined {
 }
 
 // Middleware for Request & Response Logging
-export function captureRequestResponseDetails(req: Request, res: Response, next: NextFunction) {
+export function captureRequestResponseDetails(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
   const requestId = req['requestId'];
   const startTime = Date.now();
 

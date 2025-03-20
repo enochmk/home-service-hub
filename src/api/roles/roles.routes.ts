@@ -7,7 +7,11 @@ import { rolePermissionSchema } from './roles.schema';
 
 const router = Router();
 
-router.get('/', checkPermission([PERMISSIONS['roles.list']]), controller.getAllRoles);
+router.get(
+  '/',
+  checkPermission([PERMISSIONS['roles.list']]),
+  controller.getAllRoles,
+);
 
 router.post(
   '/:roleId/permissions',

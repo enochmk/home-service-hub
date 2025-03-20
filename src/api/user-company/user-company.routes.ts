@@ -2,7 +2,10 @@ import { Router } from 'express';
 import * as controller from './user-company.controller';
 import * as middleware from './user-company.middleware';
 import schemaValidation from '../../middlewares/schema-validation.middleware';
-import { addCompanyUserSchema, removeCompanyUserSchema } from './user-company.schema';
+import {
+  addCompanyUserSchema,
+  removeCompanyUserSchema,
+} from './user-company.schema';
 import * as companyMiddleware from '../companies/companies.middleware';
 import * as userMiddleware from '../users/users.midddleware';
 import { checkPermission } from '../permissions/permissions.middleware';

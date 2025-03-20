@@ -30,12 +30,19 @@ export const createStatus: CreateStatus = async (req, res) => {
   res.status(201).json(data);
 };
 
-type UpdateStatus = RequestHandler<{ statusId: string }, any, UpdateStatusInput>;
+type UpdateStatus = RequestHandler<
+  { statusId: string },
+  any,
+  UpdateStatusInput
+>;
 export const updateStatus: UpdateStatus = async (req, res) => {
   const statusId = parseInt(req.params.statusId);
   const { name } = req.body;
   logger.verbose('Updating status', { statusId, name });
-  const data = await prisma.statuses.update({ where: { id: statusId }, data: { name } });
+  const data = await prisma.statuses.update({
+    where: { id: statusId },
+    data: { name },
+  });
   logger.info('Updated status', data);
   res.status(200).json(data);
 };

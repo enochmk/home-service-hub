@@ -9,7 +9,10 @@ export const findPermission = async (roleId: number, permissionId: number) => {
   });
 };
 
-export const addPermissionToRole = async (roleId: number, permissionId: number) => {
+export const addPermissionToRole = async (
+  roleId: number,
+  permissionId: number,
+) => {
   return prisma.rolePermissions.create({
     data: {
       roleId,
@@ -18,7 +21,10 @@ export const addPermissionToRole = async (roleId: number, permissionId: number) 
   });
 };
 
-export const removePermissionFromRole = async (roleId: number, permissionId: number) => {
+export const removePermissionFromRole = async (
+  roleId: number,
+  permissionId: number,
+) => {
   return prisma.rolePermissions.deleteMany({
     where: {
       roleId,

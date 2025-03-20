@@ -1,6 +1,10 @@
 import * as model from './companies.model';
 import { RequestHandler } from 'express';
-import { CreateCompanyRequest, GetCompanyRequest, UpdateCompanyRequest } from './companies.schema';
+import {
+  CreateCompanyRequest,
+  GetCompanyRequest,
+  UpdateCompanyRequest,
+} from './companies.schema';
 import { getLogger } from '../../utils/logger';
 
 const logger = getLogger('CompanyController');

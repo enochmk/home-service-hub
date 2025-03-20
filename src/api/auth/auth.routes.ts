@@ -9,10 +9,18 @@ import * as companyAdminMiddleware from '../user-company/user-company.middleware
 const router = Router();
 
 // user sign-in
-router.post('/sign-in', schemaValidation(schema.signInSchema), controller.signIn);
+router.post(
+  '/sign-in',
+  schemaValidation(schema.signInSchema),
+  controller.signIn,
+);
 
 // user sign-up
-router.post('/sign-up', schemaValidation(schema.signUpSchema), controller.signUp);
+router.post(
+  '/sign-up',
+  schemaValidation(schema.signUpSchema),
+  controller.signUp,
+);
 
 // user sign-out
 router.post('/sign-out', middleware.verifyJWT, controller.signOut);

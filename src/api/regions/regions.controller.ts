@@ -41,7 +41,11 @@ export const createRegion: CreateRequest = async (req, res) => {
   res.status(201).json(region);
 };
 
-type UpdateRequest = RequestHandler<{ regionId: string }, any, UpdateRegionInput>;
+type UpdateRequest = RequestHandler<
+  { regionId: string },
+  any,
+  UpdateRegionInput
+>;
 export const updateRegion: UpdateRequest = async (req, res) => {
   const regionId = parseInt(req.params.regionId);
   logger.verbose(`Updating region with id ${regionId}`, req.body);

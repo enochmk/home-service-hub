@@ -1,6 +1,9 @@
 import { RequestHandler } from 'express';
 import z from 'zod';
-import { MAX_PASSWORD_LENGTH, MIN_PASSWORD_LENGTH } from '../../utils/constants';
+import {
+  MAX_PASSWORD_LENGTH,
+  MIN_PASSWORD_LENGTH,
+} from '../../utils/constants';
 
 export const getUserSchema = z.object({
   params: z.object({
@@ -14,8 +17,14 @@ export type GetUserRequest = RequestHandler<any, any, GetUserInput>;
 
 export const createUserSchema = z.object({
   body: z.object({
-    firstName: z.string().min(2, 'First name is too short').max(100, 'First name is too long'),
-    lastName: z.string().min(2, 'Last name is too short').max(100, 'Last name is too long'),
+    firstName: z
+      .string()
+      .min(2, 'First name is too short')
+      .max(100, 'First name is too long'),
+    lastName: z
+      .string()
+      .min(2, 'Last name is too short')
+      .max(100, 'Last name is too long'),
     roleId: z.number().int().positive(),
     email: z.string().email(),
     phoneNumber: z.string(),
@@ -73,9 +82,15 @@ export const updateUserPasswordSchema = z.object({
   }),
 });
 
-export type UpdateUserPasswordInput = z.infer<typeof updateUserPasswordSchema>['body'];
+export type UpdateUserPasswordInput = z.infer<
+  typeof updateUserPasswordSchema
+>['body'];
 
-export type UpdateUserPasswordRequest = RequestHandler<any, any, UpdateUserPasswordInput>;
+export type UpdateUserPasswordRequest = RequestHandler<
+  any,
+  any,
+  UpdateUserPasswordInput
+>;
 
 export const changeOwnPasswordSchema = z.object({
   body: z.object({
@@ -90,6 +105,12 @@ export const changeOwnPasswordSchema = z.object({
   }),
 });
 
-export type ChangeOwnPasswordInput = z.infer<typeof changeOwnPasswordSchema>['body'];
+export type ChangeOwnPasswordInput = z.infer<
+  typeof changeOwnPasswordSchema
+>['body'];
 
-export type ChangeOwnPasswordRequest = RequestHandler<any, any, ChangeOwnPasswordInput>;
+export type ChangeOwnPasswordRequest = RequestHandler<
+  any,
+  any,
+  ChangeOwnPasswordInput
+>;

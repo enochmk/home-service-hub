@@ -17,7 +17,11 @@ router.post(
   controller.createCompany,
 );
 
-router.get('/', checkPermission([PERMISSIONS['company.view']]), controller.getCompanies);
+router.get(
+  '/',
+  checkPermission([PERMISSIONS['company.view']]),
+  controller.getCompanies,
+);
 
 router.put(
   '/:companyId',

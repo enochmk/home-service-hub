@@ -36,7 +36,11 @@ export const createRequest: CreateRequest = async (req, res) => {
   res.status(201).json(newRequest);
 };
 
-type UpdateRequest = RequestHandler<{ requestId: string }, any, UpdateRequestInput>;
+type UpdateRequest = RequestHandler<
+  { requestId: string },
+  any,
+  UpdateRequestInput
+>;
 export const updateRequest: UpdateRequest = async (req, res) => {
   const requestId = parseInt(req.params.requestId);
   logger.verbose(`Updating request by ID: ${requestId}`, req.body);

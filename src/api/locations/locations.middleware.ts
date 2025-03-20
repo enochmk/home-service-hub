@@ -6,7 +6,11 @@ import { CreateLocationInput } from './locations.schema';
 
 const logger = getLogger('LocationMiddleware');
 
-export async function checkLocationIdExist(req: Request, _res: Response, next: NextFunction) {
+export async function checkLocationIdExist(
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) {
   const targetId = parseInt(req.params.locationId, 10);
   logger.verbose('Checking location ID exist', { locationId: targetId });
   const location = await prisma.locations.findMany({
@@ -25,8 +29,14 @@ export async function checkLocationIdExist(req: Request, _res: Response, next: N
 }
 
 type LocationRequest = Request<unknown, unknown, CreateLocationInput>;
-export async function checkRegionIdExist(req: LocationRequest, _res: Response, next: NextFunction) {
-  logger.verbose('Checking if region Id exist', { regionId: req.body.regionId });
+export async function checkRegionIdExist(
+  req: LocationRequest,
+  _res: Response,
+  next: NextFunction,
+) {
+  logger.verbose('Checking if region Id exist', {
+    regionId: req.body.regionId,
+  });
   const region = await prisma.regions.findMany({
     where: {
       id: req.body.regionId,

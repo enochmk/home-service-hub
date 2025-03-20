@@ -8,7 +8,11 @@ import { PERMISSIONS } from '../../utils/constants';
 
 const router = Router();
 
-router.get('/', permissions.checkPermission([PERMISSIONS['task.list']]), controller.getAllTasks);
+router.get(
+  '/',
+  permissions.checkPermission([PERMISSIONS['task.list']]),
+  controller.getAllTasks,
+);
 
 router.get(
   '/:taskId',

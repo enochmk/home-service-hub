@@ -50,7 +50,11 @@ export const changePasswordSchema = z.object({
 
 export type ChangePasswordInput = z.infer<typeof changePasswordSchema>['body'];
 
-export type ChangePasswordRequest = RequestHandler<any, any, ChangePasswordInput>;
+export type ChangePasswordRequest = RequestHandler<
+  any,
+  any,
+  ChangePasswordInput
+>;
 
 export const resetPasswordSchema = z.object({
   body: z.object({
@@ -76,7 +80,11 @@ export const forgotPasswordSchema = z.object({
 
 export type ForgotPasswordInput = z.infer<typeof forgotPasswordSchema>['body'];
 
-export type ForgotPasswordRequest = RequestHandler<any, any, ForgotPasswordInput>;
+export type ForgotPasswordRequest = RequestHandler<
+  any,
+  any,
+  ForgotPasswordInput
+>;
 
 export const changeOwnPasswordSchema = z.object({
   body: z.object({
@@ -91,6 +99,12 @@ export const changeOwnPasswordSchema = z.object({
   }),
 });
 
-export type ChangeOwnPasswordInput = z.infer<typeof changeOwnPasswordSchema>['body'];
+export type ChangeOwnPasswordInput = z.infer<
+  typeof changeOwnPasswordSchema
+>['body'];
 
-export type ChangeOwnPasswordRequest = RequestHandler<any, any, ChangeOwnPasswordInput>;
+export type ChangeOwnPasswordRequest = RequestHandler<
+  any,
+  any,
+  ChangeOwnPasswordInput
+>;

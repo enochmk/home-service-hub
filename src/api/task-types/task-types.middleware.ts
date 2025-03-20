@@ -5,7 +5,11 @@ import { getLogger } from '../../utils/logger';
 
 const logger = getLogger('TaskTypesMiddleware');
 
-export async function checkTaskTypeIdExist(req: Request, _res: Response, next: NextFunction) {
+export async function checkTaskTypeIdExist(
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) {
   const taskTypeId = parseInt(req.params.taskTypeId, 10);
   logger.verbose('Checking task type ID exist', { taskTypeId });
   const taskType = await prisma.taskTypes.findMany({
@@ -23,7 +27,11 @@ export async function checkTaskTypeIdExist(req: Request, _res: Response, next: N
   return next();
 }
 
-export async function checkTaskTypeNameAvailable(req: Request, _res: Response, next: NextFunction) {
+export async function checkTaskTypeNameAvailable(
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) {
   const { name } = req.body;
   logger.verbose('Checking task type name available', { name });
   const taskType = await prisma.taskTypes.findMany({

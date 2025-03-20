@@ -5,7 +5,11 @@ import { getLogger } from '../../utils/logger';
 
 const logger = getLogger('RegionsMiddleware');
 
-export async function checkRegionIdExist(req: Request, _res: Response, next: NextFunction) {
+export async function checkRegionIdExist(
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) {
   const targetId = parseInt(req.params.regionId, 10);
   logger.verbose('Checking region ID exist', { regionId: targetId });
   const region = await prisma.regions.findMany({
@@ -23,7 +27,11 @@ export async function checkRegionIdExist(req: Request, _res: Response, next: Nex
   return next();
 }
 
-export async function checkRegionNameAvailable(req: Request, _res: Response, next: NextFunction) {
+export async function checkRegionNameAvailable(
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) {
   const { name } = req.body;
   logger.verbose('Checking region name available', { name });
   const region = await prisma.regions.findMany({

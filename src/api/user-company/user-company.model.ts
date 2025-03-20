@@ -11,7 +11,10 @@ export const addUserToCompany = async (companyId: number, userId: number) => {
   });
 };
 
-export const removeUserFromCompany = async (companyId: number, userId: number) => {
+export const removeUserFromCompany = async (
+  companyId: number,
+  userId: number,
+) => {
   return prisma.userCompany.deleteMany({
     where: {
       companyId,
@@ -29,7 +32,10 @@ export const findCompanyUsers = async (companyId: number) => {
   });
 };
 
-export const findCompanyUserByCompanyIdAndUserId = async (companyId: number, userId: number) => {
+export const findCompanyUserByCompanyIdAndUserId = async (
+  companyId: number,
+  userId: number,
+) => {
   return prisma.userCompany.findUnique({
     where: {
       userId_companyId: {

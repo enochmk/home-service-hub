@@ -15,7 +15,10 @@ export const addPermissionToRole: RolePermissionRequest = async (req, res) => {
   res.status(200).json({ message: 'Permission added successfully' });
 };
 
-export const removePermissionFromRole: RolePermissionRequest = async (req, res) => {
+export const removePermissionFromRole: RolePermissionRequest = async (
+  req,
+  res,
+) => {
   const roleId = parseInt(req.params.roleId);
   const permissionId = req.body.permissionId;
   const existingPermission = await model.findPermission(roleId, permissionId);
@@ -24,7 +27,9 @@ export const removePermissionFromRole: RolePermissionRequest = async (req, res) 
     throw new createHttpError.NotFound('Permission not found in role');
   }
   await model.removePermissionFromRole(roleId, permissionId);
-  res.status(200).json({ message: 'Permission removed from role successfully' });
+  res
+    .status(200)
+    .json({ message: 'Permission removed from role successfully' });
 };
 
 export const getPermissionsByRole: RequestHandler = async (req, res) => {
