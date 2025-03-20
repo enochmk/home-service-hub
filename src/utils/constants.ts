@@ -61,3 +61,15 @@ export const ROLE_PERMISSIONS = {
     PERMISSIONS['users.list'],
   ],
 } as const;
+
+export const REQUEST_STATUSES = {
+  NEW: 'NEW',
+  PENDING: 'PENDING',
+  COMPLETED: 'COMPLETED',
+} as const;
+
+export const TASK_TYPES = {
+  NANNY: 'NANNY',
+  CLEANING: 'CLEANING',
+  LAUNDRY: 'LAUNDRY',
+} as const;
