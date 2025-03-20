@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+export const getLocationSchema = z.object({
+  params: z.object({
+    locationId: z.string(),
+  }),
+});
+
+export type GetLocationInput = z.infer<typeof getLocationSchema>['params'];
+
 export const createLocationSchema = z.object({
   body: z.object({
     regionId: z.number().int().positive(),

@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+export const getRegionSchema = z.object({
+  params: z.object({
+    regionId: z.string(),
+  }),
+});
+
+export type GetRegionInput = z.infer<typeof getRegionSchema>['params'];
+
 export const createRegionSchema = z.object({
   body: z.object({
     name: z.string(),

@@ -38,17 +38,21 @@ export async function validateRequestCreation(
   _res: Response,
   next: NextFunction,
 ) {
-  logger.verbose('Validating request creation.', req.body);
+  logger.verbose('Validating request.', req.body);
 
-  const statusId = req.body.statusId;
-  logger.verbose(`Validating status ID. ${statusId}`);
-  await validateStatusIdExist(statusId);
-  logger.info('Status ID validated');
+  if (req.body.statusId) {
+    const statusId = req.body.statusId;
+    logger.verbose(`Validating status ID. ${statusId}`);
+    await validateStatusIdExist(statusId);
+    logger.info('Status ID validated');
+  }
 
-  const locationId = req.body.locationId;
-  logger.verbose(`Validating location ID. ${locationId}`);
-  await validateLocationIdExist(locationId);
-  logger.info('Location ID validated');
+  if (req.body.locationId) {
+    const locationId = req.body.locationId;
+    logger.verbose(`Validating location ID. ${locationId}`);
+    await validateLocationIdExist(locationId);
+    logger.info('Location ID validated');
+  }
 
   if (req.body.companyId) {
     const companyId = req.body.companyId;

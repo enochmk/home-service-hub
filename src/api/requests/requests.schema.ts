@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+export const getRequestSchema = z.object({
+  params: z.object({
+    requestId: z.string(),
+  }),
+});
+
+export type GetRequestInput = z.infer<typeof getRequestSchema>['params'];
+
 export const createRequestSchema = z.object({
   body: z.object({
     statusId: z.number().int().positive(),

@@ -1,3 +1,4 @@
+import dayjs from 'dayjs';
 import { RequestHandler } from 'express';
 import { getLogger } from '../../utils/logger';
 import prisma from '../../db/prisma.db';
@@ -24,7 +25,8 @@ export const getTaskById: GetRequest = async (req, res) => {
 type CreateRequest = RequestHandler<unknown, unknown, CreateTaskInput>;
 export const createTask: CreateRequest = async (req, res) => {
   logger.verbose('Creating new task', req.body);
-  const payload = req.body;
+  const taskDateAppointment = dayjs(req.body.taskDate).toDate();
+  const payload = { ...req.body, taskDate: taskDateAppointment };
   const newTask = await prisma.tasks.create({ data: payload });
   logger.info('Created new task', newTask);
   res.status(201).json(newTask);

@@ -13,6 +13,7 @@ import locationsRouter from './locations/locations.routes';
 import taskTypesRouter from './task-types/task-types.routes';
 import statusesRouter from './statuses/statuses.routes';
 import tasksRouter from './tasks/tasks.routes';
+import requestsRouter from './requests/requests.routes';
 
 import * as authMiddleware from './auth/auth.middleware';
 import * as userCompanyMiddleware from './user-company/user-company.middleware';
@@ -34,5 +35,6 @@ router.use('/task-types', taskTypesRouter);
 router.use('/statuses', statusesRouter);
 router.use('/locations', locationsRouter);
 router.use('/tasks', tasksRouter);
+router.use('/requests', requestsRouter);
 
 export default router;

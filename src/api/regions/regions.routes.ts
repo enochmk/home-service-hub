@@ -16,6 +16,7 @@ router.get(
 
 router.get(
   '/:regionId',
+  schemaValidation(schema.getRegionSchema),
   permissions.checkPermission([PERMISSIONS['regions.view']]),
   middlewares.checkRegionIdExist,
   controller.getRegionById,
@@ -40,6 +41,7 @@ router.put(
 
 router.delete(
   '/:regionId',
+  schemaValidation(schema.getRegionSchema),
   permissions.checkPermission([PERMISSIONS['regions.delete']]),
   middlewares.checkRegionIdExist,
   controller.deleteRegion,

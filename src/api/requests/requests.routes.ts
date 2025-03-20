@@ -16,6 +16,7 @@ router.get(
 
 router.get(
   '/:requestId',
+  schemaValidation(schema.getRequestSchema),
   permissions.checkPermission([PERMISSIONS['request.view']]),
   middlewares.checkRequestIdExist,
   controller.getRequestById,
@@ -25,7 +26,7 @@ router.post(
   '/',
   schemaValidation(schema.createRequestSchema),
   permissions.checkPermission([PERMISSIONS['request.create']]),
-  middlewares.checkRequestNameAvailable,
+  middlewares.validateRequestCreation,
   controller.createRequest,
 );
 
@@ -34,12 +35,13 @@ router.put(
   schemaValidation(schema.updateRequestSchema),
   permissions.checkPermission([PERMISSIONS['request.update']]),
   middlewares.checkRequestIdExist,
-  middlewares.checkRequestNameAvailable,
+  middlewares.validateRequestCreation,
   controller.updateRequest,
 );
 
 router.delete(
   '/:requestId',
+  schemaValidation(schema.getRequestSchema),
   permissions.checkPermission([PERMISSIONS['request.delete']]),
   middlewares.checkRequestIdExist,
   controller.deleteRequest,

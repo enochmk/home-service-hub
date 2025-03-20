@@ -16,6 +16,7 @@ router.get(
 
 router.get(
   '/:locationId',
+  schemaValidation(schema.getLocationSchema),
   permissions.checkPermission([PERMISSIONS['locations.view']]),
   middlewares.checkLocationIdExist,
   controller.getLocationById,
@@ -40,6 +41,7 @@ router.put(
 
 router.delete(
   '/:locationId',
+  schemaValidation(schema.getLocationSchema),
   permissions.checkPermission([PERMISSIONS['locations.delete']]),
   middlewares.checkLocationIdExist,
   controller.deleteLocation,
