@@ -2,19 +2,21 @@ import { RequestHandler } from 'express';
 import prisma from '../../db/prisma.db';
 import { regionSelect } from './regions.interface';
 import { getLogger } from '../../utils/logger';
+import { CreateRegionInput, UpdateRegionInput } from './regions.schema';
 
 const logger = getLogger('RegionsController');
 
 export const getAllRegions: RequestHandler = async (req, res) => {
   logger.verbose('Getting all regions');
-  const regions = await prisma.regions.findMany({
+  const data = await prisma.regions.findMany({
     select: regionSelect,
   });
-  logger.info('Regions retrieved', { regions });
-  res.status(200).json({ data: regions });
+  logger.info('Regions retrieved', { regions: data });
+  res.status(200).json({ data });
 };
 
-export const getRegionById: RequestHandler = async (req, res) => {
+type GetRegion = RequestHandler<{ regionId: string }>;
+export const getRegionById: GetRegion = async (req, res) => {
   const regionId = parseInt(req.params.regionId);
   logger.verbose(`Getting region with id ${regionId}`);
   const region = await prisma.regions.findUnique({
@@ -25,7 +27,8 @@ export const getRegionById: RequestHandler = async (req, res) => {
   res.status(200).json(region);
 };
 
-export const createRegion: RequestHandler = async (req, res) => {
+type CreateRegion = RequestHandler<unknown, unknown, CreateRegionInput>;
+export const createRegion: CreateRegion = async (req, res) => {
   const { name } = req.body;
   logger.verbose('Creating a new region', { name });
   const region = await prisma.regions.create({
@@ -38,7 +41,8 @@ export const createRegion: RequestHandler = async (req, res) => {
   res.status(201).json(region);
 };
 
-export const updateRegion: RequestHandler = async (req, res) => {
+type UpdateRegion = RequestHandler<{ regionId: string }, any, UpdateRegionInput>;
+export const updateRegion: UpdateRegion = async (req, res) => {
   const regionId = parseInt(req.params.regionId);
   logger.verbose(`Updating region with id ${regionId}`, req.body);
   const region = await prisma.regions.update({
@@ -50,7 +54,8 @@ export const updateRegion: RequestHandler = async (req, res) => {
   res.status(200).json(region);
 };
 
-export const deleteRegion: RequestHandler = async (req, res) => {
+type DeleteRegion = RequestHandler<{ regionId: string }>;
+export const deleteRegion: DeleteRegion = async (req, res) => {
   const regionId = parseInt(req.params.regionId);
   logger.verbose(`Deleting region with id ${regionId}`);
   await prisma.regions.delete({
