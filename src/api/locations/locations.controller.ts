@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import { getLogger } from '../../utils/logger';
 import prisma from '../../db/prisma.db';
+import { CreateLocationInput, UpdateLocationInput } from './locations.schema';
 
 const logger = getLogger('LocationController');
 
@@ -11,7 +12,8 @@ export const getAllLocations: RequestHandler = async (req, res) => {
   res.status(200).json({ data });
 };
 
-export const getLocationById: RequestHandler = async (req, res) => {
+type GetLocationRequest = RequestHandler<{ locationId: string }>;
+export const getLocationById: GetLocationRequest = async (req, res) => {
   const locationId = parseInt(req.params.locationId);
   logger.verbose('Getting location by id', { locationId });
   const data = await prisma.locations.findUnique({ where: { id: locationId } });
@@ -19,7 +21,8 @@ export const getLocationById: RequestHandler = async (req, res) => {
   res.status(200).json(data);
 };
 
-export const createLocation: RequestHandler = async (req, res) => {
+type LocationRequest = RequestHandler<unknown, unknown, CreateLocationInput>;
+export const createLocation: LocationRequest = async (req, res) => {
   const userId = res.locals.user!.id;
   const data = { ...req.body, createdById: userId };
   logger.verbose('Creating location', { data });
@@ -28,7 +31,8 @@ export const createLocation: RequestHandler = async (req, res) => {
   res.status(201).json(newLocation);
 };
 
-export const updateLocation: RequestHandler = async (req, res) => {
+type UpdateLocationRequest = RequestHandler<{ locationId: string }, unknown, UpdateLocationInput>;
+export const updateLocation: UpdateLocationRequest = async (req, res) => {
   const locationId = parseInt(req.params.locationId);
   logger.verbose('Updating location', { locationId });
   const data = await prisma.locations.update({
@@ -39,7 +43,8 @@ export const updateLocation: RequestHandler = async (req, res) => {
   res.status(200).json(data);
 };
 
-export const deleteLocation: RequestHandler = async (req, res) => {
+type DeleteLocationRequest = RequestHandler<{ locationId: string }>;
+export const deleteLocation: DeleteLocationRequest = async (req, res) => {
   const locationId = parseInt(req.params.locationId);
   logger.verbose('Deleting location', { locationId });
   await prisma.locations.delete({ where: { id: locationId } });
