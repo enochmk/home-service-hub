@@ -1,7 +1,7 @@
 import { RequestHandler } from 'express';
 import { getLogger } from '../../utils/logger';
 import prisma from '../../db/prisma.db';
-import { CreateRequestInput } from './requests.schema';
+import { CreateRequestInput, UpdateRequestInput } from './requests.schema';
 
 const logger = getLogger('RequestsController');
 
@@ -12,7 +12,8 @@ export const getAllRequests: RequestHandler = async (req, res) => {
   res.status(200).json({ data });
 };
 
-export const getRequestById: RequestHandler = async (req, res) => {
+type GetRequest = RequestHandler<{ requestId: string }>;
+export const getRequestById: GetRequest = async (req, res) => {
   const requestId = parseInt(req.params.requestId);
   logger.verbose(`Getting request by ID: ${requestId}`);
   const data = await prisma.requests.findUnique({
@@ -35,13 +36,29 @@ export const createRequest: CreateRequest = async (req, res) => {
   res.status(201).json(newRequest);
 };
 
-export const updateRequest: RequestHandler = async (req, res) => {
+type UpdateRequest = RequestHandler<{ requestId: string }, any, UpdateRequestInput>;
+export const updateRequest: UpdateRequest = async (req, res) => {
   const requestId = parseInt(req.params.requestId);
-  const { name } = req.body;
-  res.status(200).json({ requestId, name });
+  logger.verbose(`Updating request by ID: ${requestId}`, req.body);
+  const data = await prisma.requests.update({
+    where: {
+      id: requestId,
+    },
+    data: req.body,
+  });
+  logger.info('Request updated.', data);
+  res.status(200).json(data);
 };
 
-export const deleteRequest: RequestHandler = async (req, res) => {
-  // const requestId = parseInt(req.params.requestId);
+type DeleteRequest = RequestHandler<any, any, any, { requestId: string }>;
+export const deleteRequest: DeleteRequest = async (req, res) => {
+  const requestId = parseInt(req.params.requestId);
+  logger.verbose(`Deleting request by ID: ${requestId}`);
+  await prisma.requests.delete({
+    where: {
+      id: requestId,
+    },
+  });
+  logger.info('Request deleted.', { requestId });
   res.sendStatus(204);
 };
