@@ -25,7 +25,7 @@ router.post(
   '/',
   schemaValidation(schema.createLocationSchema),
   permissions.checkPermission([PERMISSIONS['locations.create']]),
-  middlewares.checkLocationNameAvailable,
+  middlewares.checkRegionIdExist,
   controller.createLocation,
 );
 
@@ -34,7 +34,7 @@ router.put(
   schemaValidation(schema.updateLocationSchema),
   permissions.checkPermission([PERMISSIONS['locations.update']]),
   middlewares.checkLocationIdExist,
-  middlewares.checkLocationNameAvailable,
+  middlewares.checkRegionIdExist,
   controller.updateLocation,
 );
 
