@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+export const getStatusSchema = z.object({
+  params: z.object({
+    statusId: z.string(),
+  }),
+});
+
+export type GetStatusInput = z.infer<typeof getStatusSchema>['params'];
+
 export const createStatusSchema = z.object({
   body: z.object({
     name: z.string(),

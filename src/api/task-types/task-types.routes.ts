@@ -16,6 +16,7 @@ router.get(
 
 router.get(
   '/:taskTypeId',
+  schemaValidation(schema.getTaskTypeSchema),
   permissions.checkPermission([PERMISSIONS['taskTypes.view']]),
   middlewares.checkTaskTypeIdExist,
   controller.getTaskTypeById,
@@ -40,6 +41,7 @@ router.put(
 
 router.delete(
   '/:taskTypeId',
+  schemaValidation(schema.getTaskTypeSchema),
   permissions.checkPermission([PERMISSIONS['taskTypes.delete']]),
   middlewares.checkTaskTypeIdExist,
   controller.deleteTaskType,

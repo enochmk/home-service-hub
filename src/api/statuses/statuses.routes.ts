@@ -16,6 +16,7 @@ router.get(
 
 router.get(
   '/:statusId',
+  schemaValidation(schema.getStatusSchema),
   permissions.checkPermission([PERMISSIONS['status.view']]),
   middlewares.checkStatusIdExist,
   controller.getStatusById,
@@ -40,6 +41,7 @@ router.put(
 
 router.delete(
   '/:statusId',
+  schemaValidation(schema.getStatusSchema),
   permissions.checkPermission([PERMISSIONS['status.delete']]),
   middlewares.checkStatusIdExist,
   controller.deleteStatus,
