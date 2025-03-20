@@ -1,6 +1,7 @@
 import { RequestHandler } from 'express';
 import { getLogger } from '../../utils/logger';
 import prisma from '../../db/prisma.db';
+import { CreateStatusInput, UpdateStatusInput } from './statuses.schema';
 
 const logger = getLogger('StatusesController');
 
@@ -11,7 +12,8 @@ export const getAllStatuses: RequestHandler = async (req, res) => {
   res.status(200).json({ data: data });
 };
 
-export const getStatusById: RequestHandler = async (req, res) => {
+type GetStatus = RequestHandler<{ statusId: string }>;
+export const getStatusById: GetStatus = async (req, res) => {
   const statusId = parseInt(req.params.statusId);
   logger.verbose('Fetching status by ID', { statusId });
   const data = await prisma.statuses.findUnique({ where: { id: statusId } });
@@ -19,7 +21,8 @@ export const getStatusById: RequestHandler = async (req, res) => {
   res.status(200).json(data);
 };
 
-export const createStatus: RequestHandler = async (req, res) => {
+type CreateStatus = RequestHandler<unknown, unknown, CreateStatusInput>;
+export const createStatus: CreateStatus = async (req, res) => {
   const { name } = req.body;
   logger.verbose('Creating new status', { name });
   const data = await prisma.statuses.create({ data: { name } });
@@ -27,7 +30,8 @@ export const createStatus: RequestHandler = async (req, res) => {
   res.status(201).json(data);
 };
 
-export const updateStatus: RequestHandler = async (req, res) => {
+type UpdateStatus = RequestHandler<{ statusId: string }, any, UpdateStatusInput>;
+export const updateStatus: UpdateStatus = async (req, res) => {
   const statusId = parseInt(req.params.statusId);
   const { name } = req.body;
   logger.verbose('Updating status', { statusId, name });
@@ -36,7 +40,8 @@ export const updateStatus: RequestHandler = async (req, res) => {
   res.status(200).json(data);
 };
 
-export const deleteStatus: RequestHandler = async (req, res) => {
+type DeleteStatus = RequestHandler<{ statusId: string }>;
+export const deleteStatus: DeleteStatus = async (req, res) => {
   const statusId = parseInt(req.params.statusId);
   logger.verbose(`Deleting status with ID: ${statusId}`);
   await prisma.statuses.delete({ where: { id: statusId } });
