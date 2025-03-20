@@ -34,7 +34,10 @@ type UpdateTask = RequestHandler<{ taskId: string }, any, UpdateTaskInput>;
 export const updateTask: UpdateTask = async (req, res) => {
   const taskId = parseInt(req.params.taskId);
   logger.verbose('Updating task', { taskId, ...req.body });
-  const data = await prisma.tasks.update({ where: { id: taskId }, data: req.body });
+  const data = await prisma.tasks.update({
+    where: { id: taskId },
+    data: req.body,
+  });
   logger.info('Updated task', data);
   res.status(200).json(data);
 };

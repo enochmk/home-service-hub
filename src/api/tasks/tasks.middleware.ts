@@ -5,7 +5,11 @@ import prisma from '../../db/prisma.db';
 
 const logger = getLogger('TasksMiddleware');
 
-export async function checkTaskIdExist(req: Request, _res: Response, next: NextFunction) {
+export async function checkTaskIdExist(
+  req: Request,
+  _res: Response,
+  next: NextFunction,
+) {
   const targetId = parseInt(req.params.taskId, 10);
   logger.verbose('Checking task ID exist', { taskId: targetId });
   const task = await prisma.tasks.findMany({
