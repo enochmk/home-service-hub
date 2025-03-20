@@ -25,6 +25,7 @@ model users {
   company              company[]
   requests             requests[]
   tasks                tasks[]
+  payments             payments[]
 
   @@index([firstName, lastName], name: "users_full_name_idx")
   @@index([phoneNumber], name: "users_phone_number_idx")
@@ -120,18 +121,19 @@ model statuses {
 }
 
 model requests {
-  id          Int       @id @default(autoincrement())
+  id          Int        @id @default(autoincrement())
   statusId    Int
   locationId  Int
   createdById Int
   companyId   Int?
-  createdAt   DateTime  @default(now())
-  updatedAt   DateTime  @updatedAt
-  status      statuses  @relation(fields: [statusId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  createdBy   users     @relation(fields: [createdById], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  company     company?  @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
-  location    locations @relation(fields: [locationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  status      statuses   @relation(fields: [statusId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  createdBy   users      @relation(fields: [createdById], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  company     company?   @relation(fields: [companyId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  location    locations  @relation(fields: [locationId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   tasks       tasks[]
+  payments    payments[]
 }
 
 model tasks {
@@ -145,4 +147,15 @@ model tasks {
   request    requests  @relation(fields: [requestId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   taskType   taskTypes @relation(fields: [taskTypeId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   worker     users?    @relation(fields: [workerId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+}
+
+model payments {
+  id        Int      @id @default(autoincrement())
+  requestId Int
+  userId    Int
+  amount    Float
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  request   requests @relation(fields: [requestId], references: [id], onDelete: Cascade, onUpdate: Cascade)
+  user      users    @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
 }
