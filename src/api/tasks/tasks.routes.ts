@@ -25,6 +25,7 @@ router.post(
   '/',
   schemaValidation(schema.createTaskSchema),
   permissions.checkPermission([PERMISSIONS['task.create']]),
+  middlewares.validateTaskCreation,
   controller.createTask,
 );
 
