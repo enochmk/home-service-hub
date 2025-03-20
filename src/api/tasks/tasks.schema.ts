@@ -1,5 +1,13 @@
 import { z } from 'zod';
 
+export const getTaskSchema = z.object({
+  params: z.object({
+    taskId: z.string(),
+  }),
+});
+
+export type GetTaskInput = z.infer<typeof getTaskSchema>['params'];
+
 export const createTaskSchema = z.object({
   body: z.object({
     taskTypeId: z.number().int().positive(),
