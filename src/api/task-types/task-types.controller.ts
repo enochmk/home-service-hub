@@ -1,8 +1,7 @@
 import { RequestHandler } from 'express';
 import { getLogger } from '../../utils/logger';
 import prisma from '../../db/prisma.db';
-import { CreateTaskTypeInput } from './task-types.schema';
-import { UpdateRequestInput } from '../requests/requests.schema';
+import { CreateTaskTypeInput, UpdateTaskTypeInput } from './task-types.schema';
 
 const logger = getLogger('TaskTypes');
 
@@ -31,14 +30,13 @@ export const createTaskType: CreateRequest = async (req, res) => {
   res.status(201).json(data);
 };
 
-type UpdateRequest = RequestHandler<{ taskTypeId: string }, any, UpdateRequestInput>;
+type UpdateRequest = RequestHandler<{ taskTypeId: string }, any, UpdateTaskTypeInput>;
 export const updateTaskType: UpdateRequest = async (req, res) => {
   const taskTypeId = parseInt(req.params.taskTypeId);
   logger.verbose('Updating task type', { taskTypeId, ...req.body });
-  const { name } = req.body;
   const data = await prisma.taskTypes.update({
     where: { id: taskTypeId },
-    data: { name },
+    data: req.body,
   });
   logger.info('Task type updated', data);
   res.status(200).json(data);
