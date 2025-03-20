@@ -23,8 +23,7 @@ export const getLocationById: GetRequest = async (req, res) => {
 
 type CreateRequest = RequestHandler<unknown, unknown, CreateLocationInput>;
 export const createLocation: CreateRequest = async (req, res) => {
-  const userId = res.locals.user!.id;
-  const data = { ...req.body, createdById: userId };
+  const data = { ...req.body };
   logger.verbose('Creating location', { data });
   const newLocation = await prisma.locations.create({ data });
   logger.info('Location created successfully', { newLocation });
